@@ -1,6 +1,6 @@
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import App from './App.jsx'
-import './styles.css'
+import './index.css'
 
 const root = document.getElementById('root')
 const app = <App pathname={window.location.pathname} />

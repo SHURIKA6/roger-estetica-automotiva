@@ -4,6 +4,47 @@ Landing page da Roger Estética Automotiva, em Sinop-MT.
 
 A rota `/desenvolvedores` apresenta os créditos públicos de quem construiu a experiência digital, com a mesma identidade visual da Roger.
 
+## Estrutura do projeto
+
+Estilo com **Tailwind CSS v4**. Só existe um arquivo `.css` no projeto: [`src/index.css`](src/index.css), com o tema e as regras globais. Todo o resto é classe utilitária no JSX.
+
+Componente aqui só existe quando o código aparece em mais de um lugar. Seção usada uma vez fica inline na própria página.
+
+```
+src/
+  App.jsx              escolhe a página pelo caminho da URL
+  main.jsx             entrada do navegador (hydrate ou render)
+  entry-server.jsx     entrada de SSR usada pelo build
+  route.js             resolvePage()               + route.test.js
+  content.js           textos, serviços, contatos  + content.test.js
+  index.css            @import tailwindcss + @theme + @layer base
+  icons.jsx            os 6 SVGs do site
+  components/          só o que se repete: Brand (3x), SiteHeader (2x), SkipLink (2x)
+  pages/               LandingPage e DevelopersPage, com as seções inline
+scripts/
+  build.mjs            Vite, pré-render das rotas e arquivos de SEO
+```
+
+### Tailwind neste projeto
+
+O design é **desktop-first**, o oposto do padrão do Tailwind. Por isso `src/index.css` declara duas variantes próprias:
+
+- sem prefixo → a partir de 1081px
+- `lg-down:` → até 1080px
+- `sm-down:` → até 640px
+
+A ordem em que elas aparecem no arquivo define qual sobrescreve qual: `lg-down` antes de `sm-down`. **Não troque essa ordem.** Elas são variantes próprias (e não `--breakpoint-*`) para gerar exatamente `@media (max-width: 1080px)`, já que `--breakpoint-lg: 1081px` geraria `(width < 1081px)`, que pega larguras fracionárias.
+
+Três armadilhas que já custaram bug aqui:
+
+- **Duas classes de cor na mesma string não se sobrescrevem pela ordem que você escreveu.** Quem ganha é a ordem no CSS gerado. Por isso constantes como `EYEBROW` e `SECTION_TAG` não trazem cor: cada uso declara a sua.
+- **Use `transition` seco, não `transition-[...,transform]`.** Na v4 `translate`, `rotate` e `scale` são propriedades próprias; uma lista arbitrária com `transform` não anima o hover.
+- **Para `transform` com mais de uma função, use `[transform:...]`.** As utilities `rotate-*`/`translate-*` aplicam sempre translate antes de rotate, o que inverte um `rotate(...) translateX(...)` sem avisar.
+
+Cores com transparência estão no tema como `--color-paper-24` e afins, em vez de modificadores `/opacidade`, porque o modificador gera `color-mix()` em oklab e não dá exatamente a mesma cor.
+
+Texto, serviço ou contato novo entra em `src/content.js`, nunca direto no JSX: o build lê o mesmo arquivo para gerar o JSON-LD, o `sitemap.xml` e o `llms.txt`.
+
 ## Desenvolvimento
 
 ```bash

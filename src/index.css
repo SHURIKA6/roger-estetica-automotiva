@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+/* Breakpoints do design, que é desktop-first. Declarados como variantes próprias
+   (e não via --breakpoint-*) por dois motivos: reproduzem a media query original
+   ao pé da letra — `--breakpoint-sm: 641px` viraria `(width < 641px)`, que pega
+   larguras fracionárias como 640.5px que o `max-width: 640px` não pega — e a
+   ordem de emissão passa a ser a ordem destas duas linhas.
+   A ORDEM ABAIXO IMPORTA: lg-down antes de sm-down, para o mobile sobrescrever. */
+@custom-variant lg-down { @media (max-width: 1080px) { @slot } }
+@custom-variant sm-down { @media (max-width: 640px) { @slot } }
+
+@theme static {
+  /* Desliga os breakpoints padrão do Tailwind: o projeto usa só os dois acima. */
+  --breakpoint-*: initial;
+
+  --color-ink: #0d0d0c;
+  --color-ink-soft: #151513;
+  --color-ink-light: #21201d;
+  --color-ink-hover: #191917;
+  --color-paper: #f0e7d9;
+  --color-paper-soft: #d7cdbf;
+  --color-muted: #978f86;
+  --color-muted-paper: #5d554d;
+  --color-red: #ea4436;
+  --color-red-deep: #b5221c;
+  --color-gold: #d6b788;
+
+  /* Fios e véus. São rgba() literais de propósito: o modificador /opacidade do
+     Tailwind gera color-mix() em oklab, que não dá exatamente a mesma cor. */
+  --color-line: rgba(240, 231, 217, .18);
+  --color-paper-08: rgba(240, 231, 217, .08);
+  --color-paper-13: rgba(240, 231, 217, .13);
+  --color-paper-19: rgba(240, 231, 217, .19);
+  --color-paper-22: rgba(240, 231, 217, .22);
+  --color-paper-24: rgba(240, 231, 217, .24);
+  --color-paper-28: rgba(240, 231, 217, .28);
+  --color-paper-32: rgba(240, 231, 217, .32);
+  --color-paper-40: rgba(240, 231, 217, .4);
+  --color-red-17: rgba(234, 68, 54, .17);
+  --color-red-28: rgba(234, 68, 54, .28);
+  --color-red-38: rgba(234, 68, 54, .38);
+  --color-red-45: rgba(234, 68, 54, .45);
+  --color-red-70: rgba(234, 68, 54, .7);
+  --color-ink-16: rgba(13, 13, 12, .16);
+  --color-ink-35: rgba(13, 13, 12, .35);
+  --color-ink-82: rgba(13, 13, 12, .82);
+  --color-ink-soft-92: rgba(21, 21, 19, .92);
+
+  --font-sans: 'Manrope', sans-serif;
+  --font-display: 'Barlow Condensed', Impact, sans-serif;
+  --default-font-family: var(--font-sans);
+
+  /* O design usa `.2s ease` em praticamente toda transição; redefinir os padrões
+     do Tailwind (150ms / cubic-bezier) faz um `transition` seco já sair certo. */
+  --default-transition-duration: 200ms;
+  --default-transition-timing-function: ease;
+}
+
+@layer base {
+  :root {
+    color: var(--color-paper);
+    background: var(--color-ink);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+
+    /* O Preflight aplica line-height: 1.5 em `html`. O CSS original nunca definiu
+       line-height na raiz, então tudo herdava `normal` (~1.2). Sem esta linha,
+       toda caixa de texto sem line-height explícito cresceria ~25%. */
+    line-height: normal;
+
+    --header-height: 84px;
+  }
+
+  @media (max-width: 640px) {
+    :root { --header-height: 72px; }
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-height) + 24px);
+    scroll-padding-bottom: 90px;
+  }
+
+  @media (max-width: 640px) {
+    html {
+      scroll-padding-top: calc(var(--header-height) + 18px);
+      scroll-padding-bottom: 82px;
+    }
+  }
+
+  body {
+    min-width: 320px;
+    background: var(--color-ink);
+    cursor: default;
+  }
+
+  /* O Preflight da v4 não põe cursor: pointer em button. */
+  a, button { cursor: pointer; }
+
+  /* Rede de segurança: todo ícone recebe tamanho explícito no ponto de uso. */
+  svg { width: 1.1em; height: 1.1em; }
+
+  /* O CSS original usava `* { box-sizing: border-box }`, que NÃO atinge
+     pseudo-elementos — então as decorações ::before/::after eram content-box.
+     O Preflight inclui ::before/::after, o que encolhia cada uma em 2px. */
+  ::before, ::after { box-sizing: content-box; }
+
+  /* O Preflight não mexe em <em>, que continuaria itálico. */
+  h1 em, h2 em { color: var(--color-red); font-style: normal; }
+
+  ::selection { background: var(--color-red); color: var(--color-paper); }
+
+  :focus-visible { outline: 2px solid var(--color-gold); outline-offset: 5px; }
+}

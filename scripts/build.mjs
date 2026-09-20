@@ -1,7 +1,12 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { build, createServer, loadEnv } from 'vite'
-import { ADDRESS, MAPS_URL, PHONE, serviceGroups, WHATSAPP_URL } from '../src/landing-content.js'
+import { ADDRESS, MAPS_URL, PHONE, serviceGroups, WHATSAPP_URL } from '../src/content.js'
 
+// Build de produção: gera os assets com o Vite, pré-renderiza cada rota em HTML
+// com os próprios metadados e escreve os arquivos de SEO.
+
+// SITE_URL tem prioridade sobre a URL automática da Vercel. Sem nenhuma das duas,
+// o build sai com noindex em vez de inventar um domínio.
 const env = { ...loadEnv('production', process.cwd(), ''), ...process.env }
 const configuredUrl = env.SITE_URL || (env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${env.VERCEL_PROJECT_PRODUCTION_URL}` : '')
 let origin = ''
@@ -58,7 +63,7 @@ try {
         ...(origin ? { '@id': absolute('/#empresa'), url: absolute('/'), image: absolute('/assets/roger-flyer.png') } : {}),
         hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Serviços de estética automotiva', itemListElement: serviceGroups.flatMap(group => group.services.map(service => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: service.name, description: service.detail } }))) },
       }
-      tags.push(`<script type="application/ld+json">${JSON.stringify(business).replaceAll('<', '\\u003c')}</script>`)
+      tags.push(`<script type="application/ld+json">${JSON.stringify(business).replaceAll('<', '\u003c')}</script>`)
     }
     const html = template.replace(/<title>[\s\S]*?<\/title>/g, '').replace(/<meta\s+(?:name="description"|property="og:[^"]+")[^>]*>/g, '')
       .replace('</head>', `${tags.join('\n    ')}\n  </head>`)

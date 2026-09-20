@@ -1,5 +1,13 @@
+// Conteúdo do site: contatos, serviços e créditos.
+// Sem JSX de propósito — o script de build importa este mesmo arquivo para gerar
+// o JSON-LD, o sitemap e o llms.txt.
+
 export const MAPS_URL = 'https://maps.app.goo.gl/zEgB5ubvbBt3L4Wx6'
+
 export const PHONE = '5566996126664'
+export const PHONE_DISPLAY = '(66) 99612-6664'
+export const TEL_URL = `tel:+${PHONE}`
+
 export const ADDRESS = {
   street: 'Rua dos Guapuruvús, 366',
   neighborhood: 'Jardim das Violetas',
@@ -49,5 +57,31 @@ export const serviceGroups = [
       { name: 'Polimento', detail: 'Refino visual para recuperar brilho e valorizar a pintura.' },
       { name: 'Espelhamento', detail: 'Acabamento de alto brilho para uma presença que se percebe de longe.' },
     ],
+  },
+]
+
+// Serviço que já abre expandido na lista.
+export const featuredService = 'Vitrificação em pintura'
+
+export const developers = [
+  {
+    initials: 'EG',
+    avatar: 'https://avatars.githubusercontent.com/Edu4rdo-Gobatto?s=256',
+    name: 'Eduardo Gobatto',
+    role: 'Front-end e back-end',
+    instagram: 'https://instagram.com/e.gobatto/',
+    instagramLabel: '@e.gobatto',
+    github: 'https://github.com/Edu4rdo-Gobatto',
+    accent: 'red',
+  },
+  {
+    initials: 'FR',
+    avatar: 'https://avatars.githubusercontent.com/SHURIKA6?s=256',
+    name: 'Fernando Riad',
+    role: 'Front-end e back-end',
+    instagram: 'https://instagram.com/_riad777/',
+    instagramLabel: '@_riad777',
+    github: 'https://github.com/SHURIKA6',
+    accent: 'gold',
   },
 ]
