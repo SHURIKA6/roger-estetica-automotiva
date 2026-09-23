@@ -6,17 +6,18 @@ import Brand from './Brand.jsx'
 const NAV_LINK = 'transition-colors hover:text-paper'
 // `transition` seco em vez de uma lista arbitrária: na v4 o translate é uma
 // propriedade própria, e `transition-[...,transform]` não animaria o hover.
-const NAV_CTA = 'inline-flex min-h-12 items-center border border-line px-[18px] text-paper transition hover:border-red hover:bg-red hover:[transform:translateY(-2px)] lg-down:mt-4 lg-down:font-sans lg-down:text-[15px] lg-down:font-bold lg-down:normal-case lg-down:tracking-normal'
+const NAV_CTA = 'inline-flex min-h-12 items-center gap-[11px] border border-line px-[17px] text-paper transition-colors hover:border-red hover:bg-red mt-4 font-sans text-[10px] lg:mt-0 lg:font-display lg:text-[10px]'
 
 // O overlay original encadeia `visibility 0s linear .25s` com opacity/transform.
 // São duas strings completas, uma por estado, para nunca depender da ordem entre
 // uma shorthand e sua longhand.
-const NAV_BASE = 'flex items-center gap-[clamp(18px,2.3vw,36px)] text-[14px] font-semibold text-paper-soft lg-down:fixed lg-down:uppercase lg-down:inset-0 lg-down:z-[21] lg-down:h-screen lg-down:min-h-[100dvh] lg-down:flex-col lg-down:items-start lg-down:justify-center lg-down:bg-ink lg-down:font-display lg-down:leading-[.85] lg-down:tracking-[.03em]'
-const NAV_SIZING = 'lg-down:gap-[23px] lg-down:px-[26px] lg-down:pt-[110px] lg-down:pb-[50px] lg-down:text-[40px] sm-down:gap-5 sm-down:px-5 sm-down:pt-24 sm-down:pb-10 sm-down:text-[clamp(26px,10vw,36px)]'
-const NAV_OPEN = 'lg-down:visible lg-down:opacity-100 lg-down:[transform:translateY(0)] lg-down:[transition:visibility_0s_linear_0s,opacity_.25s_ease,transform_.25s_ease]'
-const NAV_CLOSED = 'lg-down:invisible lg-down:pointer-events-none lg-down:opacity-0 lg-down:[transform:translateY(-12px)] lg-down:[transition:visibility_0s_linear_.25s,opacity_.25s_ease,transform_.25s_ease]'
+// Mobile-first: base = overlay de tela cheia; lg = nav inline.
+const NAV_BASE = 'fixed inset-0 z-[21] h-screen min-h-[100dvh] flex flex-col items-start justify-center bg-ink font-display leading-[.85] tracking-[.03em] font-extrabold text-paper-soft uppercase lg:relative lg:inset-auto lg:z-auto lg:h-auto lg:min-h-0 lg:flex-row lg:items-center lg:bg-transparent lg:font-sans lg:leading-normal lg:tracking-[.1em]'
+const NAV_SIZING = 'gap-[22px] px-5 pt-24 pb-10 text-[clamp(40px,13vw,58px)] sm:gap-[23px] sm:px-[26px] sm:pt-[110px] sm:pb-[50px] sm:text-[46px] lg:gap-[clamp(18px,2.3vw,36px)] lg:px-0 lg:pt-0 lg:pb-0 lg:text-[10px]'
+const NAV_OPEN = 'visible opacity-100 [transform:translateY(0)] [transition:visibility_0s_linear_0s,opacity_.25s_ease,transform_.25s_ease] lg:visible lg:opacity-100 lg:[transform:none]'
+const NAV_CLOSED = 'invisible pointer-events-none opacity-0 [transform:translateY(-12px)] [transition:visibility_0s_linear_.25s,opacity_.25s_ease,transform_.25s_ease] lg:visible lg:pointer-events-auto lg:opacity-100 lg:[transform:none]'
 
-// Header fixo. Abaixo de 1080px a navegação vira um overlay de tela cheia
+// Header fixo. Abaixo de 1081px a navegação vira um overlay de tela cheia
 // controlado pelo botão sanduíche.
 export default function SiteHeader({ developersActive = false }) {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -55,12 +56,12 @@ export default function SiteHeader({ developersActive = false }) {
   const closeMenu = () => setMenuOpen(false)
 
   return (
-    <header className={`fixed top-0 left-0 z-20 flex h-[var(--header-height)] w-full items-center justify-between border-b bg-ink-82 px-8 py-[18px] backdrop-blur-[18px] lg-down:px-[26px] sm-down:px-5 sm-down:py-[14px] ${developersActive ? 'border-b-red-38' : 'border-b-paper-13'}`}>
+    <header className={`fixed top-0 left-0 z-20 flex h-[var(--header-height)] w-full items-center justify-between border-b bg-ink-82 px-5 py-[14px] backdrop-blur-[18px] sm:px-[26px] sm:py-[18px] lg:px-8 ${developersActive ? 'border-b-red-38' : 'border-b-paper-13'}`}>
       <Brand onClick={closeMenu} />
 
       <button
         ref={menuButtonRef}
-        className="hidden size-12 bg-transparent p-2 lg-down:relative lg-down:z-[22] lg-down:block"
+        className="relative z-[22] block size-12 bg-transparent p-2 lg:hidden"
         type="button"
         aria-expanded={menuOpen}
         aria-controls={navId}
@@ -84,7 +85,7 @@ export default function SiteHeader({ developersActive = false }) {
         )}
         {!developersActive && (
           <a className={NAV_CTA} href={WHATSAPP_URL} target="_blank" rel="noreferrer" onClick={closeMenu}>
-            Falar pelo WhatsApp
+            Falar pelo WhatsApp <ArrowIcon className="size-[15px]" />
           </a>
         )}
       </nav>

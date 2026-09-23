@@ -1,13 +1,9 @@
 @import "tailwindcss";
 
-/* Breakpoints do design, que é desktop-first. Declarados como variantes próprias
-   (e não via --breakpoint-*) por dois motivos: reproduzem a media query original
-   ao pé da letra — `--breakpoint-sm: 641px` viraria `(width < 641px)`, que pega
-   larguras fracionárias como 640.5px que o `max-width: 640px` não pega — e a
-   ordem de emissão passa a ser a ordem destas duas linhas.
-   A ORDEM ABAIXO IMPORTA: lg-down antes de sm-down, para o mobile sobrescrever. */
-@custom-variant lg-down { @media (max-width: 1080px) { @slot } }
-@custom-variant sm-down { @media (max-width: 640px) { @slot } }
+/* Breakpoints mobile-first. A ORDEM ABAIXO IMPORTA: sm antes de lg,
+   para que os estilos de telas maiores sobrescrevam os menores. */
+@custom-variant sm { @media (min-width: 641px) { @slot } }
+@custom-variant lg { @media (min-width: 1081px) { @slot } }
 
 @theme static {
   /* Desliga os breakpoints padrão do Tailwind e define só os dois que a landing
@@ -72,23 +68,23 @@
        toda caixa de texto sem line-height explícito cresceria ~25%. */
     line-height: normal;
 
-    --header-height: 84px;
+    --header-height: 72px;
   }
 
-  @media (max-width: 640px) {
-    :root { --header-height: 72px; }
+  @media (min-width: 641px) {
+    :root { --header-height: 84px; }
   }
 
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: calc(var(--header-height) + 24px);
-    scroll-padding-bottom: 90px;
+    scroll-padding-top: calc(var(--header-height) + 18px);
+    scroll-padding-bottom: 82px;
   }
 
-  @media (max-width: 640px) {
+  @media (min-width: 641px) {
     html {
-      scroll-padding-top: calc(var(--header-height) + 18px);
-      scroll-padding-bottom: 82px;
+      scroll-padding-top: calc(var(--header-height) + 24px);
+      scroll-padding-bottom: 90px;
     }
   }
 
