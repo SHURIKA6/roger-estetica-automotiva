@@ -10,8 +10,12 @@
 @custom-variant sm-down { @media (max-width: 640px) { @slot } }
 
 @theme static {
-  /* Desliga os breakpoints padrão do Tailwind: o projeto usa só os dois acima. */
+  /* Desliga os breakpoints padrão do Tailwind e define só os dois que a landing
+     usa, mobile-first: md (tablet, 768px) e lg (desktop, 1080px). O header e a
+     página de desenvolvedores ainda usam as variantes lg-down/sm-down acima. */
   --breakpoint-*: initial;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 67.5rem;
 
   --color-ink: #0d0d0c;
   --color-ink-soft: #151513;
@@ -89,7 +93,6 @@
   }
 
   body {
-    min-width: 320px;
     background: var(--color-ink);
     cursor: default;
   }
