@@ -2,7 +2,7 @@
 
 Landing page da Roger Estética Automotiva, em Sinop-MT.
 
-A rota `/desenvolvedores` apresenta os créditos de quem construiu a experiência digital, com a mesma identidade visual da Roger. Ela é oculta: não há links para ela na landing, fica fora do sitemap e do `llms.txt` e sai com `noindex`. Só abre digitando a URL.
+A rota `/devs` apresenta os créditos de quem construiu a experiência digital, com a mesma identidade visual da Roger. Ela é oculta: não há links para ela na landing, fica fora do sitemap e do `llms.txt` e sai com `noindex`. Só abre digitando a URL.
 
 ## Estrutura do projeto
 
@@ -99,7 +99,7 @@ Os CTAs de atendimento usam o telefone fornecido na arte de referência. O ender
 
 ## SEO e publicação na Vercel
 
-O build pré-renderiza a landing e `/desenvolvedores` em HTML, com metadados próprios, Open Graph, Twitter Card e dados estruturados `AutomotiveBusiness` na landing. Gera também `dist/robots.txt`, `dist/sitemap.xml` e `dist/llms.txt`, usando os mesmos serviços e contatos da página.
+O build pré-renderiza a landing e `/devs` em HTML, com metadados próprios, Open Graph, Twitter Card e dados estruturados `AutomotiveBusiness` na landing. Gera também `dist/robots.txt`, `dist/sitemap.xml` e `dist/llms.txt`, usando os mesmos serviços e contatos da página.
 
 Na Vercel, habilite as variáveis de sistema: `VERCEL_PROJECT_PRODUCTION_URL` fornece automaticamente o endereço público do projeto. Para usar um domínio próprio, defina `SITE_URL` com a origem HTTPS completa (sem caminho) nas variáveis de produção e refaça o deploy. Essa variável tem prioridade sobre a URL automática. Não use o endereço temporário de cada deploy.
 
@@ -115,3 +115,74 @@ O foco do conteúdo é a busca local por “estética automotiva em Sinop”. SE
 - [Fundo Dodge RAM e glassmorphism escuro](docs/superpowers/plans/2026-09-29-fundo-ram-glassmorphism.md): cenário ilustrativo escurecido e desfocado, com vidro nas superfícies das duas páginas. Inclui arquivos, parâmetros iniciais, tarefas e verificação em celular e desktop.
 
 Em 29/09/2026 foi acrescentado o plano da RAM. Em 30/09/2026 o plano foi implementado sobre a reestruturação já aplicada: o cenário e o vidro substituíram os fundos opacos de serviços e rodapé (`bg-paper`/`bg-ink-soft` viraram `glass-band`), o hero e a experiência receberam `glass-surface`, o header e o menu de tela cheia ganharam vidro no `::before`, e os acentos de texto pequeno passaram por correção de contraste (`red` restrito a texto grande ou vidro denso; `muted` substituído por `paper-soft`/`gold` onde o cenário clareava o fundo). O registro completo, com evidências e limitações, está na seção “Registro da implementação” do plano. Os documentos anteriores permanecem como histórico.
+
+
+## Revisão visual — 30/09/2026
+
+Implementado o ajuste aprovado após a revisão da landing:
+
+- RAM mantida. O recorte móvel foi refeito do original do Pexels (foto 18491925), com foco na cabine e frente: crop 1570×3142 em x=2650/y=0, saída WebP 900×1800, qualidade 78, 113936 bytes (111 KiB). O registro anterior de 1080×1440/55 KiB descreve a primeira versão.
+- Cenário móvel nas duas páginas: blur 1px e posição central. Na home desktop: blur 2px; no desktop de desenvolvedores: blur 6px e posição original preservados. `SiteBackdrop` recebe a página resolvida pelo App e usa `data-page` para os parâmetros locais.
+- Painel inicial: preenchimento translúcido .36 e blur 2px, conservando o fallback quase opaco sem suporte a backdrop-filter.
+- Créditos simplificados: título, perfis, funções, links e navegação; retirados os quatro blocos de texto aprovados e compactado o espaçamento.
+- Galeria centralizada em `src/content.js`, com oito fotos distintas, dimensões e descrições. Duas metades de oito itens, ciclo de 53s (~44px/s no desktop), aviso de fotos ilustrativas, pausa e movimento reduzido preservados.
+- Preview alinhado ao rewrite de `/desenvolvedores` da Vercel. Antes, o Vite entregava a home nessa URL sem barra final e o React recuperava a página no cliente com erros de hidratação. A regra só atua no preview local.
+
+### Origem das cinco fotos acrescentadas
+
+As fotos são ilustrativas, sem atribuição de autoria dos serviços à Roger. Licença conferida em 30/09/2026: [Pexels](https://www.pexels.com/license/). Download local pelo CDN em WebP, 600×750, qualidade 85:
+
+| Arquivo | Autor e origem | Bytes |
+|---|---|---|
+| galeria-farol.webp | [Khunkorn Laowisit](https://www.pexels.com/photo/person-using-a-polishing-machine-on-the-car-5233268/) | 54042 |
+| galeria-interior.webp | [Khunkorn Laowisit](https://www.pexels.com/photo/a-person-deep-cleaning-a-car-seat-5233285/) | 55974 |
+| galeria-polimento.webp | [Khunkorn Laowisit](https://www.pexels.com/photo/a-person-polishing-the-white-car-5233279/) | 26346 |
+| galeria-protecao.webp | [Tima Miroshnichenko](https://www.pexels.com/photo/water-droplets-on-a-white-car-6873177/) | 17722 |
+| galeria-lavagem.webp | [WAVYVISUALS](https://www.pexels.com/photo/applying-car-cleaner-on-blue-sponge-20051453/) | 19380 |
+
+As imagens originais das três fotos anteriores e os contatos, serviços, URLs e SEO foram preservados. Sem dependências adicionais, commit, push ou deploy.
+
+
+### Verificação da revisão visual (30/09/2026)
+
+- `npm test`: 7/7 aprovados, incluindo integridade das oito fotos da galeria.
+- `npm run build`: aprovado; `git diff --check`: limpo.
+- Playwright/Chromium no preview de produção: `/` e `/desenvolvedores` em 390×844, 640×900, 1440×900 e 1920×1080, sem erros JavaScript/hidratação e sem overflow horizontal. A rota com barra final também apresenta os créditos.
+- Arquivos das oito fotos decodificados no navegador, dimensões conferidas. Para este check de integridade, o carregamento foi forçado somente na sessão de teste; o código mantém lazy loading.
+- Loop inspecionado em 0ms, 52999ms e 53000ms: metades idênticas de 2336px no desktop, maiores que a viewport de 1920px, sem vão ao reiniciar.
+- Botão Pausar coloca a animação em paused; menu móvel aplica inert no main e Escape fecha com aria-expanded=false. Movimento reduzido: animation=none, oito itens visíveis e rolagem horizontal manual.
+- Links GitHub/Instagram preservados nos dois perfis; noindex confirmado nos créditos. A descoberta de hidratação no preview sem barra final foi corrigida pelo rewrite local; rechecagem passou.
+- Inspeção visual realizada em Chromium, com capturas em `.playwright-mcp/`. Safari/iOS e aparelho físico não foram testados; a avaliação de contraste nesta revisão foi visual, sem nova medição numérica.
+
+
+Ajuste final da galeria: a inspeção visual revelou que o lazy loading nativo não carregava algumas fotos ao entrarem na tela apenas pelo transform da animação CSS. O carrossel passou a usar `loading="eager"` para suas oito imagens distintas (~284 KiB no total; as cópias reutilizam os mesmos URLs). As demais seções mantêm lazy loading. Este ajuste substitui o registro de lazy loading da galeria acima.
+
+
+## Rota oculta /devs e entrada automática — 30/09/2026
+
+A rota dos créditos passa a ser `/devs` (também aceita `/devs/`). Build, resolução de página, links internos dos créditos e rewrites foram atualizados. `/desenvolvedores` e `/desenvolvedores/` redirecionam permanentemente para `/devs`, preservando os favoritos antigos; o preview e o servidor de desenvolvimento espelham o redirect da Vercel. A página continua sem links na landing, com `noindex` e fora de sitemap/llms.txt.
+
+Ao entrar nos créditos, o easter egg inicia uma vez por montagem, após a hidratação: espuma → polimento → vitrificação. A entrada automática é silenciosa para respeitar autoplay; Escape cancela e limpa o efeito. Após cancelar, digitar `devs` permite repetir pelo teclado, com o áudio já existente após interação. Com movimento reduzido, a cinemática é pulada e o estado final é aplicado diretamente. Nenhum efeito foi adicionado à home.
+
+Validação: `npm test` 7/7, build aprovado e diff check limpo. Playwright no preview conferiu a sequência completa automática, `/devs` e `/devs/`, cancelamento por Escape, movimento reduzido, redirect antigo com query string preservada, noindex e ausência de canvas/link dos créditos na home. Sem erros JavaScript/hidratação. Confirmados `dist/devs/index.html` presente, pasta antiga ausente e nenhum crédito em sitemap/llms.txt. A configuração da Vercel foi atualizada localmente; nenhum deploy foi feito.
+
+
+## Revisão de segurança, SEO e funcionamento — 30/09/2026
+
+O estado atual usa Vite 6.4.3. A revisão corrigiu h1/main da home, foco e redimensionamento do menu móvel, legibilidade dos textos pequenos, favicon e ano dos rodapés. Acrescentou uma página 404 pré-renderizada, redirects dos caminhos HTML, cabeçalhos CSP e demais proteções na Vercel/preview, testes de serialização de metadados/JSON-LD e validação da origem. O código do easter egg passou a ser baixado apenas em `/devs`; a entrada automática permanece.
+
+As informações acima sobre Vite 5 e fallback de URLs desconhecidas para a home descrevem o histórico. Agora URLs desconhecidas mostram a página 404 e o preview responde HTTP 404. A configuração da Vercel usa `dist/404.html` para esse fim. `/devs` continua oculta e com noindex; a home só fica indexável no build de produção com origem válida.
+
+Resultado: 16 testes, build e diff check aprovados; npm audit sem vulnerabilidades conhecidas. Playwright conferiu três páginas em sete larguras, foco, headers, redirects, recursos ausentes e ausência de erros de hidratação/CSP. Uma simulação local móvel com CPU 4x e rede limitada observou LCP 2,44s e CLS 0,0242; métricas de campo continuam pendentes.
+
+A matriz completa dos itens das quatro imagens, evidências, limitações e procedimento de publicação/recuperação está em [Revisão do site](docs/revisao-site-2026-09-30.md). Os registros anteriores foram preservados. Não houve commit, push ou deploy.
+
+## 404 animada e retorno à home — 30/09/2026
+
+A página 404 agora mostra um carro entrando pela esquerda, batendo em uma barreira e recuando levemente. Depois da cena de 3 segundos aparece a mensagem “Não foi possível chegar ao destino.” e começa a contagem de 5 segundos para voltar à página principal. O botão “Voltar agora” funciona desde o início; “Cancelar retorno automático” mantém a pessoa na página. Interagir com o cabeçalho também cancela o retorno, permitindo usar o menu com tranquilidade.
+
+A ilustração usa SVG e CSS locais, sem bibliotecas novas. Movimento reduzido pula a cena e começa a contagem; sem JavaScript, a página mantém a cena estática, a explicação e o link de retorno. HTTP 404 e noindex foram preservados. Validação: 16 testes, build e diff check aprovados; Playwright verificou retorno, histórico, cancelamento, teclado, menu, movimento reduzido e sete larguras de 320 a 1920px. Detalhes no relatório da revisão. Sem commit, push ou deploy.
+
+## Consolidação para versionamento — 30/09/2026
+
+Após a aprovação do usuário para commit e push, as revisões desta sessão foram reunidas para publicação em `main`: fundo e galeria, `/devs` com easter egg, acessibilidade, segurança/SEO e 404 animada. Antes do commit, foram repetidos os 16 testes, o build e a checagem do diff, todos aprovados. Anexos recebidos, capturas do Playwright e saída de build ficam fora do versionamento. Os registros anteriores de “sem commit, push ou deploy” descrevem as etapas de implementação; a publicação do Git não comprova a conclusão de um deployment na hospedagem.

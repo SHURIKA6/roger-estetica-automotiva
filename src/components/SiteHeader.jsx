@@ -19,8 +19,9 @@ const NAV_CLOSED = 'invisible pointer-events-none opacity-0 [transform:translate
 
 // Header fixo. Abaixo de 1081px a navegação vira um overlay de tela cheia
 // controlado pelo botão sanduíche.
-export default function SiteHeader({ developersActive = false }) {
+export default function SiteHeader({ developersActive = false, onInteract }) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const headerRef = useRef(null)
   const menuButtonRef = useRef(null)
   const navId = developersActive ? 'developers-nav' : 'main-nav'
 
@@ -35,7 +36,29 @@ export default function SiteHeader({ developersActive = false }) {
       else main.removeAttribute('aria-hidden')
     }
 
+    const footer = document.querySelector('footer')
+    footer?.toggleAttribute('inert', menuOpen)
+    const focusTimer = menuOpen ? window.setTimeout(() => {
+      headerRef.current?.querySelector('nav a')?.focus()
+    }, 0) : null
+    const desktop = window.matchMedia('(min-width: 1081px)')
+    const handleDesktop = () => { if (desktop.matches) setMenuOpen(false) }
+    desktop.addEventListener('change', handleDesktop)
+
     const handleKeyDown = (event) => {
+      if (event.key === 'Tab' && menuOpen) {
+        const items = [menuButtonRef.current, ...headerRef.current.querySelectorAll('nav a')].filter(el =>
+          el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden')
+        const first = items[0]
+        const last = items.at(-1)
+        if (!items.includes(document.activeElement)) {
+          event.preventDefault(); first?.focus()
+        } else if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault(); last?.focus()
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault(); first?.focus()
+        }
+      }
       if (event.key === 'Escape' && menuOpen) {
         setMenuOpen(false)
         menuButtonRef.current?.focus()
@@ -44,6 +67,9 @@ export default function SiteHeader({ developersActive = false }) {
 
     document.addEventListener('keydown', handleKeyDown)
     return () => {
+      if (focusTimer !== null) window.clearTimeout(focusTimer)
+      desktop.removeEventListener('change', handleDesktop)
+      footer?.removeAttribute('inert')
       document.removeEventListener('keydown', handleKeyDown)
       document.body.style.overflow = ''
       if (main) {
@@ -56,7 +82,7 @@ export default function SiteHeader({ developersActive = false }) {
   const closeMenu = () => setMenuOpen(false)
 
   return (
-    <header className={`glass-header fixed top-0 left-0 z-20 flex h-[var(--header-height)] w-full items-center justify-between border-b px-5 py-[14px] sm:px-[26px] sm:py-[18px] xl:px-8 ${developersActive ? 'border-b-red-38' : 'border-b-paper-13'}`}>
+    <header ref={headerRef} onClick={onInteract} className={`glass-header fixed top-0 left-0 z-20 flex h-[var(--header-height)] w-full items-center justify-between border-b px-5 py-[14px] sm:px-[26px] sm:py-[18px] xl:px-8 ${developersActive ? 'border-b-red-38' : 'border-b-paper-13'}`}>
       <Brand onClick={closeMenu} />
 
       <button
@@ -76,9 +102,9 @@ export default function SiteHeader({ developersActive = false }) {
         <a className={NAV_LINK} href="/#servicos" onClick={closeMenu}>Serviços</a>
         <a className={NAV_LINK} href="/#essencia" onClick={closeMenu}>A experiência</a>
         <a className={NAV_LINK} href="/#visite" onClick={closeMenu}>Onde estamos</a>
-        {/* /desenvolvedores é oculta: só aparece no menu quando já se está nela. */}
+        {/* /devs é oculta: só aparece no menu quando já se está nela. */}
         {developersActive && (
-          <a className={`${NAV_CTA} border-red bg-red text-ink`} href="/desenvolvedores" aria-current="page" onClick={closeMenu}>
+          <a className={`${NAV_CTA} border-red bg-red text-ink`} href="/devs" aria-current="page" onClick={closeMenu}>
             Desenvolvedores <ArrowIcon className="size-[15px]" />
           </a>
         )}

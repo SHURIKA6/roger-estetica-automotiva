@@ -1,5 +1,5 @@
 // Easter egg da página de desenvolvedores: "Detalhamento Total do Site".
-// Ao digitar `devs`, o site recebe o mesmo tratamento da Roger — lavagem com
+// Ao entrar em /devs, o site recebe o mesmo tratamento da Roger — lavagem com
 // espuma, polimento orbital e vitrificação — e termina em modo vitrificado
 // persistente, com cursor-boina que deixa rastro de brilho.
 //
@@ -26,6 +26,7 @@ const SPARK_COLORS = ['#d6b788', '#ea4436', '#f0e7d9']
 // --- WebAudio (sintetizado, sem arquivos) ---------------------------------
 
 function getAudio(state) {
+  if (!state.sound) return null
   try {
     if (state.audio) return state.audio
     const AC = window.AudioContext || window.webkitAudioContext
@@ -295,6 +296,7 @@ export default function DetailingEasterEgg() {
     pad: { x: -200, y: -200 },
     polishStart: 0,
     audio: null,
+    sound: false,
     hum: null,
     fullCursor: false,
     width: 0,
@@ -491,8 +493,9 @@ export default function DetailingEasterEgg() {
       setPhaseBoth('idle')
     }
 
-    const start = () => {
+    const start = ({ sound = true } = {}) => {
       if (state.phase !== 'idle') return
+      state.sound = sound
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
       const finePointer = window.matchMedia('(pointer: fine)').matches
       state.fullCursor = !reduced && finePointer
@@ -580,6 +583,9 @@ export default function DetailingEasterEgg() {
     window.addEventListener('resize', handleResize)
     document.documentElement.addEventListener('mouseleave', handleMouseLeave)
     document.documentElement.addEventListener('mouseenter', handleMouseEnter)
+    // Inicia após a hidratação, sem som, respeitando as regras de autoplay.
+    // Escape cancela, e digitar devs permite repetir com áudio após interação.
+    start({ sound: false })
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('mousemove', handleMouseMove)

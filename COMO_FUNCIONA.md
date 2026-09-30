@@ -105,3 +105,45 @@ Trata-se de um **SSG (Static Site Generation) artesanal**:
    - Foram declaradas variáveis como `--color-paper-24: rgba(...)` em vez de usar utilitários como `bg-paper/24`. O modificador de barra `/` na v4 calcula `color-mix()` no espaço de cor `oklab`, o que causava sutis distorções na tonalidade exata desejada.
 4. **Transições**:
    - Utiliza-se `transition` seco ou transições específicas, pois propriedades como `translate`, `rotate` e `scale` agora são propriedades CSS nativas e independentes da propriedade `transform`.
+
+
+## Atualização técnica — 30/09/2026
+
+O App resolve a página uma vez e passa seu identificador ao SiteBackdrop. O atributo `data-page` permite reduzir o blur na home sem alterar o cenário desktop dos créditos. O `<picture>` usa agora o recorte móvel 900×1800 até 640px; as dimensões intrínsecas acompanham o novo arquivo. O hero recebe `hero-surface` com preenchimento .36 e blur 2px, mantendo o fallback do vidro.
+
+A lista `galleryPhotos` em `content.js` reúne oito imagens locais com `src`, `alt`, `width` e `height`. A landing duplica a lista para fechar o loop em CSS; a segunda metade é decorativa para acessibilidade e fica oculta quando movimento reduzido está ativo. Nesse modo, a faixa permite rolagem manual. O teste de conteúdo verifica arquivos, unicidade e descrições.
+
+O plugin `preview-prerender-routes` em `vite.config.js` espelha no preview a reescrita existente da Vercel para `/desenvolvedores/index.html`, inclusive preservando query string. Isso evita que a rota sem barra final receba o HTML da home e provoque recuperação de hidratação.
+
+Correções ao guia histórico acima: os breakpoints usados são `sm:` e `xl:`; o hero atual não tem flyer; a galeria fica antes dos serviços. Os registros antigos permanecem para contexto, e o README descreve o estado atual.
+
+
+Ajuste final da galeria: a inspeção visual revelou que o lazy loading nativo não carregava algumas fotos ao entrarem na tela apenas pelo transform da animação CSS. O carrossel passou a usar `loading="eager"` para suas oito imagens distintas (~284 KiB no total; as cópias reutilizam os mesmos URLs). As demais seções mantêm lazy loading. Este ajuste substitui o registro de lazy loading da galeria acima.
+
+
+## Rota oculta /devs e entrada automática — 30/09/2026
+
+A rota dos créditos passa a ser `/devs` (também aceita `/devs/`). Build, resolução de página, links internos dos créditos e rewrites foram atualizados. `/desenvolvedores` e `/desenvolvedores/` redirecionam permanentemente para `/devs`, preservando os favoritos antigos; o preview e o servidor de desenvolvimento espelham o redirect da Vercel. A página continua sem links na landing, com `noindex` e fora de sitemap/llms.txt.
+
+Ao entrar nos créditos, o easter egg inicia uma vez por montagem, após a hidratação: espuma → polimento → vitrificação. A entrada automática é silenciosa para respeitar autoplay; Escape cancela e limpa o efeito. Após cancelar, digitar `devs` permite repetir pelo teclado, com o áudio já existente após interação. Com movimento reduzido, a cinemática é pulada e o estado final é aplicado diretamente. Nenhum efeito foi adicionado à home.
+
+Validação: `npm test` 7/7, build aprovado e diff check limpo. Playwright no preview conferiu a sequência completa automática, `/devs` e `/devs/`, cancelamento por Escape, movimento reduzido, redirect antigo com query string preservada, noindex e ausência de canvas/link dos créditos na home. Sem erros JavaScript/hidratação. Confirmados `dist/devs/index.html` presente, pasta antiga ausente e nenhum crédito em sitemap/llms.txt. A configuração da Vercel foi atualizada localmente; nenhum deploy foi feito.
+
+
+## Revisão de segurança, SEO e funcionamento — 30/09/2026
+
+O estado atual usa Vite 6.4.3. A revisão corrigiu h1/main da home, foco e redimensionamento do menu móvel, legibilidade dos textos pequenos, favicon e ano dos rodapés. Acrescentou uma página 404 pré-renderizada, redirects dos caminhos HTML, cabeçalhos CSP e demais proteções na Vercel/preview, testes de serialização de metadados/JSON-LD e validação da origem. O código do easter egg passou a ser baixado apenas em `/devs`; a entrada automática permanece.
+
+As informações acima sobre Vite 5 e fallback de URLs desconhecidas para a home descrevem o histórico. Agora URLs desconhecidas mostram a página 404 e o preview responde HTTP 404. A configuração da Vercel usa `dist/404.html` para esse fim. `/devs` continua oculta e com noindex; a home só fica indexável no build de produção com origem válida.
+
+Resultado: 16 testes, build e diff check aprovados; npm audit sem vulnerabilidades conhecidas. Playwright conferiu três páginas em sete larguras, foco, headers, redirects, recursos ausentes e ausência de erros de hidratação/CSP. Uma simulação local móvel com CPU 4x e rede limitada observou LCP 2,44s e CLS 0,0242; métricas de campo continuam pendentes.
+
+A matriz completa dos itens das quatro imagens, evidências, limitações e procedimento de publicação/recuperação está em [Revisão do site](docs/revisao-site-2026-09-30.md). Os registros anteriores foram preservados. Não houve commit, push ou deploy.
+
+## Fluxo da 404 animada — 30/09/2026
+
+`NotFoundPage.jsx` começa em `ready`, idêntico no HTML pré-renderizado e no primeiro render do cliente. Após a hidratação, consulta `prefers-reduced-motion`: inicia `driving` por 3000ms ou vai diretamente a `arrived`. Os keyframes de `src/index.css` compartilham a duração informada pelo componente em `--crash-duration`; carro, rodas, barreira, impacto, fumaça e mensagem compõem uma única cena sem loops.
+
+Em `arrived`, cinco passos de 1 segundo atualizam o aviso acessível antes de `window.location.replace('/')`. Isso substitui a entrada da 404 no histórico. Os efeitos removem seus timers e o listener de preferência de movimento ao desmontar. Cancelar usa estado e uma ref para impedir a navegação também antes do próximo render; não interrompe a conclusão visual da cena. O botão continua na tela como “Retorno cancelado”, com `aria-disabled`, preservando o foco de teclado. O link para `/` permanece funcional sem JavaScript.
+
+`SiteHeader` aceita `onInteract` opcional. Somente a 404 fornece esse callback para cancelar o retorno em qualquer clique no cabeçalho, inclusive abertura do menu pelo teclado. As outras páginas mantêm o comportamento anterior. A cena SVG é decorativa; h1, main, status HTTP e metadados noindex continuam preservados. Validações detalhadas em `docs/revisao-site-2026-09-30.md`.

@@ -4,6 +4,7 @@ import SiteHeader from '../components/SiteHeader.jsx'
 import SkipLink from '../components/SkipLink.jsx'
 import {
   ADDRESS,
+  galleryPhotos,
   MAPS_URL,
   MAPS_EMBED_URL,
   PHONE_DISPLAY,
@@ -21,25 +22,8 @@ const BUTTON = 'inline-flex min-h-12 items-center justify-center gap-3 px-5 text
 const DISPLAY_XL = 'font-display text-[clamp(38px,8vw,52px)] leading-[.96] font-semibold tracking-[-.025em] uppercase sm:text-[clamp(46px,6vw,56px)] xl:text-[56px]'
 const FOOTER_LINK = 'inline-flex min-h-10 items-center gap-2 text-[10px] font-extrabold tracking-[.1em] text-paper-soft uppercase transition-colors hover:text-paper'
 
-const galleryPhotos = [
-  {
-    src: '/assets/galeria-detalhamento.webp',
-    alt: 'Profissional cuidando da pintura de um carro esportivo em uma oficina.',
-  },
-  {
-    src: '/assets/galeria-brilho.webp',
-    alt: 'Carro preto polido com reflexos de luz em uma garagem coberta.',
-  },
-  {
-    src: '/assets/galeria-reflexo.webp',
-    alt: 'Detalhe de um carro preto brilhante com reflexos na lataria.',
-  },
-]
-
-// Cada metade da faixa precisa ser mais larga que a tela, senão aparece um vão
-// no fim do ciclo. Com poucas fotos, repetimos a lista dentro de cada metade.
-const GALLERY_REPEAT = 3
-const galleryHalf = Array.from({ length: GALLERY_REPEAT }, () => galleryPhotos).flat()
+// Oito fotos cobrem até 1920px; duas metades iguais fecham o loop.
+const galleryHalf = galleryPhotos
 
 // A landing mostra só o nome e a foto; categorias e descrições continuam em
 // content.js porque o build usa `detail` no JSON-LD e no llms.txt.
@@ -58,17 +42,17 @@ export default function LandingPage() {
       <SkipLink />
       <SiteHeader />
 
-      <main id="main">
+      <main id="main" tabIndex={-1}>
         {/* Apresentação ----------------------------------------------------- */}
         <section
           id="inicio"
           aria-labelledby="hero-title"
           className={`${GRID} pt-[calc(var(--header-height)_+_48px)] pb-10 sm:pt-[calc(var(--header-height)_+_56px)] sm:pb-12 xl:pt-[calc(var(--header-height)_+_48px)] xl:pb-14`}
         >
-          <div className="glass-surface max-w-[790px] p-6 sm:p-8">
-            <p id="hero-title" className={`mb-5 max-w-[980px] ${DISPLAY_XL}`}>
+          <div className="glass-surface hero-surface max-w-[790px] p-6 sm:p-8">
+            <h1 id="hero-title" className={`mb-5 max-w-[980px] ${DISPLAY_XL}`}>
               A melhor versão do seu veículo é o nosso compromisso
-            </p>
+            </h1>
             <p className="mb-7 max-w-[620px] text-[16px] leading-[1.75] text-paper-soft sm:text-[15px]">
               Estética automotiva em Sinop: polimento, vitrificação, restauração de farol e cuidado com os detalhes do seu carro. Conheça os serviços e agende direto com a Roger.
             </p>
@@ -105,9 +89,9 @@ export default function LandingPage() {
                       className="block aspect-[4/5] w-full bg-ink-light object-cover"
                       src={photo.src}
                       alt={repeated ? '' : photo.alt}
-                      width="500"
-                      height="750"
-                      loading="lazy"
+                      width={photo.width}
+                      height={photo.height}
+                      loading="eager"
                       decoding="async"
                     />
                   </li>
@@ -136,8 +120,8 @@ export default function LandingPage() {
                   key={service.name}
                 >
                   <span>
-                    <span className="block font-display text-[clamp(12px,2.5vw,20px)] leading-[1.1] font-semibold uppercase">{service.name}</span>
-                    <span className="mt-1 block text-[11px] leading-[1.3] text-red">{service.caption}</span>
+                    <span className="block font-display text-[clamp(16px,3.8vw,20px)] leading-[1.1] font-semibold uppercase">{service.name}</span>
+                    <span className="mt-1 block text-[11px] leading-[1.3] text-paper-soft">{service.caption}</span>
                   </span>
                   {/* Decorativa: o nome ao lado já diz o que é. */}
                   <img
@@ -154,7 +138,6 @@ export default function LandingPage() {
             </ul>
           </div>
         </section>
-      </main>
 
       {/* A experiência ---------------------------------------------------- */}
         <section id="essencia" aria-labelledby="essence-title" className={`${GRID} grid items-center gap-8 py-14 sm:grid-cols-2 sm:gap-10 sm:py-20`}>
@@ -162,7 +145,7 @@ export default function LandingPage() {
             <h2 id="essence-title" className={`mb-5 ${DISPLAY_XL}`}>
               Todo o cuidado que seu carro merece
             </h2>
-            <p className="m-0 max-w-[420px] text-[16px] leading-[1.7] text-muted">
+            <p className="m-0 max-w-[420px] text-[16px] leading-[1.7] text-paper-soft">
               Sabemos o que o seu carro significa para você. Por isso, trabalhamos com paciência e dedicação. A equipe da Roger foca em cada detalhe para que o seu carro saia daqui com a melhor aparência possível</p>
           </div>
           {/* Foto retrato (2:3) recortada: 4:5 na coluna estreita do tablet, 4:3 no
@@ -181,6 +164,8 @@ export default function LandingPage() {
         </section>
 
 
+      </main>
+
       {/* Rodapé ------------------------------------------------------------- */}
       {/* Fundo e fio ocupam a largura toda; o conteúdo segue alinhado ao GRID.
           O id "visite" vive aqui porque o header e a página de devs apontam para /#visite. */}
@@ -188,9 +173,10 @@ export default function LandingPage() {
         <div className={`${GRID} grid grid-cols-1 gap-10 py-12 sm:grid-cols-2 sm:gap-8 sm:py-14 xl:grid-cols-[repeat(4,auto)] xl:justify-between`}>
           <div>
             <Brand />
-            <p className="mt-5 mb-0 max-w-[260px] text-[12px] leading-[1.7] text-muted">
+            <p className="mt-5 mb-0 max-w-[260px] text-[12px] leading-[1.7] text-paper-soft">
               Estética automotiva em Sinop/MT. Polimento, vitrificação, restauração de farol e cuidado com cada detalhe.
             </p>
+            <small className="mt-4 block text-xs text-paper-soft">© {new Date().getFullYear()} Roger Estética Automotiva</small>
           </div>
 
           <div>
@@ -212,7 +198,7 @@ export default function LandingPage() {
             src={MAPS_EMBED_URL}
             title={`Mapa: ${ADDRESS.street}, ${ADDRESS.city}`}
             loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
+            referrerPolicy="no-referrer"
             allowFullScreen
           />
 

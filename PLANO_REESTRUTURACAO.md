@@ -737,3 +737,34 @@ Se os dois planos forem solicitados, mantenha as mudanças de composição descr
 Aplicar o fundo não implica executar automaticamente o carrossel, ocultar links ou remover seções. Preserve o histórico deste arquivo e registre cada implementação quando ela ocorrer.
 
 **Atualização de 30/09/2026:** o plano da RAM foi implementado sobre a reestruturação já aplicada em `3fe7341`. Os fundos de serviços e rodapé da landing passaram a usar `glass-band` (no lugar de `bg-paper` e `bg-ink-soft`), o hero e a experiência usam `glass-surface`, o cabeçalho e o menu de tela cheia têm vidro no `::before` e os cards de `/desenvolvedores` trocaram `bg-ink-soft-92` por `glass-surface`. Acentos de texto pequeno foram ajustados para `paper-soft`/`gold` onde o cenário clareava o fundo. Detalhes, evidências e pendências estão na seção “Registro da implementação” do [plano da RAM](docs/superpowers/plans/2026-09-29-fundo-ram-glassmorphism.md).
+
+
+### Revisão aprovada em 30/09/2026 — fundo, créditos e galeria
+
+Após a reestruturação e a primeira versão do cenário RAM, foram aplicados: recorte móvel 900×1800 com foco na cabine/frente, redução de blur da home e do painel inicial, simplificação dos créditos e oito fotos ilustrativas distintas no carrossel. O cenário desktop dos créditos foi preservado. As fotos agora vêm de `galleryPhotos` em `content.js`, com duas metades de oito itens e ciclo de 53s. O preview recebeu o mesmo rewrite dos créditos usado na Vercel para evitar hidratação sobre HTML da home. Testes 7/7, build e diff check passaram; Playwright verificou as duas rotas em quatro viewports, pausa, menu e movimento reduzido. Fontes, pesos e limitações no README e no registro da RAM. Este registro complementa os planos anteriores; sem commit, push ou deploy.
+
+
+## Rota oculta /devs e entrada automática — 30/09/2026
+
+A rota dos créditos passa a ser `/devs` (também aceita `/devs/`). Build, resolução de página, links internos dos créditos e rewrites foram atualizados. `/desenvolvedores` e `/desenvolvedores/` redirecionam permanentemente para `/devs`, preservando os favoritos antigos; o preview e o servidor de desenvolvimento espelham o redirect da Vercel. A página continua sem links na landing, com `noindex` e fora de sitemap/llms.txt.
+
+Ao entrar nos créditos, o easter egg inicia uma vez por montagem, após a hidratação: espuma → polimento → vitrificação. A entrada automática é silenciosa para respeitar autoplay; Escape cancela e limpa o efeito. Após cancelar, digitar `devs` permite repetir pelo teclado, com o áudio já existente após interação. Com movimento reduzido, a cinemática é pulada e o estado final é aplicado diretamente. Nenhum efeito foi adicionado à home.
+
+Validação: `npm test` 7/7, build aprovado e diff check limpo. Playwright no preview conferiu a sequência completa automática, `/devs` e `/devs/`, cancelamento por Escape, movimento reduzido, redirect antigo com query string preservada, noindex e ausência de canvas/link dos créditos na home. Sem erros JavaScript/hidratação. Confirmados `dist/devs/index.html` presente, pasta antiga ausente e nenhum crédito em sitemap/llms.txt. A configuração da Vercel foi atualizada localmente; nenhum deploy foi feito.
+
+
+## Revisão de segurança, SEO e funcionamento — 30/09/2026
+
+O estado atual usa Vite 6.4.3. A revisão corrigiu h1/main da home, foco e redimensionamento do menu móvel, legibilidade dos textos pequenos, favicon e ano dos rodapés. Acrescentou uma página 404 pré-renderizada, redirects dos caminhos HTML, cabeçalhos CSP e demais proteções na Vercel/preview, testes de serialização de metadados/JSON-LD e validação da origem. O código do easter egg passou a ser baixado apenas em `/devs`; a entrada automática permanece.
+
+As informações acima sobre Vite 5 e fallback de URLs desconhecidas para a home descrevem o histórico. Agora URLs desconhecidas mostram a página 404 e o preview responde HTTP 404. A configuração da Vercel usa `dist/404.html` para esse fim. `/devs` continua oculta e com noindex; a home só fica indexável no build de produção com origem válida.
+
+Resultado: 16 testes, build e diff check aprovados; npm audit sem vulnerabilidades conhecidas. Playwright conferiu três páginas em sete larguras, foco, headers, redirects, recursos ausentes e ausência de erros de hidratação/CSP. Uma simulação local móvel com CPU 4x e rede limitada observou LCP 2,44s e CLS 0,0242; métricas de campo continuam pendentes.
+
+A matriz completa dos itens das quatro imagens, evidências, limitações e procedimento de publicação/recuperação está em [Revisão do site](docs/revisao-site-2026-09-30.md). Os registros anteriores foram preservados. Não houve commit, push ou deploy.
+
+## Complemento implementado: animação na 404 — 30/09/2026
+
+Executado o plano aprovado para um carro que entra, bate em uma barreira e recua, seguido da mensagem “Não foi possível chegar ao destino.”. A cena dura 3 segundos; depois começa a contagem de 5 segundos para retornar automaticamente à home. Foram incluídos retorno imediato, cancelamento acessível, cancelamento ao usar o cabeçalho, versão estática para movimento reduzido e fallback sem JavaScript. O retorno usa `replace` para evitar que o botão Voltar do navegador reabra a mesma 404.
+
+SVG/CSS locais, sem novas dependências. HTTP 404, noindex e pré-renderização preservados. Concluídos build, 16 testes, diff check e revisão independente de ciclo de vida/SSR/acessibilidade. Playwright aprovou fluxo automático em desktop/mobile, retorno manual, cancelamento antes/depois da animação, histórico, menu, teclado, preferência reduzida inicial e alterada durante a cena, ausência de JavaScript e responsividade em sete larguras. Capturas da entrada, impacto e estado final foram inspecionadas. Sem commit, push ou deploy; Safari/iOS e dispositivo físico continuam fora desta validação.

@@ -1,7 +1,63 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/desenvolvedores",
+      "destination": "/devs",
+      "permanent": true
+    },
+    {
+      "source": "/desenvolvedores/",
+      "destination": "/devs",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/devs/index.html",
+      "destination": "/devs",
+      "permanent": true
+    }
+  ],
   "rewrites": [
-    { "source": "/desenvolvedores", "destination": "/desenvolvedores/index.html" }
+    {
+      "source": "/devs",
+      "destination": "/devs/index.html"
+    },
+    {
+      "source": "/devs/",
+      "destination": "/devs/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://avatars.githubusercontent.com; connect-src 'self'; frame-src https://www.google.com; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=()"
+        }
+      ]
+    }
   ]
 }

@@ -77,8 +77,8 @@
     --header-height: 72px;
 
     /* Cenário RAM e vidro: valores-base (celular). */
-    --scene-blur: 4px;
-    --scene-position: 58% 50%;
+    --scene-blur: 1px;
+    --scene-position: 50% 50%;
     --glass-blur: 10px;
   }
 
@@ -147,6 +147,14 @@
     background: linear-gradient(135deg, #252529, #101114);
   }
 
+  .site-backdrop[data-page="landing"] {
+    --scene-blur: 2px;
+  }
+
+  @media (max-width: 640px) {
+    .site-backdrop[data-page="landing"] { --scene-blur: 1px; }
+  }
+
   /* A imagem avança 20px além da tela para o blur não deixar bordas vazias. */
   .site-backdrop picture {
     position: absolute;
@@ -202,6 +210,12 @@
     border-block: 1px solid var(--color-glass-line);
   }
 
+  /* O hero revela a RAM sem somar o blur denso dos painéis secundários. */
+  .hero-surface {
+    --glass-fill: rgba(13, 15, 19, .36);
+    --glass-blur: 2px;
+  }
+
   .glass-strong {
     --glass-fill: var(--color-glass-strong);
   }
@@ -251,9 +265,9 @@
    e a regra de movimento reduzido abaixo consegue trocar o overflow. */
 .gallery-viewport { overflow: hidden; }
 
-/* ~45px/s com 18 slides de 292px; ajuste a duração para mudar a velocidade.
+/* ~44px/s no desktop: metade de oito slides de 292px em 53s.
    Não use utilitários translate-* aqui: na v4 eles se somam ao keyframe. */
-.gallery-track { animation: gallery-marquee 60s linear infinite; }
+.gallery-track { animation: gallery-marquee 53s linear infinite; }
 
 .gallery:hover .gallery-track,
 .gallery:focus-within .gallery-track,
@@ -269,6 +283,129 @@
   .gallery-viewport { overflow-x: auto; }
   .gallery-track > [aria-hidden="true"] { display: none; }
   .gallery-toggle { display: none; }
+}
+
+/* 404: a viagem termina numa barreira, depois começa o retorno. ------------- */
+
+.not-found-main,
+.not-found-footer { width: min(860px, calc(100% - 40px)); margin-inline: auto; }
+.not-found-main { padding-block: calc(var(--header-height) + 40px) 40px; }
+.not-found-panel { padding: clamp(22px, 4vw, 44px); overflow: hidden; }
+.not-found-eyebrow {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--color-gold);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+.not-found-eyebrow span:last-child { color: var(--color-paper-soft); }
+.not-found-scene { display: block; width: 100%; height: auto; margin-block: 8px 22px; overflow: hidden; }
+.not-found-copy h1 {
+  max-width: 610px;
+  margin-bottom: 18px;
+  font-family: var(--font-display);
+  font-size: clamp(36px, 6vw, 60px);
+  font-weight: 600;
+  line-height: .98;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.not-found-description { color: var(--color-paper-soft); font-size: 14px; line-height: 1.8; }
+.not-found-status { min-height: 3.2em; margin-block: 24px 12px; color: var(--color-gold); font-size: 12px; line-height: 1.6; }
+.not-found-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; min-height: 48px; }
+.not-found-home {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 12px 24px;
+  background: var(--color-red);
+  color: var(--color-ink);
+  font-size: 13px;
+  font-weight: 800;
+  transition: background .2s;
+}
+.not-found-home:hover { background: #ff7160; }
+.not-found-home span { font-size: 22px; line-height: 1; }
+.not-found-cancel {
+  min-height: 44px;
+  color: var(--color-paper-soft);
+  font-size: 11px;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color .2s;
+}
+.not-found-cancel:hover { color: var(--color-paper); }
+.not-found-cancel[aria-disabled="true"] { cursor: default; text-decoration: none; }
+
+/* O estado base é a cena final: também funciona com JS desativado. */
+.crash-car { transform: translate(222px, 109px); }
+.crash-barrier { transform-origin: 515px 196px; transform: rotate(7deg); }
+.crash-wheel { transform-box: fill-box; transform-origin: center; transform: rotate(780deg); }
+.crash-impact { opacity: 0; }
+.crash-dust { opacity: .65; }
+
+.not-found-panel[data-phase="driving"] .crash-car { animation: crash-drive var(--crash-duration) linear both; }
+.not-found-panel[data-phase="driving"] .crash-wheel { animation: crash-wheel var(--crash-duration) linear both; }
+.not-found-panel[data-phase="driving"] .crash-barrier { animation: crash-barrier var(--crash-duration) linear both; }
+.not-found-panel[data-phase="driving"] .crash-impact { animation: crash-impact var(--crash-duration) linear both; }
+.not-found-panel[data-phase="driving"] .crash-dust { animation: crash-dust var(--crash-duration) linear both; }
+.not-found-panel[data-phase="driving"] .not-found-copy { animation: crash-message var(--crash-duration) ease both; }
+
+@keyframes crash-drive {
+  0%, 8% { transform: translate(-260px, 109px); }
+  58% { transform: translate(202px, 109px); }
+  70% { transform: translate(232px, 109px); }
+  74% { transform: translate(232px, 110px) rotate(-1deg); }
+  82% { transform: translate(217px, 108px); }
+  90%, 100% { transform: translate(222px, 109px); }
+}
+@keyframes crash-wheel {
+  0%, 8% { transform: rotate(0); }
+  58% { transform: rotate(740deg); }
+  70%, 74% { transform: rotate(790deg); }
+  82% { transform: rotate(765deg); }
+  90%, 100% { transform: rotate(780deg); }
+}
+@keyframes crash-barrier {
+  0%, 69% { transform: rotate(0); }
+  75% { transform: rotate(16deg); }
+  85% { transform: rotate(4deg); }
+  94%, 100% { transform: rotate(7deg); }
+}
+@keyframes crash-impact {
+  0%, 69%, 86%, 100% { opacity: 0; }
+  71%, 77% { opacity: 1; }
+}
+@keyframes crash-dust {
+  0%, 73% { opacity: 0; transform: translateY(8px); }
+  90%, 100% { opacity: .65; transform: translateY(0); }
+}
+@keyframes crash-message {
+  0%, 72% { opacity: 0; transform: translateY(8px); }
+  94%, 100% { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 640px) {
+  .not-found-main { padding-block: calc(var(--header-height) + 24px) 28px; }
+  .not-found-eyebrow { font-size: 9px; letter-spacing: .1em; }
+  .not-found-scene { width: calc(100% + 28px); max-width: none; margin-left: -14px; margin-block: 22px 24px; }
+  .not-found-actions { flex-direction: column; align-items: stretch; min-height: 100px; }
+  .not-found-cancel { text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .not-found-panel[data-phase] .crash-car,
+  .not-found-panel[data-phase] .crash-wheel,
+  .not-found-panel[data-phase] .crash-barrier,
+  .not-found-panel[data-phase] .crash-impact,
+  .not-found-panel[data-phase] .crash-dust,
+  .not-found-panel[data-phase] .not-found-copy { animation: none; }
 }
 
 /* Easter egg "Detalhamento Total do Site" ---------------------------------- */

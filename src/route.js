@@ -1,5 +1,7 @@
-// Resolve qual página renderizar a partir do caminho da URL.
+// Rotas públicas conhecidas; caminhos desconhecidos renderizam a página 404.
 export function resolvePage(pathname = '/') {
   const normalizedPath = pathname.replace(/\/+$/, '') || '/'
-  return normalizedPath === '/desenvolvedores' ? 'developers' : 'landing'
+  if (normalizedPath === '/') return 'landing'
+  if (normalizedPath === '/devs') return 'developers'
+  return 'not-found'
 }

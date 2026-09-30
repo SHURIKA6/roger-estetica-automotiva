@@ -448,3 +448,32 @@ Comandos: `npm test` (5/5), `npm run build` (verde, 1 `site-backdrop` por HTML, 
 3. **CPU/rede lenta:** rolagem observada apenas em fluxo automatizado sem throttling.
 4. **`package.json`:** ganhou `--host 0.0.0.0` no script `dev` durante a sessão, alteração de terceiro (mesmo diretório de trabalho) não relacionada a este plano — preservada e relatada.
 
+
+
+### Verificação da revisão visual (30/09/2026)
+
+- `npm test`: 7/7 aprovados, incluindo integridade das oito fotos da galeria.
+- `npm run build`: aprovado; `git diff --check`: limpo.
+- Playwright/Chromium no preview de produção: `/` e `/desenvolvedores` em 390×844, 640×900, 1440×900 e 1920×1080, sem erros JavaScript/hidratação e sem overflow horizontal. A rota com barra final também apresenta os créditos.
+- Arquivos das oito fotos decodificados no navegador, dimensões conferidas. Para este check de integridade, o carregamento foi forçado somente na sessão de teste; o código mantém lazy loading.
+- Loop inspecionado em 0ms, 52999ms e 53000ms: metades idênticas de 2336px no desktop, maiores que a viewport de 1920px, sem vão ao reiniciar.
+- Botão Pausar coloca a animação em paused; menu móvel aplica inert no main e Escape fecha com aria-expanded=false. Movimento reduzido: animation=none, oito itens visíveis e rolagem horizontal manual.
+- Links GitHub/Instagram preservados nos dois perfis; noindex confirmado nos créditos. A descoberta de hidratação no preview sem barra final foi corrigida pelo rewrite local; rechecagem passou.
+- Inspeção visual realizada em Chromium, com capturas em `.playwright-mcp/`. Safari/iOS e aparelho físico não foram testados; a avaliação de contraste nesta revisão foi visual, sem nova medição numérica.
+
+
+Ajuste final da galeria: a inspeção visual revelou que o lazy loading nativo não carregava algumas fotos ao entrarem na tela apenas pelo transform da animação CSS. O carrossel passou a usar `loading="eager"` para suas oito imagens distintas (~284 KiB no total; as cópias reutilizam os mesmos URLs). As demais seções mantêm lazy loading. Este ajuste substitui o registro de lazy loading da galeria acima.
+
+
+## Rota oculta /devs e entrada automática — 30/09/2026
+
+A rota dos créditos passa a ser `/devs` (também aceita `/devs/`). Build, resolução de página, links internos dos créditos e rewrites foram atualizados. `/desenvolvedores` e `/desenvolvedores/` redirecionam permanentemente para `/devs`, preservando os favoritos antigos; o preview e o servidor de desenvolvimento espelham o redirect da Vercel. A página continua sem links na landing, com `noindex` e fora de sitemap/llms.txt.
+
+Ao entrar nos créditos, o easter egg inicia uma vez por montagem, após a hidratação: espuma → polimento → vitrificação. A entrada automática é silenciosa para respeitar autoplay; Escape cancela e limpa o efeito. Após cancelar, digitar `devs` permite repetir pelo teclado, com o áudio já existente após interação. Com movimento reduzido, a cinemática é pulada e o estado final é aplicado diretamente. Nenhum efeito foi adicionado à home.
+
+Validação: `npm test` 7/7, build aprovado e diff check limpo. Playwright no preview conferiu a sequência completa automática, `/devs` e `/devs/`, cancelamento por Escape, movimento reduzido, redirect antigo com query string preservada, noindex e ausência de canvas/link dos créditos na home. Sem erros JavaScript/hidratação. Confirmados `dist/devs/index.html` presente, pasta antiga ausente e nenhum crédito em sitemap/llms.txt. A configuração da Vercel foi atualizada localmente; nenhum deploy foi feito.
+
+
+## Revisão posterior de segurança, SEO e funcionamento — 30/09/2026
+
+A revisão dos checklists manteve o cenário RAM e a composição aprovada, melhorou a semântica e os textos pequenos, acrescentou segurança HTTP e 404 e isolou o carregamento do easter egg em `/devs`. Foi feita simulação móvel com CPU/rede limitadas: LCP 2,44s e CLS 0,0242 em uma execução local. Essa evidência complementa a pendência histórica de throttling, sem substituir verificação em aparelho físico ou Safari/iOS. Detalhes e matriz de aplicabilidade em [Revisão do site](../../revisao-site-2026-09-30.md).

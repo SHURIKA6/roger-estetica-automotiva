@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { build, createServer, loadEnv } from 'vite'
+import { escapeHtmlAttribute as escape, getPublicationOrigin, serializeJsonLd } from '../src/seo.js'
 import { ADDRESS, MAPS_URL, PHONE, serviceGroups, WHATSAPP_URL } from '../src/content.js'
 
 // Build de produção: gera os assets com o Vite, pré-renderiza cada rota em HTML
@@ -8,23 +9,15 @@ import { ADDRESS, MAPS_URL, PHONE, serviceGroups, WHATSAPP_URL } from '../src/co
 // SITE_URL tem prioridade sobre a URL automática da Vercel. Sem nenhuma das duas,
 // o build sai com noindex em vez de inventar um domínio.
 const env = { ...loadEnv('production', process.cwd(), ''), ...process.env }
-const configuredUrl = env.SITE_URL || (env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${env.VERCEL_PROJECT_PRODUCTION_URL}` : '')
-let origin = ''
-if (configuredUrl) {
-  const url = new URL(configuredUrl)
-  if (url.protocol !== 'https:' || url.pathname !== '/' || url.search || url.hash || url.username || url.password) {
-    throw new Error('SITE_URL deve ser a origem HTTPS pública, sem caminho, credenciais ou parâmetros.')
-  }
-  origin = url.origin
-}
+const origin = getPublicationOrigin(env)
 const indexable = Boolean(origin) && (!env.VERCEL_ENV || env.VERCEL_ENV === 'production')
-const escape = (value) => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
 const absolute = (path) => `${origin}${path}`
 const description = 'Estética automotiva em Sinop-MT: polimento, vitrificação, restauração de farol e mais. Rua dos Guapuruvús, 366. Agende pelo WhatsApp.'
 const routes = [
   { path: '/', file: 'dist/index.html', title: 'Estética Automotiva em Sinop | Roger', description },
   // Oculta: continua acessível pela URL, mas sem links, fora do sitemap e com noindex.
-  { path: '/desenvolvedores', file: 'dist/desenvolvedores/index.html', title: 'Desenvolvedores | Roger Estética Automotiva', description: 'Conheça Eduardo Gobatto e Fernando Riad, desenvolvedores do site da Roger Estética Automotiva.', hidden: true },
+  { path: '/404.html', file: 'dist/404.html', title: 'Página não encontrada | Roger', description: 'Este endereço não existe. Volte à página inicial da Roger Estética Automotiva.', hidden: true },
+  { path: '/devs', file: 'dist/devs/index.html', title: 'Desenvolvedores | Roger Estética Automotiva', description: 'Conheça Eduardo Gobatto e Fernando Riad, desenvolvedores do site da Roger Estética Automotiva.', hidden: true },
 ]
 
 await build()
@@ -46,7 +39,7 @@ try {
       `<meta name="twitter:title" content="${escape(route.title)}" />`,
       `<meta name="twitter:description" content="${escape(route.description)}" />`,
     ]
-    if (origin) tags.push(
+    if (origin && route.path !== '/404.html') tags.push(
       `<link rel="canonical" href="${escape(absolute(route.path))}" />`,
       `<meta property="og:url" content="${escape(absolute(route.path))}" />`,
       `<meta property="og:image" content="${escape(absolute('/assets/roger-logo.jpg'))}" />`,
@@ -64,7 +57,7 @@ try {
         ...(origin ? { '@id': absolute('/#empresa'), url: absolute('/'), image: absolute('/assets/roger-logo.jpg'), logo: absolute('/assets/roger-logo.jpg') } : {}),
         hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Serviços de estética automotiva', itemListElement: serviceGroups.flatMap(group => group.services.map(service => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: service.name, description: service.detail } }))) },
       }
-      tags.push(`<script type="application/ld+json">${JSON.stringify(business).replaceAll('<', '\u003c')}</script>`)
+      tags.push(`<script type="application/ld+json">${serializeJsonLd(business)}</script>`)
     }
     const html = template.replace(/<title>[\s\S]*?<\/title>/g, '').replace(/<meta\s+(?:name="description"|property="og:[^"]+")[^>]*>/g, '')
       .replace('</head>', `${tags.join('\n    ')}\n  </head>`)

@@ -53,6 +53,26 @@ export const serviceGroups = [
   },
 ]
 
+export const galleryPhotos = [
+  {
+    src: '/assets/galeria-detalhamento.webp', width: 499, height: 750,
+    alt: 'Profissional cuidando da pintura de um carro esportivo em uma oficina.',
+  },
+  {
+    src: '/assets/galeria-brilho.webp', width: 500, height: 750,
+    alt: 'Carro preto polido com reflexos de luz em uma garagem coberta.',
+  },
+  {
+    src: '/assets/galeria-reflexo.webp', width: 500, height: 750,
+    alt: 'Detalhe de um carro preto brilhante com reflexos na lataria.',
+  },
+  { src: '/assets/galeria-farol.webp', width: 600, height: 750, alt: 'Farol de carro sendo polido com uma politriz.' },
+  { src: '/assets/galeria-interior.webp', width: 600, height: 750, alt: 'Limpeza de um banco de tecido com uma extratora.' },
+  { src: '/assets/galeria-polimento.webp', width: 600, height: 750, alt: 'Profissional polindo a pintura de um carro branco.' },
+  { src: '/assets/galeria-protecao.webp', width: 600, height: 750, alt: 'Gotas de água sobre a superfície de um carro branco.' },
+  { src: '/assets/galeria-lavagem.webp', width: 600, height: 750, alt: 'Aplicação de produto de limpeza em uma esponja azul para lavar um carro.' },
+]
+
 export const developers = [
   {
     initials: 'EG',
