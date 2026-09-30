@@ -111,6 +111,37 @@
   :focus-visible { outline: 2px solid var(--color-gold); outline-offset: 5px; }
 }
 
+/* Carrossel da landing ------------------------------------------------------ */
+
+@keyframes gallery-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Fora de @layer de propósito: vence os utilitários sem briga de especificidade,
+   e a regra de movimento reduzido abaixo consegue trocar o overflow. */
+.gallery-viewport { overflow: hidden; }
+
+/* ~45px/s com 18 slides de 292px; ajuste a duração para mudar a velocidade.
+   Não use utilitários translate-* aqui: na v4 eles se somam ao keyframe. */
+.gallery-track { animation: gallery-marquee 60s linear infinite; }
+
+.gallery:hover .gallery-track,
+.gallery:focus-within .gallery-track,
+.gallery[data-paused] .gallery-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  /* Sem movimento: vira uma faixa rolável comum, sem as cópias e sem o botão. */
+  .gallery-track { animation: none; }
+  .gallery-viewport { overflow-x: auto; }
+  .gallery-track > [aria-hidden="true"] { display: none; }
+  .gallery-toggle { display: none; }
+}
+
 /* Easter egg "Detalhamento Total do Site" ---------------------------------- */
 
 @keyframes detail-caption-in {

@@ -23,7 +23,8 @@ const absolute = (path) => `${origin}${path}`
 const description = 'Estética automotiva em Sinop-MT: polimento, vitrificação, restauração de farol e mais. Rua dos Guapuruvús, 366. Agende pelo WhatsApp.'
 const routes = [
   { path: '/', file: 'dist/index.html', title: 'Estética Automotiva em Sinop | Roger', description },
-  { path: '/desenvolvedores', file: 'dist/desenvolvedores/index.html', title: 'Desenvolvedores | Roger Estética Automotiva', description: 'Conheça Eduardo Gobatto e Fernando Riad, desenvolvedores do site da Roger Estética Automotiva.' },
+  // Oculta: continua acessível pela URL, mas sem links, fora do sitemap e com noindex.
+  { path: '/desenvolvedores', file: 'dist/desenvolvedores/index.html', title: 'Desenvolvedores | Roger Estética Automotiva', description: 'Conheça Eduardo Gobatto e Fernando Riad, desenvolvedores do site da Roger Estética Automotiva.', hidden: true },
 ]
 
 await build()
@@ -35,7 +36,7 @@ try {
     const tags = [
       `<title>${escape(route.title)}</title>`,
       `<meta name="description" content="${escape(route.description)}" />`,
-      `<meta name="robots" content="${indexable ? 'index, follow, max-image-preview:large' : 'noindex, follow'}" />`,
+      `<meta name="robots" content="${indexable && !route.hidden ? 'index, follow, max-image-preview:large' : 'noindex, follow'}" />`,
       '<meta property="og:type" content="website" />',
       '<meta property="og:locale" content="pt_BR" />',
       '<meta property="og:site_name" content="Roger Estética Automotiva" />',
@@ -76,6 +77,6 @@ try {
 }
 
 await writeFile('dist/robots.txt', `User-agent: *\nAllow: /\n${indexable ? `\nSitemap: ${absolute('/sitemap.xml')}\n` : ''}`)
-await writeFile('dist/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${indexable ? routes.map(route => `  <url><loc>${escape(absolute(route.path))}</loc></url>`).join('\n') : ''}\n</urlset>\n`)
-await writeFile('dist/llms.txt', `# Roger Estética Automotiva\n\n> Estética automotiva em Sinop, Mato Grosso, Brasil.\n\nEndereço: ${ADDRESS.street}, ${ADDRESS.neighborhood}, ${ADDRESS.city}.\nTelefone: +${PHONE}. Agendamento pelo WhatsApp.\n\n## Serviços\n\n${serviceGroups.flatMap(group => group.services.map(service => `- ${service.name}: ${service.detail}`)).join('\n')}\n\n## Contato e páginas\n\n- [Site](${absolute('/')}): serviços e informações da Roger.\n- [WhatsApp](${WHATSAPP_URL}): dúvidas e agendamento.\n- [Localização](${MAPS_URL}): endereço no Google Maps.\n- [Desenvolvedores](${absolute('/desenvolvedores')}): créditos do site.\n\nPreços, disponibilidade e horários devem ser consultados diretamente com a empresa.\n`)
+await writeFile('dist/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${indexable ? routes.filter(route => !route.hidden).map(route => `  <url><loc>${escape(absolute(route.path))}</loc></url>`).join('\n') : ''}\n</urlset>\n`)
+await writeFile('dist/llms.txt', `# Roger Estética Automotiva\n\n> Estética automotiva em Sinop, Mato Grosso, Brasil.\n\nEndereço: ${ADDRESS.street}, ${ADDRESS.neighborhood}, ${ADDRESS.city}.\nTelefone: +${PHONE}. Agendamento pelo WhatsApp.\n\n## Serviços\n\n${serviceGroups.flatMap(group => group.services.map(service => `- ${service.name}: ${service.detail}`)).join('\n')}\n\n## Contato e páginas\n\n- [Site](${absolute('/')}): serviços e informações da Roger.\n- [WhatsApp](${WHATSAPP_URL}): dúvidas e agendamento.\n- [Localização](${MAPS_URL}): endereço no Google Maps.\n\nPreços, disponibilidade e horários devem ser consultados diretamente com a empresa.\n`)
 console.log(indexable ? `SEO: produção indexável em ${origin}` : 'SEO: build com noindex; configure SITE_URL ou VERCEL_PROJECT_PRODUCTION_URL para produção. Previews da Vercel permanecem noindex.')

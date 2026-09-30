@@ -2,7 +2,7 @@
 
 Landing page da Roger Estética Automotiva, em Sinop-MT.
 
-A rota `/desenvolvedores` apresenta os créditos públicos de quem construiu a experiência digital, com a mesma identidade visual da Roger.
+A rota `/desenvolvedores` apresenta os créditos de quem construiu a experiência digital, com a mesma identidade visual da Roger. Ela é oculta: não há links para ela na landing, fica fora do sitemap e do `llms.txt` e sai com `noindex`. Só abre digitando a URL.
 
 ## Estrutura do projeto
 
@@ -47,7 +47,7 @@ Texto, serviço ou contato novo entra em `src/content.js`, nunca direto no JSX: 
 
 ### Imagens ilustrativas
 
-A galeria da home usa fotos de stock para ilustrar detalhamento automotivo; elas não representam serviços realizados pela Roger. Os arquivos WebP otimizados ficam em `public/assets/`. Fotos e origens: [WAVYVISUALS no Pexels](https://www.pexels.com/photo/man-wiping-hood-of-sports-car-20051461/), [Bradley De Melo no Pexels](https://www.pexels.com/photo/black-bmw-in-garage-26936247/) e [Matheus Bertelli no Pexels](https://www.pexels.com/photo/shiny-black-car-parked-on-a-garage-10182836/). Confira a [licença do Pexels](https://www.pexels.com/license/) ao substituir ou adicionar imagens.
+O carrossel da home usa fotos de stock para ilustrar detalhamento automotivo; elas não representam serviços realizados pela Roger. Os arquivos WebP otimizados ficam em `public/assets/`. Fotos e origens: [WAVYVISUALS no Pexels](https://www.pexels.com/photo/man-wiping-hood-of-sports-car-20051461/), [Bradley De Melo no Pexels](https://www.pexels.com/photo/black-bmw-in-garage-26936247/) e [Matheus Bertelli no Pexels](https://www.pexels.com/photo/shiny-black-car-parked-on-a-garage-10182836/). Confira a [licença do Pexels](https://www.pexels.com/license/) ao substituir ou adicionar imagens.
 
 ## Desenvolvimento
 

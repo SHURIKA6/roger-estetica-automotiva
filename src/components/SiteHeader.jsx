@@ -76,12 +76,11 @@ export default function SiteHeader({ developersActive = false }) {
         <a className={NAV_LINK} href="/#servicos" onClick={closeMenu}>Serviços</a>
         <a className={NAV_LINK} href="/#essencia" onClick={closeMenu}>A experiência</a>
         <a className={NAV_LINK} href="/#visite" onClick={closeMenu}>Onde estamos</a>
-        {developersActive ? (
+        {/* /desenvolvedores é oculta: só aparece no menu quando já se está nela. */}
+        {developersActive && (
           <a className={`${NAV_CTA} border-red bg-red text-ink`} href="/desenvolvedores" aria-current="page" onClick={closeMenu}>
             Desenvolvedores <ArrowIcon className="size-[15px]" />
           </a>
-        ) : (
-          <a className={NAV_LINK} href="/desenvolvedores" onClick={closeMenu}>Desenvolvedores</a>
         )}
         {!developersActive && (
           <a className={NAV_CTA} href={WHATSAPP_URL} target="_blank" rel="noreferrer" onClick={closeMenu}>

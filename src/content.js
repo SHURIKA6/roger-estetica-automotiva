@@ -17,18 +17,6 @@ export const ADDRESS = {
 export const WHATSAPP_MESSAGE = 'Olá, Roger! Quero agendar um cuidado para o meu carro.'
 export const WHATSAPP_URL = `https://wa.me/${PHONE}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`
 
-export const proofPoints = [
-  { value: '7', label: 'serviços para cuidar do carro por inteiro' },
-  { value: 'Sinop', label: 'atendimento local, perto de você' },
-  { value: 'Direto', label: 'fale com a Roger pelo WhatsApp' },
-]
-
-export const journeySteps = [
-  { number: '01', title: 'Conte o que seu carro precisa', copy: 'Mande uma mensagem e explique qual detalhe você quer recuperar ou proteger.' },
-  { number: '02', title: 'Escolha o cuidado certo', copy: 'A Roger orienta o próximo passo entre recuperação, proteção e acabamento.' },
-  { number: '03', title: 'Combine seu atendimento', copy: 'Agende pelo WhatsApp e leve seu carro para receber atenção de verdade.' },
-]
-
 export const serviceGroups = [
   {
     label: 'Recuperação',
