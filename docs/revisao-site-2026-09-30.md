@@ -94,3 +94,34 @@ Verificações desta etapa, sobre o preview local de produção em Chromium:
 - Inspeção visual de mobile/desktop e dos quadros de entrada (1200ms), impacto (2160ms) e repouso (2820ms). Capturas locais em `.playwright-mcp/404-cena-*.png`; os quadros foram pausados apenas para inspeção, enquanto o retorno automático foi validado em execução normal.
 
 Uma segunda revisão somente de leitura conferiu timers, SSR e acessibilidade. Safari/iOS e aparelho físico não foram testados nesta etapa. Sem commit, push ou deploy.
+
+## Complemento: oferta, fotografias e descoberta de `/devs` — 30/09/2026
+
+Depois dos checklists e da 404, o usuário aprovou a melhoria da oferta e solicitou `/devs` nos arquivos de descoberta. Este complemento substitui a política histórica de noindex dos créditos e sitemap só com home apresentada nas tabelas e no procedimento de publicação acima. O histórico das verificações continua preservado.
+
+### Mudanças desta etapa
+
+- Abertura com “Brilho e proteção para seu carro em Sinop”, bairro/cidade, CTA de orçamento no WhatsApp e “Ver serviços”. A lista de serviços vem antes da galeria e recebe outro CTA; atendimento e localização aparecem na sequência.
+- Legendas mais legíveis e descrições mais específicas para os serviços, sem promessa de duração. Correção para “Hidratação de bancos de couro”, com imagem e descrição correspondentes na página e nos arquivos derivados do conteúdo.
+- Quatro novas fontes de stock no Pexels, com cinco arquivos locais WebP: polimento em atendimento; couro no serviço e substituindo tecido na galeria; painel e espuma acrescentados à galeria. Dez fotos distintas, proporção visual 4:3, loop de 66s, pausa e movimento reduzido. Fontes e dimensões estão no README; cada seção identifica as imagens como ilustrativas.
+- Créditos indexáveis em produção com origem válida, título/descrição próprios, canonical `/devs`, Open Graph e Twitter Card. `Allow: /devs` no robots, URLs canônicas de `/` e `/devs` no sitemap e link/dados dos dois desenvolvedores no `llms.txt`.
+- Preview da Vercel e build sem origem continuam noindex e com sitemap vazio. 404 segue excluída, redirects dos aliases e ausência de link de navegação para créditos na landing são preservados.
+
+Sem avaliações, antes/depois, fotos apresentadas como equipe/trabalhos da Roger, preços ou horários não confirmados. RAM e identidade visual mantidas; sem novas dependências, commit, push ou deploy.
+
+### Evidências desta etapa
+
+Resultados executados para este complemento:
+
+- `npm test`: 24/24, zero falhas. Três execuções sequenciais de `node scripts/build.mjs`, o mesmo script de `npm run build`, aprovadas. Produção sintética: `SITE_URL=https://roger.example.test` e `VERCEL_ENV=production`; preview: mesma origem e `VERCEL_ENV=preview`; local: sem origem nem `VERCEL_ENV`. O build final local foi restaurado sem domínio fictício.
+- Assertivas lendo `dist` confirmaram home e créditos com `index, follow` em produção, 404 noindex, canonical exato de `/devs` sem barra final, sitemap com exatamente `/` e `/devs`, robots com `Allow: /devs` e referência ao sitemap de produção. Preview e build sem origem conservaram noindex e sitemap vazio.
+- `llms.txt` contém o link dos créditos e os nomes/funções dos dois desenvolvedores. O JSON-LD contém os sete serviços, incluindo hidratação de couro, sem reviews/aggregateRating. Nome antigo ausente no HTML, JSON-LD e `llms.txt`; ordem das seções e dois CTAs de orçamento confirmados no HTML.
+- Playwright/Chromium sobre o preview, em `/` e `/devs`, nas larguras 320, 390, 640, 768, 1080, 1440 e 1920px com altura de 900px: um h1 por página, sem overflow horizontal e sem erros JavaScript/hidratação. A home tem dois CTAs de orçamento, sete serviços, dez fotos distintas e dez cópias com `aria-hidden`; legendas de serviços com 13px.
+- Menu móvel até 1080px: abertura, inert, foco contido no cabeçalho, Escape e retorno do foco ao botão conferidos. O link “Ver serviços” alcança a seção sem ficar encoberta pelo header. O menu mostra “Atendimento”, preservando a âncora `#essencia`.
+- Vinte imagens do carrossel decodificadas, com dimensões conferidas; inspeção dos recortes de polimento, couro e espuma. Pausa deixa a animação parada; retomada restaura `aria-pressed=false`. Quadros em 0, 65999 e 66000ms confirmaram metades iguais de 2920px, sem vão no reinício em 1920px. Movimento reduzido: animação desligada, dez itens visíveis e rolagem manual.
+- Redirects: `/desenvolvedores?ref=seo` → 308 para `/devs?ref=seo`; `/devs/index.html` → 308 para `/devs`; `/devs/` → 200, sem `X-Robots-Tag`. A última navegação observada teve zero erros e zero avisos no console.
+- Inspeção visual em desktop 1440px e celular 390×844, com capturas em `.playwright-mcp/`, ignoradas pelo Git. Revisão independente sem achados pendentes. `git diff --check` da documentação passou; os únicos avisos foram de futura normalização LF/CRLF.
+
+As evidências das etapas anteriores continuam históricas. Nesta etapa não foram testados Safari/iOS ou aparelho físico, nem realizada nova medição de Core Web Vitals. Sem commit, push ou deploy.
+
+Após publicação autorizada, conferir home e `/devs` indexáveis, canonical/OG com a origem real, sitemap com as duas URLs, créditos no `llms.txt`, robots, aliases antigos e 404. A conferência local não comprova o deploy, a indexação no Google nem os resultados de campo.

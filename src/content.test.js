@@ -18,7 +18,7 @@ test('mantém os sete serviços públicos organizados por categoria', () => {
     'Micro pintura',
     'Vitrificação em pintura',
     'Cristalização com teflon',
-    'Hidratação de bancos sem couro',
+    'Hidratação de bancos de couro',
     'Polimento',
     'Espelhamento',
   ])
@@ -40,9 +40,9 @@ test('o telefone exibido corresponde ao número usado nos links', () => {
   assert.equal(`55${PHONE_DISPLAY.replace(/\D/g, '')}`, PHONE)
 })
 
-test('galeria oferece oito fotos distintas com arquivos locais e descrições', () => {
-  assert.equal(galleryPhotos.length, 8)
-  assert.equal(new Set(galleryPhotos.map(photo => photo.src)).size, 8)
+test('galeria oferece dez fotos distintas com arquivos locais e descrições', () => {
+  assert.equal(galleryPhotos.length, 10)
+  assert.equal(new Set(galleryPhotos.map(photo => photo.src)).size, 10)
   for (const photo of galleryPhotos) {
     assert.ok(existsSync(new URL(`../public${photo.src}`, import.meta.url)), photo.src)
     assert.ok(photo.alt.trim())

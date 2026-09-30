@@ -2,7 +2,7 @@
 
 Landing page da Roger Estética Automotiva, em Sinop-MT.
 
-A rota `/devs` apresenta os créditos de quem construiu a experiência digital, com a mesma identidade visual da Roger. Ela é oculta: não há links para ela na landing, fica fora do sitemap e do `llms.txt` e sai com `noindex`. Só abre digitando a URL.
+A rota `/devs` apresenta os créditos de quem construiu a experiência digital, com a mesma identidade visual da Roger. Ela é indexável em produção com origem HTTPS válida, aparece no `sitemap.xml`, no `llms.txt` e no `robots.txt`, e mantém metadados próprios. A landing continua sem link de navegação para os créditos. Previews e builds sem origem configurada recebem `noindex`. Os registros anteriores sobre ocultação e exclusão do SEO foram preservados como histórico e são substituídos pelo complemento mais recente abaixo.
 
 ## Estrutura do projeto
 
@@ -186,3 +186,50 @@ A ilustração usa SVG e CSS locais, sem bibliotecas novas. Movimento reduzido p
 ## Consolidação para versionamento — 30/09/2026
 
 Após a aprovação do usuário para commit e push, as revisões desta sessão foram reunidas para publicação em `main`: fundo e galeria, `/devs` com easter egg, acessibilidade, segurança/SEO e 404 animada. Antes do commit, foram repetidos os 16 testes, o build e a checagem do diff, todos aprovados. Anexos recebidos, capturas do Playwright e saída de build ficam fora do versionamento. Os registros anteriores de “sem commit, push ou deploy” descrevem as etapas de implementação; a publicação do Git não comprova a conclusão de um deployment na hospedagem.
+
+## Oferta, fotografias e descoberta de `/devs` — 30/09/2026
+
+Este complemento registra o novo ajuste aprovado pelo usuário. Ele substitui, para o estado atual, a ordem anterior das seções, o serviço descrito como bancos sem couro e a decisão de excluir os créditos do SEO; os registros anteriores permanecem como histórico.
+
+- A abertura usa “Brilho e proteção para seu carro em Sinop”, com descrição curta, localização “Jardim das Violetas · Sinop/MT”, “Pedir orçamento no WhatsApp” e “Ver serviços”. Depois da lista de serviços há outro CTA para pedir orçamento e orientação para quem tem dúvida sobre qual serviço escolher.
+- A leitura segue apresentação → serviços → galeria → atendimento → localização no rodapé. A RAM, o vidro escuro e o WhatsApp flutuante continuam. As legendas dos serviços ficaram mais legíveis; as descrições distinguem polimento, espelhamento, cristalização e vitrificação sem acrescentar promessa de duração.
+- O serviço correto é “Hidratação de bancos de couro”: “Tratamento de hidratação para preservar o toque e a aparência dos bancos de couro.” A foto desse serviço e a antiga foto de tecido da galeria passam a mostrar couro.
+- A seção de atendimento orienta a consultar os serviços e combinar o atendimento pelo WhatsApp, com uma nova fotografia ilustrativa de polimento. Nenhuma foto é apresentada como trabalho, equipe ou instalação da Roger.
+- A galeria reúne dez fotos distintas, mostradas em 4:3, com duas metades iguais e ciclo de 66s. Pausa, foco, duplicatas decorativas e rolagem manual em movimento reduzido são preservados. Ela mantém `loading="eager"` para evitar espaços vazios durante a animação CSS; são 324.800 bytes (317,2 KiB) de fotos distintas, com os mesmos URLs reutilizados pelas cópias. Fotos de serviços e atendimento usam carregamento adiado.
+
+### Quatro novas fontes de fotografia
+
+Downloads locais em WebP pelo CDN do Pexels, qualidade 82, com dimensões explícitas e recortes para o uso na página. A espuma usa `crop=top` para preservar o capô coberto. A imagem de couro tem duas saídas, por isso quatro fontes produzem cinco arquivos, totalizando 153.092 bytes (149,5 KiB). A [licença do Pexels](https://www.pexels.com/license/) e as fontes foram conferidas em 30/09/2026. As fontes anteriores continuam documentadas acima como histórico; a foto de tecido foi substituída no conteúdo ativo.
+
+| Arquivo | Dimensões | Autor e fonte | Bytes |
+|---|---|---|---|
+| `experiencia-polimento.webp` | 1000×750 | [Dextar Studio](https://www.pexels.com/photo/person-polishing-the-surface-of-a-car-14615262/) | 42.790 |
+| `servico-couro.webp` | 400×300 | [Filipp Romanovski](https://www.pexels.com/photo/leather-car-seat-16527891/) | 20.202 |
+| `galeria-couro.webp` | 600×450 | [Filipp Romanovski](https://www.pexels.com/photo/leather-car-seat-16527891/) | 38.494 |
+| `galeria-painel.webp` | 600×450 | [Ariyo](https://www.pexels.com/photo/crop-person-wiping-modern-car-panel-4218867/) | 33.848 |
+| `galeria-espuma.webp` | 600×450 | [Jarne Aerts](https://www.pexels.com/photo/car-covered-in-foam-in-a-car-wash-5693659/) | 17.758 |
+
+### Política atual de SEO
+
+Em produção com `SITE_URL` ou `VERCEL_PROJECT_PRODUCTION_URL` válida, a home e `/devs` recebem `index, follow, max-image-preview:large`; os créditos têm título, descrição, canonical `/devs`, Open Graph e Twitter Card próprios. O `robots.txt` permite explicitamente `/devs` e referencia o sitemap. O `sitemap.xml` contém somente as URLs canônicas de `/` e `/devs`, sem aliases ou 404. O `llms.txt` inclui o link dos créditos e os dados públicos já existentes de Eduardo Gobatto e Fernando Riad.
+
+Previews da Vercel e builds sem origem continuam com `noindex` e sitemap vazio; a página 404 permanece excluída. Os redirects antigos para `/devs` são preservados. O texto e os sete serviços vêm de `src/content.js`, mantendo a página, o catálogo JSON-LD e o `llms.txt` coerentes. Após a publicação autorizada, a conferência no Search Console deve incluir também `/devs`; indexabilidade não garante indexação.
+
+Sem avaliações, antes/depois, fotos atribuídas à Roger, horários, preços ou durações não confirmados. Sem novas dependências, commit, push ou deploy nesta etapa.
+
+### Verificação deste complemento
+
+Resultados desta etapa, distintos das verificações históricas acima:
+
+- `npm test`: 24/24 aprovados, zero falhas. Três builds sequenciais com `node scripts/build.mjs` (o script de `npm run build`) aprovados: produção sintética com `SITE_URL=https://roger.example.test`/`VERCEL_ENV=production`, preview com a mesma origem e `VERCEL_ENV=preview`, e local sem origem/`VERCEL_ENV`. O build local final foi restaurado, sem domínio fictício.
+- Assertivas nos arquivos de `dist`: produção com home e `/devs` indexáveis, 404 noindex, canonical dos créditos sem barra final, sitemap exatamente com `/` e `/devs`, `Allow: /devs` e referência ao sitemap no robots. Preview e local com noindex e sitemap vazio. `llms.txt` contém o link dos créditos, ambos os nomes/funções e o serviço de couro; JSON-LD parseável com sete serviços, sem reviews/aggregateRating. Serviço antigo ausente no HTML, JSON-LD e `llms.txt`; ordem das seções e dois CTAs de orçamento confirmados.
+- Playwright/Chromium no preview: `/` e `/devs` em 320, 390, 640, 768, 1080, 1440 e 1920px (altura 900px), com um h1, sem overflow e sem erros JavaScript/hidratação. Na home: dois CTAs de orçamento, sete serviços, dez fotos distintas e dez cópias decorativas com `aria-hidden`, legendas de 13px. Menu até 1080px: abertura, inert, foco contido e fechamento por Escape com retorno ao botão. “Ver serviços” chega à âncora sem ficar encoberta pelo cabeçalho.
+- Vinte imagens da galeria decodificadas com dimensões conferidas; recortes de polimento, couro e espuma inspecionados. Pausa e retomada funcionais. Loop conferido em 0, 65999 e 66000ms: metades iguais de 2920px, sem vão em 1920px. Movimento reduzido: `animation: none`, dez itens visíveis e rolagem horizontal manual.
+- Compatibilidade HTTP: `/desenvolvedores?ref=seo` retorna 308 para `/devs?ref=seo`; `/devs/index.html` retorna 308 para `/devs`; `/devs/` retorna 200 sem `X-Robots-Tag`. A última navegação observada ficou sem erros ou avisos no console.
+- Inspeção visual em desktop 1440px e celular 390×844; capturas em `.playwright-mcp/`, ignoradas pelo Git. Revisão independente sem achados pendentes. `git diff --check` da documentação passou, com apenas avisos de normalização futura de LF para CRLF.
+
+Safari/iOS e aparelho físico não foram testados; não houve nova medição de Core Web Vitals, commit, push ou deploy. A verificação local não comprova publicação nem indexação no Google.
+
+## Versionamento deste complemento — 30/09/2026
+
+Após o pedido explícito de commit e push, as mudanças de oferta, fotografias, hidratação de couro e SEO de `/devs` foram preparadas para publicação em `main`, incluindo os testes e esta documentação. Antes do commit, `npm test` foi repetido com 24/24 aprovados, `npm run build` passou e o diff foi conferido. Os registros anteriores de “sem commit, push ou deploy” descrevem a implementação antes dessa autorização e permanecem como histórico. A publicação do Git não comprova a conclusão de um deployment na hospedagem.

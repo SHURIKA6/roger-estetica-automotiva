@@ -19,8 +19,37 @@ export const MAPS_EMBED_URL = `https://www.google.com/maps?q=${encodeURIComponen
   `${ADDRESS.street} - ${ADDRESS.neighborhood}, Sinop - MT`,
 )}&output=embed`
 
-export const WHATSAPP_MESSAGE = 'Olá, Roger! Quero agendar um cuidado para o meu carro.'
+export const WHATSAPP_MESSAGE = 'Olá, Roger! Gostaria de um orçamento para cuidar do meu carro.'
 export const WHATSAPP_URL = `https://wa.me/${PHONE}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`
+
+export const landingContent = {
+  hero: {
+    eyebrow: 'Estética automotiva · Sinop/MT',
+    title: 'Brilho e proteção para seu carro em Sinop',
+    description: 'Polimento, vitrificação, restauração de faróis e cuidados com bancos de couro. Consulte o serviço indicado para o seu veículo.',
+  },
+  budgetCta: 'Pedir orçamento no WhatsApp',
+  servicesCta: 'Ver serviços',
+  services: {
+    title: 'Serviços para o seu carro',
+    help: 'Não sabe qual escolher? Fale com a Roger.',
+    photoNotice: 'Imagens dos serviços são ilustrativas.',
+  },
+  gallery: {
+    title: 'Detalhes do cuidado automotivo',
+    photoNotice: 'Fotos ilustrativas',
+  },
+  attendance: {
+    navLabel: 'Atendimento',
+    title: 'Converse com a Roger sobre o seu carro',
+    description: 'Conte pelo WhatsApp o que deseja melhorar no veículo. Consulte os serviços disponíveis e combine o atendimento diretamente com a Roger.',
+    image: '/assets/experiencia-polimento.webp',
+    imageAlt: 'Politriz em contato com a pintura de um carro durante o polimento.',
+    imageWidth: 1000,
+    imageHeight: 750,
+    photoNotice: 'Imagem ilustrativa de polimento automotivo.',
+  },
+}
 
 export const serviceGroups = [
   {
@@ -28,8 +57,8 @@ export const serviceGroups = [
     title: 'Devolver presença',
     copy: 'Para o que já viu dias melhores — e ainda pode voltar a chamar atenção.',
     services: [
-      { name: 'Restauração de farol', detail: 'Mais transparência no olhar do carro e um acabamento que muda a primeira impressão.', image: '/assets/servico-farol.webp', caption: 'Faróis transparentes de novo' },
-      { name: 'Micro pintura', detail: 'Correções localizadas para devolver uniformidade aos detalhes da pintura.', image: '/assets/servico-micro-pintura.webp', caption: 'Retoque preciso na pintura' },
+      { name: 'Restauração de farol', detail: 'Tratamento para recuperar a transparência da superfície dos faróis.', image: '/assets/servico-farol.webp', caption: 'Recuperação da transparência dos faróis.' },
+      { name: 'Micro pintura', detail: 'Correções localizadas para devolver uniformidade aos detalhes da pintura.', image: '/assets/servico-micro-pintura.webp', caption: 'Retoques localizados na pintura.' },
     ],
   },
   {
@@ -37,9 +66,9 @@ export const serviceGroups = [
     title: 'Preservar o que importa',
     copy: 'Camadas de cuidado para a pintura, os bancos e tudo aquilo que você quer manter bonito.',
     services: [
-      { name: 'Vitrificação em pintura', detail: 'Proteção e brilho profundo para a superfície da pintura.', image: '/assets/servico-vitrificacao.webp', caption: 'Brilho e proteção duradouros' },
-      { name: 'Cristalização com teflon', detail: 'Um acabamento protegido, liso e com presença.', image: '/assets/servico-cristalizacao.webp', caption: 'Pintura lisa e protegida' },
-      { name: 'Hidratação de bancos sem couro', detail: 'Cuidado para bancos sem couro, com toque renovado e aparência mais uniforme.', image: '/assets/servico-bancos.webp', caption: 'Tecido limpo e renovado' },
+      { name: 'Vitrificação em pintura', detail: 'Aplicação de uma camada de proteção sobre a superfície da pintura.', image: '/assets/servico-vitrificacao.webp', caption: 'Camada de proteção sobre a pintura.' },
+      { name: 'Cristalização com teflon', detail: 'Tratamento com teflon para proteger o acabamento da pintura.', image: '/assets/servico-cristalizacao.webp', caption: 'Tratamento com teflon para o acabamento.' },
+      { name: 'Hidratação de bancos de couro', detail: 'Tratamento de hidratação para preservar o toque e a aparência dos bancos de couro.', image: '/assets/servico-couro.webp', caption: 'Cuidado para preservar o toque do couro.' },
     ],
   },
   {
@@ -47,8 +76,8 @@ export const serviceGroups = [
     title: 'Fazer o detalhe aparecer',
     copy: 'O toque final que tira o carro do comum e faz cada linha ganhar luz.',
     services: [
-      { name: 'Polimento', detail: 'Refino visual para recuperar brilho e valorizar a pintura.', image: '/assets/servico-polimento.webp', caption: 'Brilho de volta à pintura' },
-      { name: 'Espelhamento', detail: 'Acabamento de alto brilho para uma presença que se percebe de longe.', image: '/assets/servico-espelhamento.webp', caption: 'Reflexo de espelho' },
+      { name: 'Polimento', detail: 'Refino da superfície da pintura para recuperar o brilho.', image: '/assets/servico-polimento.webp', caption: 'Refino da pintura para recuperar o brilho.' },
+      { name: 'Espelhamento', detail: 'Acabamento de alto brilho para valorizar os reflexos da pintura.', image: '/assets/servico-espelhamento.webp', caption: 'Acabamento para destacar os reflexos.' },
     ],
   },
 ]
@@ -67,10 +96,12 @@ export const galleryPhotos = [
     alt: 'Detalhe de um carro preto brilhante com reflexos na lataria.',
   },
   { src: '/assets/galeria-farol.webp', width: 600, height: 750, alt: 'Farol de carro sendo polido com uma politriz.' },
-  { src: '/assets/galeria-interior.webp', width: 600, height: 750, alt: 'Limpeza de um banco de tecido com uma extratora.' },
+  { src: '/assets/galeria-couro.webp', width: 600, height: 450, alt: 'Detalhe do revestimento e das costuras de um banco de couro.' },
   { src: '/assets/galeria-polimento.webp', width: 600, height: 750, alt: 'Profissional polindo a pintura de um carro branco.' },
   { src: '/assets/galeria-protecao.webp', width: 600, height: 750, alt: 'Gotas de água sobre a superfície de um carro branco.' },
   { src: '/assets/galeria-lavagem.webp', width: 600, height: 750, alt: 'Aplicação de produto de limpeza em uma esponja azul para lavar um carro.' },
+  { src: '/assets/galeria-painel.webp', width: 600, height: 450, alt: 'Limpeza do painel de um carro com um pano de microfibra.' },
+  { src: '/assets/galeria-espuma.webp', width: 600, height: 450, alt: 'Espuma sobre o capô de um carro durante a lavagem.' },
 ]
 
 export const developers = [

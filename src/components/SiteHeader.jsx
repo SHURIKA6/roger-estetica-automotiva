@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { WHATSAPP_URL } from '../content.js'
+import { landingContent, WHATSAPP_URL } from '../content.js'
 import { ArrowIcon } from '../icons.jsx'
 import Brand from './Brand.jsx'
 
@@ -100,7 +100,7 @@ export default function SiteHeader({ developersActive = false, onInteract }) {
 
       <nav id={navId} aria-label="Navegação principal" className={`${NAV_BASE} ${NAV_SIZING} ${menuOpen ? NAV_OPEN : NAV_CLOSED}`}>
         <a className={NAV_LINK} href="/#servicos" onClick={closeMenu}>Serviços</a>
-        <a className={NAV_LINK} href="/#essencia" onClick={closeMenu}>A experiência</a>
+        <a className={NAV_LINK} href="/#essencia" onClick={closeMenu}>{landingContent.attendance.navLabel}</a>
         <a className={NAV_LINK} href="/#visite" onClick={closeMenu}>Onde estamos</a>
         {/* /devs é oculta: só aparece no menu quando já se está nela. */}
         {developersActive && (

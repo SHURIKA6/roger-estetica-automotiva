@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { build, createServer, loadEnv } from 'vite'
-import { escapeHtmlAttribute as escape, getPublicationOrigin, serializeJsonLd } from '../src/seo.js'
-import { ADDRESS, MAPS_URL, PHONE, serviceGroups, WHATSAPP_URL } from '../src/content.js'
+import { escapeHtmlAttribute as escape, getPublicationSeo, serializeJsonLd } from '../src/seo.js'
+import { ADDRESS, MAPS_URL, PHONE, serviceGroups } from '../src/content.js'
 
 // Build de produção: gera os assets com o Vite, pré-renderiza cada rota em HTML
 // com os próprios metadados e escreve os arquivos de SEO.
@@ -9,16 +9,8 @@ import { ADDRESS, MAPS_URL, PHONE, serviceGroups, WHATSAPP_URL } from '../src/co
 // SITE_URL tem prioridade sobre a URL automática da Vercel. Sem nenhuma das duas,
 // o build sai com noindex em vez de inventar um domínio.
 const env = { ...loadEnv('production', process.cwd(), ''), ...process.env }
-const origin = getPublicationOrigin(env)
-const indexable = Boolean(origin) && (!env.VERCEL_ENV || env.VERCEL_ENV === 'production')
+const { origin, indexable, description, routes, robots, sitemap, llms } = getPublicationSeo(env)
 const absolute = (path) => `${origin}${path}`
-const description = 'Estética automotiva em Sinop-MT: polimento, vitrificação, restauração de farol e mais. Rua dos Guapuruvús, 366. Agende pelo WhatsApp.'
-const routes = [
-  { path: '/', file: 'dist/index.html', title: 'Estética Automotiva em Sinop | Roger', description },
-  // Oculta: continua acessível pela URL, mas sem links, fora do sitemap e com noindex.
-  { path: '/404.html', file: 'dist/404.html', title: 'Página não encontrada | Roger', description: 'Este endereço não existe. Volte à página inicial da Roger Estética Automotiva.', hidden: true },
-  { path: '/devs', file: 'dist/devs/index.html', title: 'Desenvolvedores | Roger Estética Automotiva', description: 'Conheça Eduardo Gobatto e Fernando Riad, desenvolvedores do site da Roger Estética Automotiva.', hidden: true },
-]
 
 await build()
 const template = await readFile('dist/index.html', 'utf8')
@@ -29,7 +21,7 @@ try {
     const tags = [
       `<title>${escape(route.title)}</title>`,
       `<meta name="description" content="${escape(route.description)}" />`,
-      `<meta name="robots" content="${indexable && !route.hidden ? 'index, follow, max-image-preview:large' : 'noindex, follow'}" />`,
+      `<meta name="robots" content="${route.robots}" />`,
       '<meta property="og:type" content="website" />',
       '<meta property="og:locale" content="pt_BR" />',
       '<meta property="og:site_name" content="Roger Estética Automotiva" />',
@@ -69,7 +61,7 @@ try {
   await server.close()
 }
 
-await writeFile('dist/robots.txt', `User-agent: *\nAllow: /\n${indexable ? `\nSitemap: ${absolute('/sitemap.xml')}\n` : ''}`)
-await writeFile('dist/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${indexable ? routes.filter(route => !route.hidden).map(route => `  <url><loc>${escape(absolute(route.path))}</loc></url>`).join('\n') : ''}\n</urlset>\n`)
-await writeFile('dist/llms.txt', `# Roger Estética Automotiva\n\n> Estética automotiva em Sinop, Mato Grosso, Brasil.\n\nEndereço: ${ADDRESS.street}, ${ADDRESS.neighborhood}, ${ADDRESS.city}.\nTelefone: +${PHONE}. Agendamento pelo WhatsApp.\n\n## Serviços\n\n${serviceGroups.flatMap(group => group.services.map(service => `- ${service.name}: ${service.detail}`)).join('\n')}\n\n## Contato e páginas\n\n- [Site](${absolute('/')}): serviços e informações da Roger.\n- [WhatsApp](${WHATSAPP_URL}): dúvidas e agendamento.\n- [Localização](${MAPS_URL}): endereço no Google Maps.\n\nPreços, disponibilidade e horários devem ser consultados diretamente com a empresa.\n`)
+await writeFile('dist/robots.txt', robots)
+await writeFile('dist/sitemap.xml', sitemap)
+await writeFile('dist/llms.txt', llms)
 console.log(indexable ? `SEO: produção indexável em ${origin}` : 'SEO: build com noindex; configure SITE_URL ou VERCEL_PROJECT_PRODUCTION_URL para produção. Previews da Vercel permanecem noindex.')

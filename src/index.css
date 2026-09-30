@@ -265,9 +265,9 @@
    e a regra de movimento reduzido abaixo consegue trocar o overflow. */
 .gallery-viewport { overflow: hidden; }
 
-/* ~44px/s no desktop: metade de oito slides de 292px em 53s.
+/* ~44px/s no desktop: metade de dez slides de 292px em 66s.
    Não use utilitários translate-* aqui: na v4 eles se somam ao keyframe. */
-.gallery-track { animation: gallery-marquee 53s linear infinite; }
+.gallery-track { animation: gallery-marquee 66s linear infinite; }
 
 .gallery:hover .gallery-track,
 .gallery:focus-within .gallery-track,
