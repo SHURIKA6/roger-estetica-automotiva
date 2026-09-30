@@ -60,21 +60,12 @@ export default function LandingPage() {
           className={`${GRID} pt-[calc(var(--header-height)_+_48px)] pb-10 sm:pt-[calc(var(--header-height)_+_56px)] sm:pb-12 xl:pt-[calc(var(--header-height)_+_48px)] xl:pb-14`}
         >
           <div className="max-w-[790px]">
-            <p className={`${EYEBROW} text-paper-soft`}>Estética automotiva em Sinop/MT</p>
-            <h1 id="hero-title" className={`mb-5 max-w-[980px] ${DISPLAY_XL}`}>
-              Seu carro pronto para aparecer.
-            </h1>
-            <p className="mb-7 max-w-[620px] text-[14px] leading-[1.75] text-paper-soft sm:text-[15px]">
+            <p id="hero-title" className={`mb-5 max-w-[980px] ${DISPLAY_XL}`}>
+              A melhor versão do seu veículo é o nosso compromisso
+            </p>
+            <p className="mb-7 max-w-[620px] text-[16px] leading-[1.75] text-paper-soft sm:text-[15px]">
               Estética automotiva em Sinop: polimento, vitrificação, restauração de farol e cuidado com os detalhes do seu carro. Conheça os serviços e agende direto com a Roger.
             </p>
-            <div className="flex flex-wrap items-center gap-4">
-              <a className={`${BUTTON} bg-red text-ink hover:bg-paper`} href={WHATSAPP_URL} target="_blank" rel="noreferrer">
-                Agendar pelo WhatsApp <ArrowIcon className="size-4" />
-              </a>
-              <a className="inline-flex min-h-12 items-center gap-2 text-[10px] font-extrabold tracking-[.1em] text-paper-soft uppercase transition-colors hover:text-paper" href="#servicos">
-                Ver serviços <ArrowIcon className="size-4" direction="down" />
-              </a>
-            </div>
           </div>
         </section>
 
@@ -120,15 +111,36 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* A experiência ---------------------------------------------------- */}
+        
+        {/* Serviços --------------------------------------------------------- */}
+        <section id="servicos" aria-labelledby="services-title" className="bg-paper py-12 text-ink sm:py-16">
+          <div className={`${GRID} text-center`}>
+           
+            <h2 id="services-title" className={`mx-auto mb-0 max-w-[900px] ${DISPLAY_XL}`}>
+              Escolha o <span className="text-red-deep">cuidado</span> que seu carro merece
+            </h2>
+
+            <ul className="mx-auto mt-10 mb-0 flex max-w-[1040px] list-none flex-wrap justify-center gap-x-4 gap-y-2 p-0 sm:mt-12">
+              {services.map((service, index) => (
+                <li className="font-display text-[clamp(24px,5vw,40px)] leading-[1.1] font-semibold uppercase" key={service.name}>
+                  {service.name}
+                  {/* Separador só visual: aria-hidden para o leitor de tela não ler as barras. */}
+                  {index < services.length - 1 && <span className="ml-4 text-red-deep" aria-hidden="true">/</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      </main>
+
+      {/* A experiência ---------------------------------------------------- */}
         <section id="essencia" aria-labelledby="essence-title" className={`${GRID} grid items-center gap-8 py-14 sm:grid-cols-2 sm:gap-10 sm:py-20`}>
           <div>
             <h2 id="essence-title" className={`mb-5 ${DISPLAY_XL}`}>
-              Mais que limpeza. <span className="text-paper-soft">É cuidado que aparece.</span>
+              Todo o cuidado que seu carro merece
             </h2>
-            <p className="m-0 max-w-[420px] text-[12px] leading-[1.7] text-muted">
-              Seu carro tem linhas, textura e personalidade. O trabalho da Roger é revelar tudo isso com técnica, paciência e olho para o detalhe.
-            </p>
+            <p className="m-0 max-w-[420px] text-[16px] leading-[1.7] text-muted">
+              Sabemos o que o seu carro significa para você. Por isso, trabalhamos com paciência e dedicação. A equipe da Roger foca em cada detalhe para que o seu carro saia daqui com a melhor aparência possível</p>
           </div>
           {/* Foto retrato (2:3) recortada: 4:5 na coluna estreita do tablet, 4:3 no
               celular e no desktop para a seção não ficar mais alta que o texto. */}
@@ -145,26 +157,6 @@ export default function LandingPage() {
           </figure>
         </section>
 
-        {/* Serviços --------------------------------------------------------- */}
-        <section id="servicos" aria-labelledby="services-title" className="bg-paper py-12 text-ink sm:py-16">
-          <div className={`${GRID} text-center`}>
-            <p className={`${EYEBROW} text-muted-paper`}>Sete formas de cuidar melhor</p>
-            <h2 id="services-title" className={`mx-auto mb-0 max-w-[900px] ${DISPLAY_XL}`}>
-              Escolha o próximo <span className="text-red-deep">nível de cuidado.</span>
-            </h2>
-
-            <ul className="mx-auto mt-10 mb-0 flex max-w-[1040px] list-none flex-wrap justify-center gap-x-4 gap-y-2 p-0 sm:mt-12">
-              {services.map((service, index) => (
-                <li className="font-display text-[clamp(24px,5vw,40px)] leading-[1.1] font-semibold uppercase" key={service.name}>
-                  {service.name}
-                  {/* Separador só visual: aria-hidden para o leitor de tela não ler as barras. */}
-                  {index < services.length - 1 && <span className="ml-4 text-red-deep" aria-hidden="true">/</span>}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      </main>
 
       {/* Rodapé ------------------------------------------------------------- */}
       {/* Fundo e fio ocupam a largura toda; o conteúdo segue alinhado ao GRID.
