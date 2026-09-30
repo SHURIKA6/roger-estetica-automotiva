@@ -48,11 +48,11 @@ try {
     if (origin) tags.push(
       `<link rel="canonical" href="${escape(absolute(route.path))}" />`,
       `<meta property="og:url" content="${escape(absolute(route.path))}" />`,
-      `<meta property="og:image" content="${escape(absolute('/assets/roger-flyer.png'))}" />`,
-      '<meta property="og:image:width" content="1600" />',
-      '<meta property="og:image:height" content="900" />',
-      '<meta property="og:image:alt" content="Flyer da Roger Estética Automotiva" />',
-      `<meta name="twitter:image" content="${escape(absolute('/assets/roger-flyer.png'))}" />`,
+      `<meta property="og:image" content="${escape(absolute('/assets/roger-logo.jpg'))}" />`,
+      '<meta property="og:image:width" content="1024" />',
+      '<meta property="og:image:height" content="1024" />',
+      '<meta property="og:image:alt" content="Logo da Roger Estética Automotiva" />',
+      `<meta name="twitter:image" content="${escape(absolute('/assets/roger-logo.jpg'))}" />`,
     )
     if (route.path === '/') {
       const business = {
@@ -60,7 +60,7 @@ try {
         name: 'Roger Estética Automotiva', description, telephone: `+${PHONE}`,
         address: { '@type': 'PostalAddress', streetAddress: ADDRESS.street, addressLocality: 'Sinop', addressRegion: 'MT', addressCountry: 'BR' },
         areaServed: { '@type': 'City', name: 'Sinop' }, hasMap: MAPS_URL,
-        ...(origin ? { '@id': absolute('/#empresa'), url: absolute('/'), image: absolute('/assets/roger-flyer.png') } : {}),
+        ...(origin ? { '@id': absolute('/#empresa'), url: absolute('/'), image: absolute('/assets/roger-logo.jpg'), logo: absolute('/assets/roger-logo.jpg') } : {}),
         hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Serviços de estética automotiva', itemListElement: serviceGroups.flatMap(group => group.services.map(service => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: service.name, description: service.detail } }))) },
       }
       tags.push(`<script type="application/ld+json">${JSON.stringify(business).replaceAll('<', '\u003c')}</script>`)

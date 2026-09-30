@@ -27,13 +27,13 @@ scripts/
 
 ### Tailwind neste projeto
 
-O design é **desktop-first**, o oposto do padrão do Tailwind. Por isso `src/index.css` declara duas variantes próprias:
+O design é **mobile-first**. As classes sem prefixo definem o layout de telas pequenas; `sm:` atende tablets e `xl:` aplica as regras de desktop:
 
-- sem prefixo → a partir de 1081px
-- `lg-down:` → até 1080px
-- `sm-down:` → até 640px
+- sem prefixo → base, até 640px
+- `sm:` → a partir de 641px
+- `xl:` → a partir de 1081px nas páginas e no cabeçalho
 
-A ordem em que elas aparecem no arquivo define qual sobrescreve qual: `lg-down` antes de `sm-down`. **Não troque essa ordem.** Elas são variantes próprias (e não `--breakpoint-*`) para gerar exatamente `@media (max-width: 1080px)`, já que `--breakpoint-lg: 1081px` geraria `(width < 1081px)`, que pega larguras fracionárias.
+As variantes são próprias sobre `min-width`; `xl:` é usado para que as regras de desktop prevaleçam sobre as de tablet na cascata do Tailwind. Os breakpoints padrão do Tailwind ficam desativados no tema do projeto.
 
 Três armadilhas que já custaram bug aqui:
 
@@ -44,6 +44,10 @@ Três armadilhas que já custaram bug aqui:
 Cores com transparência estão no tema como `--color-paper-24` e afins, em vez de modificadores `/opacidade`, porque o modificador gera `color-mix()` em oklab e não dá exatamente a mesma cor.
 
 Texto, serviço ou contato novo entra em `src/content.js`, nunca direto no JSX: o build lê o mesmo arquivo para gerar o JSON-LD, o `sitemap.xml` e o `llms.txt`.
+
+### Imagens ilustrativas
+
+A galeria da home usa fotos de stock para ilustrar detalhamento automotivo; elas não representam serviços realizados pela Roger. Os arquivos WebP otimizados ficam em `public/assets/`. Fotos e origens: [WAVYVISUALS no Pexels](https://www.pexels.com/photo/man-wiping-hood-of-sports-car-20051461/), [Bradley De Melo no Pexels](https://www.pexels.com/photo/black-bmw-in-garage-26936247/) e [Matheus Bertelli no Pexels](https://www.pexels.com/photo/shiny-black-car-parked-on-a-garage-10182836/). Confira a [licença do Pexels](https://www.pexels.com/license/) ao substituir ou adicionar imagens.
 
 ## Desenvolvimento
 

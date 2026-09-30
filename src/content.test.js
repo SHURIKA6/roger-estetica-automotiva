@@ -2,7 +2,6 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {
   ADDRESS,
-  featuredService,
   PHONE,
   PHONE_DISPLAY,
   serviceGroups,
@@ -31,10 +30,4 @@ test('usa o contato confirmado para os CTAs da landing', () => {
 
 test('o telefone exibido corresponde ao número usado nos links', () => {
   assert.equal(`55${PHONE_DISPLAY.replace(/\D/g, '')}`, PHONE)
-})
-
-test('o serviço em destaque existe na lista pública', () => {
-  const services = serviceGroups.flatMap((group) => group.services.map((service) => service.name))
-
-  assert.ok(services.includes(featuredService))
 })

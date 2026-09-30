@@ -5,22 +5,36 @@ import {
   ADDRESS,
   journeySteps,
   MAPS_URL,
+  PHONE_DISPLAY,
   proofPoints,
   serviceGroups,
   TEL_URL,
   WHATSAPP_URL,
 } from '../content.js'
-import { ArrowIcon, PinIcon } from '../icons.jsx'
+import { ArrowIcon, PhoneIcon, PinIcon } from '../icons.jsx'
 
-// Largura padrão das seções — mobile-first.
-const GRID = 'mx-auto w-[calc(100%_-_40px)] sm:w-[min(100%_-_52px,760px)] lg:w-[min(1240px,calc(100%_-_64px))]'
+const GRID = 'mx-auto w-[calc(100%_-_40px)] sm:w-[min(100%_-_52px,760px)] xl:w-[min(1240px,calc(100%_-_64px))]'
+const EYEBROW = 'mb-4 text-[10px] leading-[1.4] font-extrabold tracking-[.14em] uppercase'
+const SECTION_TAG = 'text-[10px] font-extrabold tracking-[.14em] uppercase'
+const BUTTON = 'inline-flex min-h-12 items-center justify-center gap-3 px-5 text-[10px] font-extrabold tracking-[.1em] uppercase transition-colors'
+const BUTTON_LIGHT = `${BUTTON} bg-paper text-ink hover:bg-red hover:text-ink`
+const BUTTON_DARK = `${BUTTON} bg-ink text-paper hover:bg-red hover:text-ink`
+const H2 = 'font-display text-[clamp(36px,9vw,44px)] leading-[.96] font-semibold tracking-[-.025em] uppercase sm:text-[clamp(42px,5vw,48px)]'
 
-const EYEBROW = 'mb-[21px] flex items-center gap-[9px] text-[10px] leading-[1.3] font-extrabold tracking-[.17em] uppercase'
-const SECTION_TAG = 'font-display text-[12px] font-semibold tracking-[.15em] uppercase'
-// Hovers simplificados: removido translateY(-3px) excessivo.
-const BUTTON = 'inline-flex min-h-[48px] items-center justify-center gap-[14px] px-[19px] text-[10px] font-extrabold tracking-[.1em] uppercase transition-colors sm:min-h-[52px] sm:gap-[17px] sm:px-[21px]'
-// Fontes H2 reduzidas: era clamp(59px,7.2vw,105px), agora escala mais contido.
-const H2 = 'font-display text-[clamp(38px,11vw,52px)] leading-[.86] font-semibold tracking-[-.04em] uppercase sm:text-[clamp(42px,5vw,72px)]'
+const galleryPhotos = [
+  {
+    src: '/assets/galeria-detalhamento.webp',
+    alt: 'Profissional cuidando da pintura de um carro esportivo em uma oficina.',
+  },
+  {
+    src: '/assets/galeria-brilho.webp',
+    alt: 'Carro preto polido com reflexos de luz em uma garagem coberta.',
+  },
+  {
+    src: '/assets/galeria-reflexo.webp',
+    alt: 'Detalhe de um carro preto brilhante com reflexos na lataria.',
+  },
+]
 
 export default function LandingPage() {
   return (
@@ -29,129 +43,198 @@ export default function LandingPage() {
       <SiteHeader />
 
       <main id="main">
-        {/* Hero ------------------------------------------------------------ */}
+        {/* Apresentação ----------------------------------------------------- */}
         <section
           id="inicio"
           aria-labelledby="hero-title"
-          className={`${GRID} relative grid grid-cols-[1fr] items-center min-h-[auto] pt-[118px] pb-[61px] before:absolute before:z-[-1] before:top-[21%] before:left-[-65vw] before:h-px before:w-[150vw] before:origin-center before:bg-line before:content-[''] before:[transform:rotate(-13deg)] sm:pt-[154px] sm:pb-[82px] lg:grid-cols-[minmax(0,.93fr)_minmax(440px,.9fr)] lg:min-h-[680px] lg:pt-[110px] lg:pb-[76px] lg:after:absolute lg:after:z-[-1] lg:after:top-0 lg:after:left-[49%] lg:after:h-full lg:after:w-px lg:after:bg-line lg:after:content-['']`}
+          className={`${GRID} pt-[calc(var(--header-height)_+_48px)] pb-10 sm:pt-[calc(var(--header-height)_+_56px)] sm:pb-12 xl:pt-[calc(var(--header-height)_+_48px)] xl:pb-14`}
         >
-          <div className="relative z-[1] pb-[26px] lg:pb-5">
-            <p className={`${EYEBROW} text-paper-soft`}><span className="size-[7px] bg-red [transform:rotate(45deg)]" /> Estética automotiva · Sinop/MT</p>
-            {/* H1 em 2–3 linhas no desktop, como nas referências do setor. */}
-            <h1 id="hero-title" className="mb-6 max-w-[620px] font-display text-[clamp(44px,11vw,60px)] leading-[.9] font-bold tracking-[-.02em] uppercase sm:text-[64px] lg:text-[clamp(60px,5.4vw,80px)]">
-              Seu carro<br /><em>pronto para aparecer.</em>
+          <div className="max-w-[790px]">
+            <p className={`${EYEBROW} text-paper-soft`}>Estética automotiva em Sinop/MT</p>
+            <h1 id="hero-title" className="mb-5 max-w-[980px] font-display text-[clamp(38px,8vw,52px)] leading-[.96] font-semibold tracking-[-.025em] uppercase sm:text-[clamp(46px,6vw,56px)] xl:text-[56px]">
+              Seu carro pronto para aparecer.
             </h1>
-            <p className="mb-9 max-w-[440px] text-[15px] leading-[1.6] text-paper-soft sm:text-[16px]">Estética automotiva em Sinop: polimento, vitrificação, restauração de farol e cuidado com os detalhes do seu carro. Conheça os serviços e agende direto com a Roger.</p>
-            <div className="flex flex-col items-start gap-[18px] sm:flex-row sm:flex-wrap sm:items-center sm:gap-6">
-              <a className={`${BUTTON} bg-red text-paper hover:bg-red-deep`} href={WHATSAPP_URL} target="_blank" rel="noreferrer">Agendar pelo WhatsApp <ArrowIcon className="size-[15px]" /></a>
-              <a className="inline-flex min-h-11 items-center gap-[10px] border-b border-b-line pb-2 text-[10px] font-extrabold tracking-[.1em] text-paper-soft uppercase transition-colors hover:border-red hover:text-paper" href="#servicos">Ver serviços <ArrowIcon className="size-[15px]" direction="down" /></a>
+            <p className="mb-7 max-w-[620px] text-[14px] leading-[1.75] text-paper-soft sm:text-[15px]">
+              Estética automotiva em Sinop: polimento, vitrificação, restauração de farol e cuidado com os detalhes do seu carro. Conheça os serviços e agende direto com a Roger.
+            </p>
+            <div className="flex flex-wrap items-center gap-4">
+              <a className={`${BUTTON} bg-red text-ink hover:bg-paper`} href={WHATSAPP_URL} target="_blank" rel="noreferrer">
+                Agendar pelo WhatsApp <ArrowIcon className="size-4" />
+              </a>
+              <a className="inline-flex min-h-12 items-center gap-2 text-[10px] font-extrabold tracking-[.1em] text-paper-soft uppercase transition-colors hover:text-paper" href="#servicos">
+                Ver serviços <ArrowIcon className="size-4" direction="down" />
+              </a>
             </div>
-            <div className="mt-11 flex flex-wrap items-center gap-[13px] font-display text-[11px] tracking-[.08em] text-muted uppercase sm:mt-[60px] sm:text-[13px]" aria-label="Especialidades">
-              <span>Polimento</span><i className="size-[4px] bg-red [transform:rotate(45deg)]" /><span>Proteção</span><i className="size-[4px] bg-red [transform:rotate(45deg)]" /><span>Restauração</span>
-            </div>
-          </div>
-
-          <div
-            role="img"
-            aria-label="Flyer da Roger Estética Automotiva com um carro esportivo vermelho"
-            className="relative self-stretch mt-[23px] min-h-[430px] w-[calc(100%_+_7px)] before:absolute before:top-[18%] before:left-[18%] before:h-[62%] before:w-[78%] before:border before:border-paper-19 before:content-[''] before:[transform:rotate(11deg)] after:absolute after:right-0 after:bottom-[10%] after:h-[51%] after:w-[51%] after:bg-red after:opacity-[.91] after:mix-blend-multiply after:content-[''] sm:mt-0 sm:ml-auto sm:w-[min(100%,580px)] lg:min-h-[520px] lg:mb-3 lg:ml-[12%] lg:w-auto"
-          >
-            <div className="absolute z-[2] top-[47%] left-[-5%] h-[21px] w-[117%] bg-red shadow-[0_0_40px_rgba(234,68,54,.2)] [transform:rotate(-17deg)] sm:top-[54%] sm:h-[26px]" />
-            {/* Removido group-hover scale — era efeito excessivo de IA. Imagem estática. */}
-            <div className="absolute z-[1] top-[12%] right-0 h-[63%] w-[92%] overflow-hidden bg-ink-light [clip-path:polygon(11%_0,100%_0,100%_89%,89%_100%,0_100%,0_11%)] sm:top-[16%] sm:right-[3%] sm:h-[59%] sm:w-[82%]">
-              <img className="block size-full object-cover object-[50%_18%] [filter:saturate(1.14)_contrast(1.07)] [transform:scale(1.04)]" src="/assets/roger-flyer.png" alt="Flyer da Roger Estética Automotiva com um carro esportivo vermelho" width="1600" height="900" fetchPriority="high" />
-            </div>
-            <div className="absolute z-[3] top-[76%] left-[6%] flex items-baseline gap-[14px] font-display sm:top-[77%] sm:left-[8%]"><span className="text-[50px] leading-[.8] font-extrabold tracking-[.02em] text-paper sm:text-[clamp(38px,5vw,60px)]">ROGER</span><span className="text-[8px] tracking-[.15em] text-paper-soft uppercase sm:text-[10px]">EST. AUTOMOTIVA</span></div>
-            <div className="absolute z-[3] right-0 bottom-[4%] text-right font-display text-[13px] leading-[1.05] tracking-[.05em] text-paper uppercase sm:bottom-[8%] sm:text-[15px]">A estética<br />começa no olhar.</div>
           </div>
         </section>
 
-        {/* Faixa de provas --------------------------------------------------- */}
-        <section className="border-y border-y-paper-24 bg-red text-paper" aria-label="Por que falar com a Roger">
-          <div className={`${GRID} block sm:grid sm:grid-cols-[repeat(3,1fr)]`}>
-            {proofPoints.map((point) => (
-              <div className="flex min-h-0 items-baseline gap-3 border-b border-b-paper-32 px-0 py-4 last:border-b-0 sm:grid sm:min-h-[100px] sm:content-center sm:gap-[5px] sm:border-b-0 sm:border-l sm:border-l-paper-32 sm:px-[30px] sm:py-[18px] sm:first:border-l-0" key={point.value}>
-                <strong className="flex-[0_0_78px] font-display text-[27px] leading-[.9] font-semibold tracking-[.02em] uppercase sm:flex-auto sm:text-[28px]">{point.value}</strong>
-                <span className="max-w-none text-[11px] leading-[1.45] sm:max-w-[210px]">{point.label}</span>
+        {/* Galeria ilustrativa --------------------------------------------- */}
+        <section aria-label="Fotos ilustrativas de estética automotiva" className={`${GRID} pb-12 sm:pb-14`}>
+          <div className="mb-4 flex items-baseline justify-between gap-4">
+            <h2 className="font-display text-[18px] font-semibold tracking-[.02em] text-paper uppercase sm:text-[20px]">Cuidado automotivo</h2>
+            <p className="m-0 text-right text-[10px] text-muted">Fotos ilustrativas</p>
+          </div>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+            {galleryPhotos.map((photo) => (
+              <figure className="m-0 overflow-hidden bg-ink-light" key={photo.src}>
+                <img
+                  className="block aspect-[5/3] w-full object-cover sm:aspect-[4/3]"
+                  src={photo.src}
+                  alt={photo.alt}
+                  width="500"
+                  height="750"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+            ))}
+          </div>
+        </section>
+
+        {/* Informações rápidas --------------------------------------------- */}
+        <section className="border-y border-y-ink-16 bg-paper text-ink" aria-label="Sobre o atendimento">
+          <div className={`${GRID} grid grid-cols-1 sm:grid-cols-3`}>
+            {proofPoints.map((point, index) => (
+              <div
+                className={`flex items-baseline gap-3 border-b border-b-ink-16 py-4 last:border-b-0 sm:grid sm:content-center sm:gap-1 sm:py-5 sm:pl-6 sm:first:pl-0 sm:border-b-0 ${index > 0 ? 'sm:border-l sm:border-l-ink-16' : ''}`}
+                key={point.value}
+              >
+                <strong className="min-w-[72px] font-display text-[24px] leading-none font-semibold tracking-[.01em] uppercase sm:text-[26px]">{point.value}</strong>
+                <span className="max-w-[220px] text-[12px] leading-[1.5] text-muted-paper">{point.label}</span>
               </div>
             ))}
           </div>
         </section>
 
-        {/* A experiência ----------------------------------------------------- */}
-        <section id="essencia" aria-labelledby="essence-title" className={`${GRID} relative block pt-[90px] pb-[101px] sm:grid sm:grid-cols-[1fr_2.2fr] sm:gap-10 sm:pt-[140px] sm:pb-[160px] lg:grid-cols-[1fr_2.2fr_.4fr]`}>
-          <div className="sm:col-start-2">
-            <h2 id="essence-title" className={`mb-9 ${H2} sm:mb-[52px]`}>Mais que limpeza.<br /><span className="text-paper-soft">É cuidado que aparece.</span></h2>
-            <p className="max-w-[370px] text-[13px] leading-[1.9] text-muted">Seu carro tem linhas, textura e personalidade. O trabalho da Roger é revelar tudo isso com técnica, paciência e olho para o detalhe.</p>
-          </div>
-        </section>
-
-        {/* Serviços ---------------------------------------------------------- */}
-        <section id="servicos" aria-labelledby="services-title" className="bg-paper pt-[75px] pb-[88px] text-ink sm:pt-[110px] sm:pb-[140px]">
-          <div className={GRID}>
-            <p className={`${SECTION_TAG} text-red`}>/ o que fazemos</p>
-            <div className="mt-[34px] block sm:mt-11 sm:grid sm:grid-cols-[1fr_1fr] sm:items-start sm:gap-10 lg:gap-16">
-              <h2 id="services-title" className={`mb-11 ${H2} sm:mb-0`}>Seu carro pede cuidado.<br /><em className="text-red-deep">A Roger resolve.</em></h2>
-              <ol className="border-t border-t-ink-35">
-                {serviceGroups.map((group, index) => (
-                  <li className="flex items-baseline gap-5 border-b border-b-ink-16 py-6 sm:gap-7 sm:py-7" key={group.title}>
-                    <span className="font-display text-[18px] font-semibold text-red-deep">{String(index + 1).padStart(2, '0')}</span>
-                    <h3 className="font-display text-[28px] leading-[.95] font-semibold tracking-[-.01em] uppercase sm:text-[32px] lg:text-[38px]">{group.title}</h3>
-                  </li>
-                ))}
-              </ol>
+        {/* A experiência ---------------------------------------------------- */}
+        <section id="essencia" aria-labelledby="essence-title" className={`${GRID} grid gap-5 py-14 sm:grid-cols-[.8fr_2.2fr] sm:gap-8 sm:py-20`}>
+          <p className={`${SECTION_TAG} m-0 text-red`}>A experiência</p>
+          <div>
+            <h2 id="essence-title" className={`mb-5 ${H2}`}>
+              Mais que limpeza. <span className="text-paper-soft">É cuidado que aparece.</span>
+            </h2>
+            <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-end sm:justify-between">
+              <p className="m-0 max-w-[540px] text-[14px] leading-[1.75] text-muted">
+                Seu carro tem linhas, textura e personalidade. O trabalho da Roger é revelar tudo isso com técnica, paciência e olho para o detalhe.
+              </p>
+              <a className={`${BUTTON} bg-red text-ink hover:bg-paper`} href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label="Conversar com a Roger pelo WhatsApp">
+                Quero cuidar <ArrowIcon className="size-4" />
+              </a>
             </div>
           </div>
         </section>
 
-        {/* Como começar ------------------------------------------------------ */}
-        <section id="como-comecar" aria-label="Como começar" className="relative overflow-hidden bg-ink-soft pt-[86px] pb-[92px] before:absolute before:top-[42%] before:right-[-55%] before:h-[34%] before:w-[135%] before:bg-red before:opacity-[.92] before:content-[''] before:[transform:skewY(-11deg)] sm:pt-[126px] sm:pb-[136px] sm:before:top-[25%] sm:before:right-[-12%] sm:before:h-[58%] sm:before:w-[62%]">
-          <div className={`${GRID} relative z-[1] block sm:grid sm:grid-cols-[1fr_2.2fr] sm:gap-10`}>
-            <div className="grid gap-0 sm:col-start-2">
+        {/* Serviços --------------------------------------------------------- */}
+        <section id="servicos" aria-labelledby="services-title" className="bg-paper py-14 text-ink sm:py-20">
+          <div className={`${GRID} mb-8 grid gap-4 sm:mb-10 sm:grid-cols-[.8fr_2.2fr] sm:gap-8`}>
+            <p className={`${SECTION_TAG} m-0 text-red-deep`}>Serviços</p>
+            <div>
+              <p className={`${EYEBROW} text-muted-paper`}>Sete formas de cuidar melhor</p>
+              <h2 id="services-title" className={`m-0 max-w-[650px] text-ink ${H2}`}>
+                Escolha o próximo <span className="text-red-deep">nível de cuidado.</span>
+              </h2>
+            </div>
+          </div>
+
+          <div className={`${GRID} grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-9 xl:grid-cols-3`}>
+            {serviceGroups.map((group) => (
+              <article className="border-t border-t-ink-16 pt-4" key={group.label}>
+                <p className="m-0 text-[10px] font-extrabold tracking-[.12em] text-red-deep uppercase">{group.label}</p>
+                <h3 className="mt-3 mb-2 font-display text-[24px] leading-[1] font-semibold uppercase">{group.title}</h3>
+                <p className="mb-5 max-w-[360px] text-[13px] leading-[1.65] text-muted-paper">{group.copy}</p>
+                <ul className="m-0 list-none border-y border-y-ink-16 p-0">
+                  {group.services.map((service) => (
+                    <li className="border-b border-b-ink-16 py-4 last:border-b-0" key={service.name}>
+                      <h4 className="mb-1 text-[14px] leading-[1.4] font-bold">{service.name}</h4>
+                      <p className="m-0 text-[13px] leading-[1.6] text-muted-paper">{service.detail}</p>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* Como começar ----------------------------------------------------- */}
+        <section id="como-comecar" aria-labelledby="journey-title" className="bg-ink-soft py-14 sm:py-20">
+          <div className={`${GRID} grid gap-8 sm:grid-cols-[.9fr_1.1fr] sm:gap-10`}>
+            <div>
+              <p className={`${SECTION_TAG} mb-4 text-red`}>Como começar</p>
+              <h2 id="journey-title" className={`mb-6 max-w-[470px] ${H2}`}>
+                Seu carro pede cuidado. <span className="text-paper">A Roger resolve.</span>
+              </h2>
+              <a className={BUTTON_LIGHT} href={WHATSAPP_URL} target="_blank" rel="noreferrer">
+                Falar com a Roger <ArrowIcon className="size-4" />
+              </a>
+            </div>
+            <ol className="m-0 list-none p-0">
               {journeySteps.map((step) => (
-                <article className="grid grid-cols-[45px_minmax(0,1fr)] gap-x-3 border-t border-t-paper-24 py-6 last:border-b last:border-b-paper-24 sm:grid-cols-[60px_minmax(0,1fr)] sm:gap-x-[18px]" key={step.number}>
-                  <span className="font-display text-[22px] leading-none text-gold">{step.number}</span>
-                  <h3 className="mb-2 font-display text-[24px] leading-[.9] font-medium tracking-[.01em] uppercase sm:text-[26px]">{step.title}</h3>
-                  <p className="col-start-2 m-0 max-w-[350px] text-[12px] leading-[1.7] text-paper-soft">{step.copy}</p>
-                </article>
+                <li className="grid grid-cols-[44px_minmax(0,1fr)] gap-x-3 border-t border-t-paper-24 py-5 last:border-b last:border-b-paper-24 sm:grid-cols-[52px_minmax(0,1fr)] sm:gap-x-4" key={step.number}>
+                  <span className="font-display text-[20px] leading-none text-gold">{step.number}</span>
+                  <div>
+                    <h3 className="mb-2 font-display text-[21px] leading-[1.1] font-medium uppercase">{step.title}</h3>
+                    <p className="m-0 max-w-[390px] text-[13px] leading-[1.65] text-paper-soft">{step.copy}</p>
+                  </div>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         </section>
 
-        {/* Onde estamos ------------------------------------------------------ */}
-        <section id="visite" aria-labelledby="visit-title" className={`${GRID} block pt-[61px] pb-[75px] sm:pt-[110px] sm:pb-[112px]`}>
-          <div className="relative flex min-h-[390px] flex-col items-start overflow-hidden bg-red px-[27px] py-[28px] before:absolute before:right-[-70px] before:bottom-[-90px] before:size-[310px] before:rounded-full before:border before:border-paper-40 before:content-[''] after:absolute after:right-[-35px] after:bottom-[-55px] after:size-[225px] after:rounded-full after:border after:border-paper-28 after:content-[''] sm:min-h-[418px] sm:px-[43px] sm:py-[38px]">
-            <div className="flex w-full items-center justify-between"><span className={`${SECTION_TAG} text-paper`}>/ visite a gente</span><span><PinIcon className="size-[28px]" /></span></div>
-            {/* Fonte reduzida */}
-            <h2 id="visit-title" className="relative z-[1] mt-auto mb-[22px] font-display text-[clamp(40px,10vw,56px)] leading-[.85] font-semibold tracking-[-.04em] uppercase sm:text-[clamp(44px,5vw,68px)]">Seu carro sabe<br /><em className="text-ink">o caminho.</em></h2>
-            <p className="relative z-[1] text-[12px] leading-[1.8] font-semibold">{ADDRESS.street}<br />{ADDRESS.neighborhood} · {ADDRESS.city}</p>
+        {/* Endereço e contato ----------------------------------------------- */}
+        <section id="visite" aria-label="Endereço e contato" className={`${GRID} grid grid-cols-1 gap-4 py-12 sm:grid-cols-2 sm:gap-5 sm:py-16`}>
+          <div className="flex min-h-[330px] flex-col items-start bg-paper p-6 text-ink sm:min-h-[360px] sm:p-8">
+            <div className="flex w-full items-center justify-between">
+              <p className={`${SECTION_TAG} m-0 text-red-deep`}>Visite a gente</p>
+              <PinIcon className="size-6" />
+            </div>
+            <h2 className={`mt-auto mb-4 ${H2}`}>
+              Seu carro sabe <span className="text-red-deep">o caminho.</span>
+            </h2>
+            <p className="mb-5 text-[13px] leading-[1.7] font-semibold">
+              {ADDRESS.street}<br />{ADDRESS.neighborhood} · {ADDRESS.city}
+            </p>
+            <a className={BUTTON_DARK} href={MAPS_URL} target="_blank" rel="noreferrer">
+              Abrir no Google Maps <ArrowIcon className="size-4" />
+            </a>
+          </div>
+
+          <div className="min-h-[330px] border border-line bg-ink-soft p-6 sm:min-h-[360px] sm:p-8">
+            <p className={`${EYEBROW} text-muted`}>Fale direto com a Roger</p>
+            <a className="mt-12 block font-display text-[clamp(30px,7vw,42px)] leading-none font-medium tracking-[-.02em] text-paper transition-colors hover:text-red sm:mt-14 sm:text-[42px]" href={TEL_URL}>
+              {PHONE_DISPLAY}
+            </a>
+            <p className="mt-5 mb-6 max-w-[280px] text-[13px] leading-[1.7] text-muted">
+              Agende seu horário ou tire suas dúvidas pelo WhatsApp.
+            </p>
+            <a className="inline-flex min-h-11 items-center gap-2 border-b border-b-red pb-2 text-[10px] font-extrabold tracking-[.1em] text-paper uppercase transition-colors hover:text-red" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
+              <PhoneIcon className="size-4 text-red" /> WhatsApp <ArrowIcon className="ml-2 size-4" />
+            </a>
           </div>
         </section>
       </main>
 
-      {/* Rodapé -------------------------------------------------------------- */}
-      <footer className={`${GRID} block pb-[91px] border-t border-t-line pt-[31px] sm:grid sm:grid-cols-[1fr_1fr] sm:items-end sm:gap-7 sm:pb-9 lg:grid-cols-[1.1fr_.9fr_1fr_auto]`}>
+      {/* Rodapé ------------------------------------------------------------- */}
+      <footer className={`${GRID} grid grid-cols-1 gap-6 border-t border-t-line py-7 sm:grid-cols-[1fr_auto] sm:items-end sm:py-8`}>
         <Brand />
-        <p className="my-[38px] font-display text-[16px] leading-[.95] tracking-[.03em] text-paper uppercase sm:m-0 sm:text-[18px]">Seu carro. Seu estilo.<br /><span className="text-red">Seu melhor detalhe.</span></p>
-        <div className="mb-7 flex flex-wrap justify-start gap-x-[21px] gap-y-[17px] text-[10px] font-extrabold tracking-[.08em] text-muted uppercase sm:mb-0 lg:justify-center">
-          <a className="hover:text-paper" href={WHATSAPP_URL} target="_blank" rel="noreferrer">WhatsApp</a>
-          <a className="hover:text-paper" href={MAPS_URL} target="_blank" rel="noreferrer">Google Maps</a>
-          <a className="hover:text-paper" href="/desenvolvedores">Desenvolvedores</a>
-          <a className="hover:text-paper" href={TEL_URL}>Ligar</a>
-        </div>
-        <small className="text-left text-[9px] tracking-[.08em] text-muted uppercase lg:text-right">© 2026 Roger Estética Automotiva</small>
+        <nav aria-label="Links do rodapé" className="flex flex-wrap gap-x-5 gap-y-3 text-[10px] font-extrabold tracking-[.08em] text-muted uppercase sm:justify-end">
+          <a className="transition-colors hover:text-paper" href={WHATSAPP_URL} target="_blank" rel="noreferrer">WhatsApp</a>
+          <a className="transition-colors hover:text-paper" href={MAPS_URL} target="_blank" rel="noreferrer">Google Maps</a>
+          <a className="transition-colors hover:text-paper" href="/desenvolvedores">Desenvolvedores</a>
+          <a className="transition-colors hover:text-paper" href={TEL_URL}>Ligar</a>
+        </nav>
+        <small className="text-[10px] text-muted sm:col-span-2">© 2026 Roger Estética Automotiva</small>
       </footer>
 
-      {/* Atalho fixo de WhatsApp --------------------------------------------- */}
+      {/* Atalho fixo de WhatsApp ------------------------------------------- */}
       <a
-        className="fixed right-[15px] bottom-[calc(15px_+_env(safe-area-inset-bottom))] z-[19] block size-14 transition hover:[transform:translateY(-3px)] sm:right-[22px] sm:bottom-[calc(20px_+_env(safe-area-inset-bottom))]"
+        className="fixed right-4 bottom-[calc(16px_+_env(safe-area-inset-bottom))] z-[19] grid size-14 place-items-center rounded-full bg-paper shadow-[0_10px_26px_rgba(0,0,0,.22)] transition-colors hover:bg-red sm:right-6 sm:bottom-[calc(24px_+_env(safe-area-inset-bottom))]"
         href={WHATSAPP_URL}
         target="_blank"
         rel="noreferrer"
         aria-label="Falar com a Roger pelo WhatsApp"
       >
-        <img className="block size-full object-contain" src="/assets/WhatsApp.svg.webp" alt="WhatsApp" />
+        <img className="size-8" src="/assets/WhatsApp.svg.webp" alt="" />
       </a>
     </div>
   )

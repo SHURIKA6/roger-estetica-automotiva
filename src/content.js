@@ -60,9 +60,6 @@ export const serviceGroups = [
   },
 ]
 
-// Serviço que já abre expandido na lista.
-export const featuredService = 'Vitrificação em pintura'
-
 export const developers = [
   {
     initials: 'EG',

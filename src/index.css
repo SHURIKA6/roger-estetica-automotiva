@@ -1,13 +1,16 @@
 @import "tailwindcss";
 
+/* Breakpoints mobile-first. `xl` ordena depois de `sm` na cascata do Tailwind,
+   então as regras de desktop da landing sobrescrevem as de tablet. */
+@custom-variant sm { @media (min-width: 641px) { @slot } }
+@custom-variant lg { @media (min-width: 1081px) { @slot } }
+@custom-variant xl { @media (min-width: 1081px) { @slot } }
+
 @theme static {
-  /* Breakpoints mobile-first: sm (tablet, 641px) e lg (desktop, 1081px).
-     Precisam ser breakpoints do tema, não @custom-variant: só assim o Tailwind
-     ordena as media queries por largura e lg: sobrescreve sm:. Com
-     @custom-variant o bloco sm saía depois do lg e vencia no desktop. */
+  /* Desliga os breakpoints padrão do Tailwind. */
   --breakpoint-*: initial;
-  --breakpoint-sm: 641px;
-  --breakpoint-lg: 1081px;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 67.5rem;
 
   --color-ink: #0d0d0c;
   --color-ink-soft: #151513;
@@ -106,4 +109,118 @@
   ::selection { background: var(--color-red); color: var(--color-paper); }
 
   :focus-visible { outline: 2px solid var(--color-gold); outline-offset: 5px; }
+}
+
+/* Easter egg "Detalhamento Total do Site" ---------------------------------- */
+
+@keyframes detail-caption-in {
+  from { opacity: 0; transform: translateY(26px) scale(.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes detail-sweep {
+  from { transform: translateX(-130%) rotate(-18deg); }
+  to { transform: translateX(230%) rotate(-18deg); }
+}
+
+@keyframes detail-toast-in {
+  /* O `-translate-x-1/2` do Tailwind v4 usa a propriedade `translate`, que
+     compõe com `transform` — por isso o keyframe mexe só no eixo Y. */
+  from { opacity: 0; transform: translateY(-14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes detail-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes detail-shake {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(1px, -1px); }
+  50% { transform: translate(-1px, 1px); }
+  75% { transform: translate(1px, 1px); }
+}
+
+@keyframes detail-sheen {
+  to { background-position: -220% center; }
+}
+
+@keyframes detail-chip-shimmer {
+  from { background-position: 200% center; }
+  to { background-position: -200% center; }
+}
+
+.detail-caption {
+  animation: detail-caption-in .45s ease both;
+  text-shadow: 0 0 42px rgba(234, 68, 54, .45), 0 4px 30px rgba(0, 0, 0, .6);
+}
+
+.detail-sweep {
+  position: fixed;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 45%;
+  z-index: 62;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(240, 231, 217, .06) 30%, rgba(240, 231, 217, .22) 50%, rgba(214, 183, 136, .14) 62%, transparent);
+  animation: detail-sweep 1.15s ease-in-out both;
+}
+
+.detail-toast {
+  animation: detail-toast-in .4s ease both;
+}
+
+.detail-spin {
+  animation: detail-spin .8s linear infinite;
+}
+
+/* Micro-vibração do <main> enquanto a politriz trabalha. */
+body.is-polishing main {
+  animation: detail-shake .32s linear infinite;
+}
+
+/* Modo vitrificado: títulos com brilho iridescente ouro/vermelho. */
+body[data-vitrified] #main h1 {
+  background: linear-gradient(100deg, #f0e7d9 20%, #d6b788 40%, #ea4436 55%, #f0e7d9 75%);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px rgba(214, 183, 136, .25));
+  animation: detail-sheen 5s linear infinite;
+}
+
+/* Cursor-boina: esconde o cursor padrão e mostra a boina de polir. */
+body.detail-cursor,
+body.detail-cursor a,
+body.detail-cursor button {
+  cursor: none;
+}
+
+.detail-pad svg {
+  transition: transform .2s ease;
+}
+
+.detail-pad-hot svg {
+  transform: scale(1.35);
+}
+
+.detail-chip {
+  background-image: linear-gradient(110deg, rgba(214, 183, 136, 0) 40%, rgba(214, 183, 136, .28) 50%, rgba(214, 183, 136, 0) 60%);
+  background-size: 200% auto;
+  animation: detail-chip-shimmer 2.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .detail-caption,
+  .detail-sweep,
+  .detail-toast,
+  .detail-spin,
+  .detail-chip,
+  body.is-polishing main,
+  body[data-vitrified] #main h1 {
+    animation: none;
+  }
 }
