@@ -47,7 +47,19 @@ Texto, serviço ou contato novo entra em `src/content.js`, nunca direto no JSX: 
 
 ### Imagens ilustrativas
 
-O carrossel da home usa fotos de stock para ilustrar detalhamento automotivo; elas não representam serviços realizados pela Roger. Os arquivos WebP otimizados ficam em `public/assets/`. Fotos e origens: [WAVYVISUALS no Pexels](https://www.pexels.com/photo/man-wiping-hood-of-sports-car-20051461/), [Bradley De Melo no Pexels](https://www.pexels.com/photo/black-bmw-in-garage-26936247/) e [Matheus Bertelli no Pexels](https://www.pexels.com/photo/shiny-black-car-parked-on-a-garage-10182836/). Confira a [licença do Pexels](https://www.pexels.com/license/) ao substituir ou adicionar imagens.
+O carrossel e a lista de serviços da home usam fotos de stock para ilustrar detalhamento automotivo; elas não representam serviços realizados pela Roger. Os arquivos WebP otimizados ficam em `public/assets/`. Fotos e origens do carrossel: [WAVYVISUALS no Pexels](https://www.pexels.com/photo/man-wiping-hood-of-sports-car-20051461/), [Bradley De Melo no Pexels](https://www.pexels.com/photo/black-bmw-in-garage-26936247/) e [Matheus Bertelli no Pexels](https://www.pexels.com/photo/shiny-black-car-parked-on-a-garage-10182836/).
+
+Na lista de serviços, cada foto (`servico-*.webp`) é ligada ao serviço pelo campo `image` em `src/content.js`, e um teste confere que o arquivo existe. As fotos vêm do CDN do Pexels já recortadas em 400×300 e em WebP (`?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop&fm=webp`):
+
+- Restauração de farol: [Khunkorn Laowisit no Pexels](https://www.pexels.com/photo/person-using-a-polishing-machine-on-the-car-5233268/)
+- Micro pintura: [Dextar Studio no Pexels](https://www.pexels.com/photo/close-up-of-man-painting-car-details-14615263/)
+- Vitrificação em pintura: [WAVYVISUALS no Pexels](https://www.pexels.com/photo/applying-car-cleaner-on-blue-sponge-20051453/)
+- Cristalização com teflon: [Tima Miroshnichenko no Pexels](https://www.pexels.com/photo/water-droplets-on-a-white-car-6873177/)
+- Hidratação de bancos sem couro: [Khunkorn Laowisit no Pexels](https://www.pexels.com/photo/a-person-deep-cleaning-a-car-seat-5233285/)
+- Polimento: [Khunkorn Laowisit no Pexels](https://www.pexels.com/photo/a-person-polishing-the-white-car-5233279/)
+- Espelhamento: [chickenbunny no Pexels](https://www.pexels.com/photo/photo-of-a-hood-of-a-car-10905354/)
+
+Confira a [licença do Pexels](https://www.pexels.com/license/) ao substituir ou adicionar imagens.
 
 ## Desenvolvimento
 

@@ -5,6 +5,7 @@ import SkipLink from '../components/SkipLink.jsx'
 import {
   ADDRESS,
   MAPS_URL,
+  MAPS_EMBED_URL,
   PHONE_DISPLAY,
   serviceGroups,
   TEL_URL,
@@ -40,9 +41,14 @@ const galleryPhotos = [
 const GALLERY_REPEAT = 3
 const galleryHalf = Array.from({ length: GALLERY_REPEAT }, () => galleryPhotos).flat()
 
-// A landing mostra só os nomes; categorias e descrições continuam em content.js
-// porque o build usa `detail` no JSON-LD e no llms.txt.
+// A landing mostra só o nome e a foto; categorias e descrições continuam em
+// content.js porque o build usa `detail` no JSON-LD e no llms.txt.
 const services = serviceGroups.flatMap((group) => group.services)
+
+// No desktop, Hidratação (o nome mais longo) fecha a lista sozinha e centralizada.
+const SOLO_SERVICE = 'Hidratação de bancos sem couro'
+const soloService = services.find((service) => service.name === SOLO_SERVICE)
+const listedServices = [...services.filter((service) => service !== soloService), soloService]
 
 export default function LandingPage() {
   const [galleryPaused, setGalleryPaused] = useState(false)
@@ -113,19 +119,36 @@ export default function LandingPage() {
 
         
         {/* Serviços --------------------------------------------------------- */}
-        <section id="servicos" aria-labelledby="services-title" className="bg-paper py-12 text-ink sm:py-16">
+        <section id="servicos" aria-labelledby="services-title" className="bg-paper py-10 text-ink sm:py-12">
           <div className={`${GRID} text-center`}>
            
             <h2 id="services-title" className={`mx-auto mb-0 max-w-[900px] ${DISPLAY_XL}`}>
               Escolha o <span className="text-red-deep">cuidado</span> que seu carro merece
             </h2>
 
-            <ul className="mx-auto mt-10 mb-0 flex max-w-[1040px] list-none flex-wrap justify-center gap-x-4 gap-y-2 p-0 sm:mt-12">
-              {services.map((service, index) => (
-                <li className="font-display text-[clamp(24px,5vw,40px)] leading-[1.1] font-semibold uppercase" key={service.name}>
-                  {service.name}
-                  {/* Separador só visual: aria-hidden para o leitor de tela não ler as barras. */}
-                  {index < services.length - 1 && <span className="ml-4 text-red-deep" aria-hidden="true">/</span>}
+            {/* No desktop a grade corre por coluna (grid-flow-col, 4 linhas): 3 serviços à
+                esquerda, 3 à direita. O solo tem coluna e linha definidas, então é posto
+                antes e ocupa a linha 4; sem col-span-full ele abriria uma 3ª coluna. */}
+            <ul className="mx-auto mt-6 mb-0 grid max-w-[340px] list-none grid-cols-1 gap-y-3 p-0 text-left sm:mt-8 xl:max-w-[720px] xl:grid-flow-col xl:grid-cols-2 xl:grid-rows-4 xl:gap-x-16">
+              {listedServices.map((service) => (
+                <li
+                  className={`flex items-center justify-between gap-3 ${service === soloService ? 'xl:col-span-full xl:row-start-4 xl:justify-self-center' : ''}`}
+                  key={service.name}
+                >
+                  <span>
+                    <span className="block font-display text-[clamp(12px,2.5vw,20px)] leading-[1.1] font-semibold uppercase">{service.name}</span>
+                    <span className="mt-1 block text-[11px] leading-[1.3] text-red-deep">{service.caption}</span>
+                  </span>
+                  {/* Decorativa: o nome ao lado já diz o que é. */}
+                  <img
+                    className="relative block aspect-[4/3] w-[78px] shrink-0 bg-ink-16 rounded-md object-cover shadow-[0_8px_20px_rgba(13,13,12,.45)] transition duration-500 hover:z-10 hover:scale-125 sm:w-[101px] xl:w-28"
+                    src={service.image}
+                    alt=""
+                    width="400"
+                    height="300"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </li>
               ))}
             </ul>
@@ -162,7 +185,7 @@ export default function LandingPage() {
       {/* Fundo e fio ocupam a largura toda; o conteúdo segue alinhado ao GRID.
           O id "visite" vive aqui porque o header e a página de devs apontam para /#visite. */}
       <footer id="visite" className="border-t border-t-line bg-ink-soft">
-        <div className={`${GRID} grid grid-cols-1 gap-10 py-12 sm:grid-cols-2 sm:gap-8 sm:py-14 xl:grid-cols-[1.3fr_1fr_1fr_.8fr]`}>
+        <div className={`${GRID} grid grid-cols-1 gap-10 py-12 sm:grid-cols-2 sm:gap-8 sm:py-14 xl:grid-cols-[repeat(4,auto)] xl:justify-between`}>
           <div>
             <Brand />
             <p className="mt-5 mb-0 max-w-[260px] text-[12px] leading-[1.7] text-muted">
@@ -171,17 +194,27 @@ export default function LandingPage() {
           </div>
 
           <div>
-            <p className={`${SECTION_TAG} mb-4 flex items-center gap-2 text-red`}>
+            <p className={`${SECTION_TAG} mb-4 flex items-center gap-1 text-red`}>
               <PinIcon className="size-4" /> Visite a gente
             </p>
             {/* O Preflight não tira o itálico padrão de <address>. */}
             <address className="mb-4 text-[13px] leading-[1.7] text-paper-soft not-italic">
               {ADDRESS.street}<br />{ADDRESS.neighborhood} · {ADDRESS.city}
             </address>
-            <a className={FOOTER_LINK} href={MAPS_URL} target="_blank" rel="noreferrer">
+            <a className={`${FOOTER_LINK} xl:hidden`} href={MAPS_URL} target="_blank" rel="noreferrer">
               Abrir no Google Maps <ArrowIcon className="size-4" />
             </a>
           </div>
+
+          {/* Mapa só no desktop: no mobile o link "Abrir no Google Maps" já resolve. */}
+          <iframe
+            className="hidden h-35 rounded-xl border-0 xl:block xl:w-75"
+            src={MAPS_EMBED_URL}
+            title={`Mapa: ${ADDRESS.street}, ${ADDRESS.city}`}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+          />
 
           <div>
             <p className={`${SECTION_TAG} mb-4 flex items-center gap-2 text-red`}>
@@ -193,22 +226,6 @@ export default function LandingPage() {
             <a className={FOOTER_LINK} href={WHATSAPP_URL} target="_blank" rel="noreferrer">
               WhatsApp <ArrowIcon className="size-4" />
             </a>
-          </div>
-
-          <nav aria-label="Links do rodapé">
-            <p className={`${SECTION_TAG} mb-4 text-red`}>Navegue</p>
-            <ul className="m-0 grid list-none gap-1 p-0">
-              <li><a className={FOOTER_LINK} href="#inicio">Início</a></li>
-              <li><a className={FOOTER_LINK} href="#essencia">A experiência</a></li>
-              <li><a className={FOOTER_LINK} href="#servicos">Serviços</a></li>
-            </ul>
-          </nav>
-        </div>
-
-        <div className="border-t border-t-line">
-          <div className={`${GRID} flex flex-col gap-1 py-5 text-[10px] text-muted sm:flex-row sm:justify-between`}>
-            <small>© 2026 Roger Estética Automotiva</small>
-            <span>Sinop · Mato Grosso</span>
           </div>
         </div>
       </footer>

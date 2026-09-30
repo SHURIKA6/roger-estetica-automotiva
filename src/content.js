@@ -14,6 +14,11 @@ export const ADDRESS = {
   city: 'Sinop/MT',
 }
 
+// Embed sem API key: o Google aceita uma busca por endereço com output=embed.
+export const MAPS_EMBED_URL = `https://www.google.com/maps?q=${encodeURIComponent(
+  `${ADDRESS.street} - ${ADDRESS.neighborhood}, Sinop - MT`,
+)}&output=embed`
+
 export const WHATSAPP_MESSAGE = 'Olá, Roger! Quero agendar um cuidado para o meu carro.'
 export const WHATSAPP_URL = `https://wa.me/${PHONE}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`
 
@@ -23,8 +28,8 @@ export const serviceGroups = [
     title: 'Devolver presença',
     copy: 'Para o que já viu dias melhores — e ainda pode voltar a chamar atenção.',
     services: [
-      { name: 'Restauração de farol', detail: 'Mais transparência no olhar do carro e um acabamento que muda a primeira impressão.' },
-      { name: 'Micro pintura', detail: 'Correções localizadas para devolver uniformidade aos detalhes da pintura.' },
+      { name: 'Restauração de farol', detail: 'Mais transparência no olhar do carro e um acabamento que muda a primeira impressão.', image: '/assets/servico-farol.webp', caption: 'Faróis transparentes de novo' },
+      { name: 'Micro pintura', detail: 'Correções localizadas para devolver uniformidade aos detalhes da pintura.', image: '/assets/servico-micro-pintura.webp', caption: 'Retoque preciso na pintura' },
     ],
   },
   {
@@ -32,9 +37,9 @@ export const serviceGroups = [
     title: 'Preservar o que importa',
     copy: 'Camadas de cuidado para a pintura, os bancos e tudo aquilo que você quer manter bonito.',
     services: [
-      { name: 'Vitrificação em pintura', detail: 'Proteção e brilho profundo para a superfície da pintura.' },
-      { name: 'Cristalização com teflon', detail: 'Um acabamento protegido, liso e com presença.' },
-      { name: 'Hidratação de bancos sem couro', detail: 'Cuidado para bancos sem couro, com toque renovado e aparência mais uniforme.' },
+      { name: 'Vitrificação em pintura', detail: 'Proteção e brilho profundo para a superfície da pintura.', image: '/assets/servico-vitrificacao.webp', caption: 'Brilho e proteção duradouros' },
+      { name: 'Cristalização com teflon', detail: 'Um acabamento protegido, liso e com presença.', image: '/assets/servico-cristalizacao.webp', caption: 'Pintura lisa e protegida' },
+      { name: 'Hidratação de bancos sem couro', detail: 'Cuidado para bancos sem couro, com toque renovado e aparência mais uniforme.', image: '/assets/servico-bancos.webp', caption: 'Tecido limpo e renovado' },
     ],
   },
   {
@@ -42,8 +47,8 @@ export const serviceGroups = [
     title: 'Fazer o detalhe aparecer',
     copy: 'O toque final que tira o carro do comum e faz cada linha ganhar luz.',
     services: [
-      { name: 'Polimento', detail: 'Refino visual para recuperar brilho e valorizar a pintura.' },
-      { name: 'Espelhamento', detail: 'Acabamento de alto brilho para uma presença que se percebe de longe.' },
+      { name: 'Polimento', detail: 'Refino visual para recuperar brilho e valorizar a pintura.', image: '/assets/servico-polimento.webp', caption: 'Brilho de volta à pintura' },
+      { name: 'Espelhamento', detail: 'Acabamento de alto brilho para uma presença que se percebe de longe.', image: '/assets/servico-espelhamento.webp', caption: 'Reflexo de espelho' },
     ],
   },
 ]
