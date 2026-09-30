@@ -33,7 +33,6 @@ export const landingContent = {
   budgetCta: "Pedir orçamento no WhatsApp",
   services: {
     title: "Serviços para o seu carro",
-    photoNotice: "Imagens dos serviços são ilustrativas.",
   },
   gallery: {
     title: "Detalhes do cuidado automotivo",
