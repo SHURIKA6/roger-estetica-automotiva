@@ -5,7 +5,7 @@ import SkipLink from '../components/SkipLink.jsx'
 import { ADDRESS, developers, MAPS_URL, PHONE_DISPLAY, TEL_URL } from '../content.js'
 import { GithubIcon, InstagramIcon } from '../icons.jsx'
 
-const GRID = 'mx-auto w-[calc(100%_-_40px)] sm:w-[min(100%_-_52px,760px)] xl:w-[min(1240px,calc(100%_-_64px))]'
+const GRID = 'mx-auto w-[calc(100%_-_40px)] sm:w-[min(100%_-_52px,760px)] xl:w-[min(1120px,calc(100%_-_64px))]'
 const FOOTER_LINK = 'inline-flex min-h-10 w-max items-center text-[10px] font-extrabold tracking-[.09em] uppercase transition-colors hover:text-paper'
 
 export default function DevelopersPage() {

@@ -2,9 +2,21 @@
 
 /* Breakpoints mobile-first. `xl` ordena depois de `sm` na cascata do Tailwind,
    então as regras de desktop da landing sobrescrevem as de tablet. */
-@custom-variant sm { @media (min-width: 641px) { @slot } }
-@custom-variant lg { @media (min-width: 1081px) { @slot } }
-@custom-variant xl { @media (min-width: 1081px) { @slot } }
+@custom-variant sm {
+  @media (min-width: 641px) {
+    @slot;
+  }
+}
+@custom-variant lg {
+  @media (min-width: 1081px) {
+    @slot;
+  }
+}
+@custom-variant xl {
+  @media (min-width: 1081px) {
+    @slot;
+  }
+}
 
 @theme static {
   /* Desliga os breakpoints padrão do Tailwind. */
@@ -16,7 +28,7 @@
   --color-ink-soft: #151513;
   --color-ink-light: #21201d;
   --color-ink-hover: #191917;
-  --color-paper: #f0e7d9;
+  --color-paper: #787877;
   --color-paper-soft: #d7cdbf;
   --color-muted: #978f86;
   --color-muted-paper: #5d554d;
@@ -26,34 +38,34 @@
 
   /* Fios e véus. São rgba() literais de propósito: o modificador /opacidade do
      Tailwind gera color-mix() em oklab, que não dá exatamente a mesma cor. */
-  --color-line: rgba(240, 231, 217, .18);
-  --color-paper-08: rgba(240, 231, 217, .08);
-  --color-paper-13: rgba(240, 231, 217, .13);
-  --color-paper-19: rgba(240, 231, 217, .19);
-  --color-paper-22: rgba(240, 231, 217, .22);
-  --color-paper-24: rgba(240, 231, 217, .24);
-  --color-paper-28: rgba(240, 231, 217, .28);
-  --color-paper-32: rgba(240, 231, 217, .32);
-  --color-paper-40: rgba(240, 231, 217, .4);
-  --color-red-17: rgba(234, 68, 54, .17);
-  --color-red-28: rgba(234, 68, 54, .28);
-  --color-red-38: rgba(234, 68, 54, .38);
-  --color-red-45: rgba(234, 68, 54, .45);
-  --color-red-70: rgba(234, 68, 54, .7);
-  --color-ink-16: rgba(13, 13, 12, .16);
-  --color-ink-35: rgba(13, 13, 12, .35);
-  --color-ink-82: rgba(13, 13, 12, .82);
-  --color-ink-soft-92: rgba(21, 21, 19, .92);
+  --color-line: rgba(240, 231, 217, 0.18);
+  --color-paper-08: rgba(240, 231, 217, 0.08);
+  --color-paper-13: rgba(240, 231, 217, 0.13);
+  --color-paper-19: rgba(240, 231, 217, 0.19);
+  --color-paper-22: rgba(240, 231, 217, 0.22);
+  --color-paper-24: rgba(240, 231, 217, 0.24);
+  --color-paper-28: rgba(240, 231, 217, 0.28);
+  --color-paper-32: rgba(240, 231, 217, 0.32);
+  --color-paper-40: rgba(240, 231, 217, 0.4);
+  --color-red-17: rgba(234, 68, 54, 0.17);
+  --color-red-28: rgba(234, 68, 54, 0.28);
+  --color-red-38: rgba(234, 68, 54, 0.38);
+  --color-red-45: rgba(234, 68, 54, 0.45);
+  --color-red-70: rgba(234, 68, 54, 0.7);
+  --color-ink-16: rgba(13, 13, 12, 0.16);
+  --color-ink-35: rgba(13, 13, 12, 0.35);
+  --color-ink-82: rgba(13, 13, 12, 0.82);
+  --color-ink-soft-92: rgba(21, 21, 19, 0.92);
 
   /* Vidro fumê do glassmorphism: preenchimentos translúcidos, versão mais
      densa, o do menu de tela cheia e o fio claro das bordas. */
-  --color-glass: rgba(13, 15, 19, .58);
-  --color-glass-strong: rgba(13, 15, 19, .74);
-  --color-glass-menu: rgba(13, 15, 19, .90);
-  --color-glass-line: rgba(240, 231, 217, .16);
+  --color-glass: rgba(13, 15, 19, 0.58);
+  --color-glass-strong: rgba(13, 15, 19, 0.74);
+  --color-glass-menu: rgba(13, 15, 19, 0.9);
+  --color-glass-line: rgba(240, 231, 217, 0.16);
 
-  --font-sans: 'Manrope', sans-serif;
-  --font-display: 'Barlow Condensed', Impact, sans-serif;
+  --font-sans: "Manrope", sans-serif;
+  --font-display: "Barlow Condensed", Impact, sans-serif;
   --default-font-family: var(--font-sans);
 
   /* O design usa `.2s ease` em praticamente toda transição; redefinir os padrões
@@ -110,22 +122,41 @@
   }
 
   /* O Preflight da v4 não põe cursor: pointer em button. */
-  a, button { cursor: pointer; }
+  a,
+  button {
+    cursor: pointer;
+  }
 
   /* Rede de segurança: todo ícone recebe tamanho explícito no ponto de uso. */
-  svg { width: 1.1em; height: 1.1em; }
+  svg {
+    width: 1.1em;
+    height: 1.1em;
+  }
 
   /* O CSS original usava `* { box-sizing: border-box }`, que NÃO atinge
      pseudo-elementos — então as decorações ::before/::after eram content-box.
      O Preflight inclui ::before/::after, o que encolhia cada uma em 2px. */
-  ::before, ::after { box-sizing: content-box; }
+  ::before,
+  ::after {
+    box-sizing: content-box;
+  }
 
   /* O Preflight não mexe em <em>, que continuaria itálico. */
-  h1 em, h2 em { color: var(--color-red); font-style: normal; }
+  h1 em,
+  h2 em {
+    color: var(--color-red);
+    font-style: normal;
+  }
 
-  ::selection { background: var(--color-red); color: var(--color-paper); }
+  ::selection {
+    background: var(--color-red);
+    color: var(--color-paper);
+  }
 
-  :focus-visible { outline: 2px solid var(--color-gold); outline-offset: 5px; }
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 5px;
+  }
 
   /* #root cria o contexto de empilhamento que separa o cenário fixo (z 0)
      da página (z 1) sem deixar o véu vazar para outros contextos. */
@@ -152,7 +183,9 @@
   }
 
   @media (max-width: 640px) {
-    .site-backdrop[data-page="landing"] { --scene-blur: 1px; }
+    .site-backdrop[data-page="landing"] {
+      --scene-blur: 1px;
+    }
   }
 
   /* A imagem avança 20px além da tela para o blur não deixar bordas vazias. */
@@ -178,8 +211,8 @@
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(180deg, rgba(8, 9, 12, .12), rgba(8, 9, 12, .46)),
-      linear-gradient(90deg, rgba(8, 9, 12, .72), rgba(8, 9, 12, .36));
+      linear-gradient(180deg, rgba(8, 9, 12, 0.12), rgba(8, 9, 12, 0.46)),
+      linear-gradient(90deg, rgba(8, 9, 12, 0.72), rgba(8, 9, 12, 0.36));
   }
 
   .site-page {
@@ -196,14 +229,15 @@
   .glass-header::before,
   .glass-menu::before {
     --glass-fill: var(--color-glass);
-    background: rgba(13, 15, 19, .94);
+    background: rgba(13, 15, 19, 0.94);
   }
 
   .glass-surface {
     border: 1px solid var(--color-glass-line);
     border-radius: 14px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, .22),
-                inset 0 1px 0 rgba(240, 231, 217, .06);
+    box-shadow:
+      0 16px 40px rgba(0, 0, 0, 0.22),
+      inset 0 1px 0 rgba(240, 231, 217, 0.06);
   }
 
   .glass-band {
@@ -212,7 +246,7 @@
 
   /* O hero revela a RAM sem somar o blur denso dos painéis secundários. */
   .hero-surface {
-    --glass-fill: rgba(13, 15, 19, .36);
+    --glass-fill: rgba(13, 15, 19, 0.36);
     --glass-blur: 2px;
   }
 
@@ -235,7 +269,9 @@
     --glass-fill: var(--color-glass-menu);
   }
 
-  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  @supports (
+    (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+  ) {
     .glass-surface,
     .glass-band,
     .glass-header::before,
@@ -257,17 +293,25 @@
 /* Carrossel da landing ------------------------------------------------------ */
 
 @keyframes gallery-marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 /* Fora de @layer de propósito: vence os utilitários sem briga de especificidade,
    e a regra de movimento reduzido abaixo consegue trocar o overflow. */
-.gallery-viewport { overflow: hidden; }
+.gallery-viewport {
+  overflow: hidden;
+}
 
 /* ~44px/s no desktop: metade de dez slides de 292px em 66s.
    Não use utilitários translate-* aqui: na v4 eles se somam ao keyframe. */
-.gallery-track { animation: gallery-marquee 66s linear infinite; }
+.gallery-track {
+  animation: gallery-marquee 66s linear infinite;
+}
 
 .gallery:hover .gallery-track,
 .gallery:focus-within .gallery-track,
@@ -276,21 +320,39 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  html {
+    scroll-behavior: auto;
+  }
 
   /* Sem movimento: vira uma faixa rolável comum, sem as cópias e sem o botão. */
-  .gallery-track { animation: none; }
-  .gallery-viewport { overflow-x: auto; }
-  .gallery-track > [aria-hidden="true"] { display: none; }
-  .gallery-toggle { display: none; }
+  .gallery-track {
+    animation: none;
+  }
+  .gallery-viewport {
+    overflow-x: auto;
+  }
+  .gallery-track > [aria-hidden="true"] {
+    display: none;
+  }
+  .gallery-toggle {
+    display: none;
+  }
 }
 
 /* 404: a viagem termina numa barreira, depois começa o retorno. ------------- */
 
 .not-found-main,
-.not-found-footer { width: min(860px, calc(100% - 40px)); margin-inline: auto; }
-.not-found-main { padding-block: calc(var(--header-height) + 40px) 40px; }
-.not-found-panel { padding: clamp(22px, 4vw, 44px); overflow: hidden; }
+.not-found-footer {
+  width: min(860px, calc(100% - 40px));
+  margin-inline: auto;
+}
+.not-found-main {
+  padding-block: calc(var(--header-height) + 40px) 40px;
+}
+.not-found-panel {
+  padding: clamp(22px, 4vw, 44px);
+  overflow: hidden;
+}
 .not-found-eyebrow {
   display: flex;
   justify-content: space-between;
@@ -298,24 +360,48 @@
   color: var(--color-gold);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: .15em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
 }
-.not-found-eyebrow span:last-child { color: var(--color-paper-soft); }
-.not-found-scene { display: block; width: 100%; height: auto; margin-block: 8px 22px; overflow: hidden; }
+.not-found-eyebrow span:last-child {
+  color: var(--color-paper-soft);
+}
+.not-found-scene {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-block: 8px 22px;
+  overflow: hidden;
+}
 .not-found-copy h1 {
   max-width: 610px;
   margin-bottom: 18px;
   font-family: var(--font-display);
   font-size: clamp(36px, 6vw, 60px);
   font-weight: 600;
-  line-height: .98;
+  line-height: 0.98;
   text-transform: uppercase;
   text-wrap: balance;
 }
-.not-found-description { color: var(--color-paper-soft); font-size: 14px; line-height: 1.8; }
-.not-found-status { min-height: 3.2em; margin-block: 24px 12px; color: var(--color-gold); font-size: 12px; line-height: 1.6; }
-.not-found-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; min-height: 48px; }
+.not-found-description {
+  color: var(--color-paper-soft);
+  font-size: 14px;
+  line-height: 1.8;
+}
+.not-found-status {
+  min-height: 3.2em;
+  margin-block: 24px 12px;
+  color: var(--color-gold);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.not-found-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+  min-height: 48px;
+}
 .not-found-home {
   display: inline-flex;
   min-height: 48px;
@@ -327,10 +413,15 @@
   color: var(--color-ink);
   font-size: 13px;
   font-weight: 800;
-  transition: background .2s;
+  transition: background 0.2s;
 }
-.not-found-home:hover { background: #ff7160; }
-.not-found-home span { font-size: 22px; line-height: 1; }
+.not-found-home:hover {
+  background: #ff7160;
+}
+.not-found-home span {
+  font-size: 22px;
+  line-height: 1;
+}
 .not-found-cancel {
   min-height: 44px;
   color: var(--color-paper-soft);
@@ -338,65 +429,172 @@
   text-align: left;
   text-decoration: underline;
   text-underline-offset: 4px;
-  transition: color .2s;
+  transition: color 0.2s;
 }
-.not-found-cancel:hover { color: var(--color-paper); }
-.not-found-cancel[aria-disabled="true"] { cursor: default; text-decoration: none; }
+.not-found-cancel:hover {
+  color: var(--color-paper);
+}
+.not-found-cancel[aria-disabled="true"] {
+  cursor: default;
+  text-decoration: none;
+}
 
 /* O estado base é a cena final: também funciona com JS desativado. */
-.crash-car { transform: translate(222px, 109px); }
-.crash-barrier { transform-origin: 515px 196px; transform: rotate(7deg); }
-.crash-wheel { transform-box: fill-box; transform-origin: center; transform: rotate(780deg); }
-.crash-impact { opacity: 0; }
-.crash-dust { opacity: .65; }
+.crash-car {
+  transform: translate(222px, 109px);
+}
+.crash-barrier {
+  transform-origin: 515px 196px;
+  transform: rotate(7deg);
+}
+.crash-wheel {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(780deg);
+}
+.crash-impact {
+  opacity: 0;
+}
+.crash-dust {
+  opacity: 0.65;
+}
 
-.not-found-panel[data-phase="driving"] .crash-car { animation: crash-drive var(--crash-duration) linear both; }
-.not-found-panel[data-phase="driving"] .crash-wheel { animation: crash-wheel var(--crash-duration) linear both; }
-.not-found-panel[data-phase="driving"] .crash-barrier { animation: crash-barrier var(--crash-duration) linear both; }
-.not-found-panel[data-phase="driving"] .crash-impact { animation: crash-impact var(--crash-duration) linear both; }
-.not-found-panel[data-phase="driving"] .crash-dust { animation: crash-dust var(--crash-duration) linear both; }
-.not-found-panel[data-phase="driving"] .not-found-copy { animation: crash-message var(--crash-duration) ease both; }
+.not-found-panel[data-phase="driving"] .crash-car {
+  animation: crash-drive var(--crash-duration) linear both;
+}
+.not-found-panel[data-phase="driving"] .crash-wheel {
+  animation: crash-wheel var(--crash-duration) linear both;
+}
+.not-found-panel[data-phase="driving"] .crash-barrier {
+  animation: crash-barrier var(--crash-duration) linear both;
+}
+.not-found-panel[data-phase="driving"] .crash-impact {
+  animation: crash-impact var(--crash-duration) linear both;
+}
+.not-found-panel[data-phase="driving"] .crash-dust {
+  animation: crash-dust var(--crash-duration) linear both;
+}
+.not-found-panel[data-phase="driving"] .not-found-copy {
+  animation: crash-message var(--crash-duration) ease both;
+}
 
 @keyframes crash-drive {
-  0%, 8% { transform: translate(-260px, 109px); }
-  58% { transform: translate(202px, 109px); }
-  70% { transform: translate(232px, 109px); }
-  74% { transform: translate(232px, 110px) rotate(-1deg); }
-  82% { transform: translate(217px, 108px); }
-  90%, 100% { transform: translate(222px, 109px); }
+  0%,
+  8% {
+    transform: translate(-260px, 109px);
+  }
+  58% {
+    transform: translate(202px, 109px);
+  }
+  70% {
+    transform: translate(232px, 109px);
+  }
+  74% {
+    transform: translate(232px, 110px) rotate(-1deg);
+  }
+  82% {
+    transform: translate(217px, 108px);
+  }
+  90%,
+  100% {
+    transform: translate(222px, 109px);
+  }
 }
 @keyframes crash-wheel {
-  0%, 8% { transform: rotate(0); }
-  58% { transform: rotate(740deg); }
-  70%, 74% { transform: rotate(790deg); }
-  82% { transform: rotate(765deg); }
-  90%, 100% { transform: rotate(780deg); }
+  0%,
+  8% {
+    transform: rotate(0);
+  }
+  58% {
+    transform: rotate(740deg);
+  }
+  70%,
+  74% {
+    transform: rotate(790deg);
+  }
+  82% {
+    transform: rotate(765deg);
+  }
+  90%,
+  100% {
+    transform: rotate(780deg);
+  }
 }
 @keyframes crash-barrier {
-  0%, 69% { transform: rotate(0); }
-  75% { transform: rotate(16deg); }
-  85% { transform: rotate(4deg); }
-  94%, 100% { transform: rotate(7deg); }
+  0%,
+  69% {
+    transform: rotate(0);
+  }
+  75% {
+    transform: rotate(16deg);
+  }
+  85% {
+    transform: rotate(4deg);
+  }
+  94%,
+  100% {
+    transform: rotate(7deg);
+  }
 }
 @keyframes crash-impact {
-  0%, 69%, 86%, 100% { opacity: 0; }
-  71%, 77% { opacity: 1; }
+  0%,
+  69%,
+  86%,
+  100% {
+    opacity: 0;
+  }
+  71%,
+  77% {
+    opacity: 1;
+  }
 }
 @keyframes crash-dust {
-  0%, 73% { opacity: 0; transform: translateY(8px); }
-  90%, 100% { opacity: .65; transform: translateY(0); }
+  0%,
+  73% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  90%,
+  100% {
+    opacity: 0.65;
+    transform: translateY(0);
+  }
 }
 @keyframes crash-message {
-  0%, 72% { opacity: 0; transform: translateY(8px); }
-  94%, 100% { opacity: 1; transform: translateY(0); }
+  0%,
+  72% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  94%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 640px) {
-  .not-found-main { padding-block: calc(var(--header-height) + 24px) 28px; }
-  .not-found-eyebrow { font-size: 9px; letter-spacing: .1em; }
-  .not-found-scene { width: calc(100% + 28px); max-width: none; margin-left: -14px; margin-block: 22px 24px; }
-  .not-found-actions { flex-direction: column; align-items: stretch; min-height: 100px; }
-  .not-found-cancel { text-align: center; }
+  .not-found-main {
+    padding-block: calc(var(--header-height) + 24px) 28px;
+  }
+  .not-found-eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+  .not-found-scene {
+    width: calc(100% + 28px);
+    max-width: none;
+    margin-left: -14px;
+    margin-block: 22px 24px;
+  }
+  .not-found-actions {
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 100px;
+  }
+  .not-found-cancel {
+    text-align: center;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -405,52 +603,91 @@
   .not-found-panel[data-phase] .crash-barrier,
   .not-found-panel[data-phase] .crash-impact,
   .not-found-panel[data-phase] .crash-dust,
-  .not-found-panel[data-phase] .not-found-copy { animation: none; }
+  .not-found-panel[data-phase] .not-found-copy {
+    animation: none;
+  }
 }
 
 /* Easter egg "Detalhamento Total do Site" ---------------------------------- */
 
 @keyframes detail-caption-in {
-  from { opacity: 0; transform: translateY(26px) scale(.96); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @keyframes detail-sweep {
-  from { transform: translateX(-130%) rotate(-18deg); }
-  to { transform: translateX(230%) rotate(-18deg); }
+  from {
+    transform: translateX(-130%) rotate(-18deg);
+  }
+  to {
+    transform: translateX(230%) rotate(-18deg);
+  }
 }
 
 @keyframes detail-toast-in {
   /* O `-translate-x-1/2` do Tailwind v4 usa a propriedade `translate`, que
      compõe com `transform` — por isso o keyframe mexe só no eixo Y. */
-  from { opacity: 0; transform: translateY(-14px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes detail-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes detail-shake {
-  0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(1px, -1px); }
-  50% { transform: translate(-1px, 1px); }
-  75% { transform: translate(1px, 1px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(1px, -1px);
+  }
+  50% {
+    transform: translate(-1px, 1px);
+  }
+  75% {
+    transform: translate(1px, 1px);
+  }
 }
 
 @keyframes detail-sheen {
-  to { background-position: -220% center; }
+  to {
+    background-position: -220% center;
+  }
 }
 
 @keyframes detail-chip-shimmer {
-  from { background-position: 200% center; }
-  to { background-position: -200% center; }
+  from {
+    background-position: 200% center;
+  }
+  to {
+    background-position: -200% center;
+  }
 }
 
 .detail-caption {
-  animation: detail-caption-in .45s ease both;
-  text-shadow: 0 0 42px rgba(234, 68, 54, .45), 0 4px 30px rgba(0, 0, 0, .6);
+  animation: detail-caption-in 0.45s ease both;
+  text-shadow:
+    0 0 42px rgba(234, 68, 54, 0.45),
+    0 4px 30px rgba(0, 0, 0, 0.6);
 }
 
 .detail-sweep {
@@ -461,31 +698,44 @@
   width: 45%;
   z-index: 62;
   pointer-events: none;
-  background: linear-gradient(90deg, transparent, rgba(240, 231, 217, .06) 30%, rgba(240, 231, 217, .22) 50%, rgba(214, 183, 136, .14) 62%, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(240, 231, 217, 0.06) 30%,
+    rgba(240, 231, 217, 0.22) 50%,
+    rgba(214, 183, 136, 0.14) 62%,
+    transparent
+  );
   animation: detail-sweep 1.15s ease-in-out both;
 }
 
 .detail-toast {
-  animation: detail-toast-in .4s ease both;
+  animation: detail-toast-in 0.4s ease both;
 }
 
 .detail-spin {
-  animation: detail-spin .8s linear infinite;
+  animation: detail-spin 0.8s linear infinite;
 }
 
 /* Micro-vibração do <main> enquanto a politriz trabalha. */
 body.is-polishing main {
-  animation: detail-shake .32s linear infinite;
+  animation: detail-shake 0.32s linear infinite;
 }
 
 /* Modo vitrificado: títulos com brilho iridescente ouro/vermelho. */
 body[data-vitrified] #main h1 {
-  background: linear-gradient(100deg, #f0e7d9 20%, #d6b788 40%, #ea4436 55%, #f0e7d9 75%);
+  background: linear-gradient(
+    100deg,
+    #f0e7d9 20%,
+    #d6b788 40%,
+    #ea4436 55%,
+    #f0e7d9 75%
+  );
   background-size: 220% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 0 18px rgba(214, 183, 136, .25));
+  filter: drop-shadow(0 0 18px rgba(214, 183, 136, 0.25));
   animation: detail-sheen 5s linear infinite;
 }
 
@@ -497,7 +747,7 @@ body.detail-cursor button {
 }
 
 .detail-pad svg {
-  transition: transform .2s ease;
+  transition: transform 0.2s ease;
 }
 
 .detail-pad-hot svg {
@@ -505,7 +755,12 @@ body.detail-cursor button {
 }
 
 .detail-chip {
-  background-image: linear-gradient(110deg, rgba(214, 183, 136, 0) 40%, rgba(214, 183, 136, .28) 50%, rgba(214, 183, 136, 0) 60%);
+  background-image: linear-gradient(
+    110deg,
+    rgba(214, 183, 136, 0) 40%,
+    rgba(214, 183, 136, 0.28) 50%,
+    rgba(214, 183, 136, 0) 60%
+  );
   background-size: 200% auto;
   animation: detail-chip-shimmer 2.6s linear infinite;
 }

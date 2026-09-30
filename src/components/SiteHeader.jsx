@@ -82,7 +82,7 @@ export default function SiteHeader({ developersActive = false, onInteract }) {
   const closeMenu = () => setMenuOpen(false)
 
   return (
-    <header ref={headerRef} onClick={onInteract} className={`glass-header fixed top-0 left-0 z-20 flex h-[var(--header-height)] w-full items-center justify-between border-b px-5 py-[14px] sm:px-[26px] sm:py-[18px] xl:px-8 ${developersActive ? 'border-b-red-38' : 'border-b-paper-13'}`}>
+    <header ref={headerRef} onClick={onInteract} className={`glass-header fixed top-0 left-0 z-20 flex h-[var(--header-height)] w-full items-center justify-between border-b px-5 py-[14px] sm:px-[26px] sm:py-[18px] xl:px-[max(32px,calc((100%_-_1120px)/2))] ${developersActive ? 'border-b-red-38' : 'border-b-paper-13'}`}>
       <Brand onClick={closeMenu} />
 
       <button
