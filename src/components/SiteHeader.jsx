@@ -12,7 +12,7 @@ const NAV_CTA = 'inline-flex min-h-12 items-center gap-[11px] border border-line
 // São duas strings completas, uma por estado, para nunca depender da ordem entre
 // uma shorthand e sua longhand.
 // Mobile-first: base = overlay de tela cheia; xl = nav inline.
-const NAV_BASE = 'fixed inset-0 z-[21] h-screen min-h-[100dvh] flex flex-col items-start justify-center bg-ink font-display leading-[.85] tracking-[.03em] font-extrabold text-paper-soft uppercase xl:relative xl:inset-auto xl:z-auto xl:h-auto xl:min-h-0 xl:flex-row xl:items-center xl:bg-transparent xl:font-sans xl:leading-normal xl:tracking-[.1em]'
+const NAV_BASE = 'glass-menu fixed inset-0 z-[21] h-screen min-h-[100dvh] flex flex-col items-start justify-center font-display leading-[.85] tracking-[.03em] font-extrabold text-paper-soft uppercase xl:relative xl:inset-auto xl:z-auto xl:h-auto xl:min-h-0 xl:flex-row xl:items-center xl:bg-transparent xl:font-sans xl:leading-normal xl:tracking-[.1em]'
 const NAV_SIZING = 'gap-[22px] px-5 pt-24 pb-10 text-[clamp(40px,13vw,58px)] sm:gap-[23px] sm:px-[26px] sm:pt-[110px] sm:pb-[50px] sm:text-[46px] xl:gap-[clamp(18px,2.3vw,36px)] xl:px-0 xl:pt-0 xl:pb-0 xl:text-[10px]'
 const NAV_OPEN = 'visible opacity-100 [transform:translateY(0)] [transition:visibility_0s_linear_0s,opacity_.25s_ease,transform_.25s_ease] xl:visible xl:opacity-100 xl:[transform:none]'
 const NAV_CLOSED = 'invisible pointer-events-none opacity-0 [transform:translateY(-12px)] [transition:visibility_0s_linear_.25s,opacity_.25s_ease,transform_.25s_ease] xl:visible xl:pointer-events-auto xl:opacity-100 xl:[transform:none]'
@@ -56,7 +56,7 @@ export default function SiteHeader({ developersActive = false }) {
   const closeMenu = () => setMenuOpen(false)
 
   return (
-    <header className={`fixed top-0 left-0 z-20 flex h-[var(--header-height)] w-full items-center justify-between border-b bg-ink-82 px-5 py-[14px] backdrop-blur-[18px] sm:px-[26px] sm:py-[18px] xl:px-8 ${developersActive ? 'border-b-red-38' : 'border-b-paper-13'}`}>
+    <header className={`glass-header fixed top-0 left-0 z-20 flex h-[var(--header-height)] w-full items-center justify-between border-b px-5 py-[14px] sm:px-[26px] sm:py-[18px] xl:px-8 ${developersActive ? 'border-b-red-38' : 'border-b-paper-13'}`}>
       <Brand onClick={closeMenu} />
 
       <button

@@ -723,3 +723,17 @@ Não faça sem o usuário pedir:
 - Novas fotos (o usuário ainda vai produzir; ver "Passo 5" do `plano.md`).
 - Horário de funcionamento, preços ou qualquer dado que não esteja em `content.js`.
 - Commit, push ou deploy.
+
+---
+
+## 14. Complemento visual — Dodge RAM e glassmorphism (29/09/2026)
+
+Foi criado o [plano de fundo Dodge RAM com glassmorphism escuro](docs/superpowers/plans/2026-09-29-fundo-ram-glassmorphism.md), a pedido do usuário. Ele detalha um cenário ilustrativo com o carro escurecido e desfocado, recortes para celular/desktop e superfícies de vidro que mantêm o conteúdo nítido.
+
+Este registro acrescenta planejamento; não declara os dois planos implementados. A fotografia da RAM ainda precisa ser obtida ou gerada na futura implementação.
+
+Se os dois planos forem solicitados, mantenha as mudanças de composição descritas neste documento. Para os fundos de serviços e rodapé, prevalece o novo vidro escuro sobre as propostas anteriores de `bg-paper` e `bg-ink-soft`; ajuste as cores dos textos junto. As alterações de `App.jsx`, do bloco visual do hero e de `DevelopersPage.jsx` passam a ter escopo específico no plano da RAM, sem alterar o contrato das rotas ou os dados do site.
+
+Aplicar o fundo não implica executar automaticamente o carrossel, ocultar links ou remover seções. Preserve o histórico deste arquivo e registre cada implementação quando ela ocorrer.
+
+**Atualização de 30/09/2026:** o plano da RAM foi implementado sobre a reestruturação já aplicada em `3fe7341`. Os fundos de serviços e rodapé da landing passaram a usar `glass-band` (no lugar de `bg-paper` e `bg-ink-soft`), o hero e a experiência usam `glass-surface`, o cabeçalho e o menu de tela cheia têm vidro no `::before` e os cards de `/desenvolvedores` trocaram `bg-ink-soft-92` por `glass-surface`. Acentos de texto pequeno foram ajustados para `paper-soft`/`gold` onde o cenário clareava o fundo. Detalhes, evidências e pendências estão na seção “Registro da implementação” do [plano da RAM](docs/superpowers/plans/2026-09-29-fundo-ram-glassmorphism.md).

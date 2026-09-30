@@ -45,6 +45,13 @@
   --color-ink-82: rgba(13, 13, 12, .82);
   --color-ink-soft-92: rgba(21, 21, 19, .92);
 
+  /* Vidro fumê do glassmorphism: preenchimentos translúcidos, versão mais
+     densa, o do menu de tela cheia e o fio claro das bordas. */
+  --color-glass: rgba(13, 15, 19, .58);
+  --color-glass-strong: rgba(13, 15, 19, .74);
+  --color-glass-menu: rgba(13, 15, 19, .90);
+  --color-glass-line: rgba(240, 231, 217, .16);
+
   --font-sans: 'Manrope', sans-serif;
   --font-display: 'Barlow Condensed', Impact, sans-serif;
   --default-font-family: var(--font-sans);
@@ -68,10 +75,20 @@
     line-height: normal;
 
     --header-height: 72px;
+
+    /* Cenário RAM e vidro: valores-base (celular). */
+    --scene-blur: 4px;
+    --scene-position: 58% 50%;
+    --glass-blur: 10px;
   }
 
   @media (min-width: 641px) {
-    :root { --header-height: 84px; }
+    :root {
+      --header-height: 84px;
+      --scene-blur: 6px;
+      --scene-position: 66% 50%;
+      --glass-blur: 14px;
+    }
   }
 
   html {
@@ -109,6 +126,118 @@
   ::selection { background: var(--color-red); color: var(--color-paper); }
 
   :focus-visible { outline: 2px solid var(--color-gold); outline-offset: 5px; }
+
+  /* #root cria o contexto de empilhamento que separa o cenário fixo (z 0)
+     da página (z 1) sem deixar o véu vazar para outros contextos. */
+  #root {
+    isolation: isolate;
+    min-height: 100vh;
+  }
+}
+
+/* Cenário RAM e superfícies de vidro ---------------------------------------- */
+
+@layer components {
+  .site-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background: linear-gradient(135deg, #252529, #101114);
+  }
+
+  /* A imagem avança 20px além da tela para o blur não deixar bordas vazias. */
+  .site-backdrop picture {
+    position: absolute;
+    inset: -20px;
+    display: block;
+  }
+
+  .site-backdrop img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--scene-position);
+    filter: blur(var(--scene-blur));
+  }
+
+  /* Véu escuro: mais denso atrás do texto (esquerda) e na base; mais leve na
+     região do carro. Duas camadas independentes, nunca filtros no wrapper. */
+  .site-backdrop::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(8, 9, 12, .12), rgba(8, 9, 12, .46)),
+      linear-gradient(90deg, rgba(8, 9, 12, .72), rgba(8, 9, 12, .36));
+  }
+
+  .site-page {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Superfícies de vidro. Sem backdrop-filter (ou com ele bloqueado), o
+     preenchimento quase opaco .94 mantém o conteúdo legível; com suporte,
+     o @supports troca pelo véu translúcido + blur do que está atrás.
+     `--glass-fill` permite variar a densidade sem repetir o bloco. */
+  .glass-surface,
+  .glass-band,
+  .glass-header::before,
+  .glass-menu::before {
+    --glass-fill: var(--color-glass);
+    background: rgba(13, 15, 19, .94);
+  }
+
+  .glass-surface {
+    border: 1px solid var(--color-glass-line);
+    border-radius: 14px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, .22),
+                inset 0 1px 0 rgba(240, 231, 217, .06);
+  }
+
+  .glass-band {
+    border-block: 1px solid var(--color-glass-line);
+  }
+
+  .glass-strong {
+    --glass-fill: var(--color-glass-strong);
+  }
+
+  /* O vidro do header e do menu vive no ::before, atrás dos filhos e sem
+     roubar cliques: os containers já criam contexto de empilhamento. */
+  .glass-header::before,
+  .glass-menu::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .glass-menu::before {
+    --glass-fill: var(--color-glass-menu);
+  }
+
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass-surface,
+    .glass-band,
+    .glass-header::before,
+    .glass-menu::before {
+      background: var(--glass-fill);
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      backdrop-filter: blur(var(--glass-blur));
+    }
+  }
+
+  /* No desktop o nav é inline e transparente: sem véu. */
+  @media (min-width: 1081px) {
+    .glass-menu::before {
+      content: none;
+    }
+  }
 }
 
 /* Carrossel da landing ------------------------------------------------------ */

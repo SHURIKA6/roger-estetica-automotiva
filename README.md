@@ -61,12 +61,32 @@ Na lista de serviços, cada foto (`servico-*.webp`) é ligada ao serviço pelo c
 
 Confira a [licença do Pexels](https://www.pexels.com/license/) ao substituir ou adicionar imagens.
 
+### Cenário Dodge RAM e superfícies de vidro
+
+O fundo do site é uma fotografia ilustrativa de uma picape Ram preta sob um viaduto ([Abdullah Alsaibaie no Pexels](https://www.pexels.com/photo/truck-parked-under-overpass-18491925/), original 5585×3142, recortada para 16:9). Ela não é carro de cliente da Roger e não representa serviço realizado. Dois recortes locais em `public/assets/`, servidos por `<picture>` conforme a viewport:
+
+| Arquivo | Dimensões | Peso | Uso |
+|---|---|---|---|
+| `ram-background-desktop.webp` | 1920×1080 | 106 KiB | a partir de 641px |
+| `ram-background-mobile.webp` | 1080×1440 | 55 KiB | até 640px |
+
+O cenário vive em [`src/components/SiteBackdrop.jsx`](src/components/SiteBackdrop.jsx): camada fixa, `aria-hidden`, sem interação, com desfoque (`--scene-blur`) e dois véus escuros sobre a foto. O conteúdo fica em `.site-page` acima dela. As superfícies translúcidas usam as classes de `src/index.css`:
+
+- `glass-surface` — painel de vidro com borda clara, raio e sombra (hero, experiência, cards de desenvolvedores);
+- `glass-band` — faixa full-width com fio em cima e embaixo (serviços e rodapé da landing);
+- `glass-strong` — aumenta a densidade do vidro (`--color-glass-strong`), quando o texto pedir;
+- `glass-header` / `glass-menu` — o vidro fica no `::before`, atrás dos filhos, e o menu de tela cheia some no desktop.
+
+Sem suporte a `backdrop-filter`, o `@supports` mantém um preenchimento quase opaco (`rgba(13, 15, 19, .94)`), então o texto continua legível; se a foto falhar após a hidratação, o `onError` esconde a `<img>` e o gradiente base do cenário permanece. Texto pequeno sobre o cenário usa `paper`/`paper-soft`/`gold`; acentos em `red` ficam reservados a texto grande ou a áreas com vidro denso, por contraste.
+
 ## Desenvolvimento
 
 ```bash
 npm install
 npm run dev
 ```
+
+O servidor de desenvolvimento fica acessível a outros dispositivos na mesma rede Wi-Fi. Abra no celular ou em outro computador o endereço de rede exibido pelo Vite no terminal (por exemplo, `http://192.168.1.10:5173`). Se não conectar, permita o Node.js/Vite no firewall do computador para redes privadas.
 
 ## Build de produção
 
@@ -88,3 +108,10 @@ Sem URL configurada, o build local recebe `noindex` e sitemap vazio, sem inventa
 Após publicar, verifique a propriedade no Google Search Console, envie `/sitemap.xml`, inspecione a URL inicial e associe o site ao Perfil da Empresa no Google. Confira o endereço oficial: Rua dos Guapuruvús, 366, Jardim das Violetas, Sinop/MT. Ao trocar de domínio, configure o redirecionamento permanente do endereço anterior na hospedagem.
 
 O foco do conteúdo é a busca local por “estética automotiva em Sinop”. SEO não garante indexação nem posição nos resultados. `llms.txt` é um resumo para ferramentas de IA; não é requisito do Google nem garantia de ranqueamento. Não foram adicionadas avaliações, horários ou preços não confirmados.
+
+## Planos de evolução visual
+
+- [Reestruturação da landing](PLANO_REESTRUTURACAO.md): compactação, carrossel, serviços e rodapé.
+- [Fundo Dodge RAM e glassmorphism escuro](docs/superpowers/plans/2026-09-29-fundo-ram-glassmorphism.md): cenário ilustrativo escurecido e desfocado, com vidro nas superfícies das duas páginas. Inclui arquivos, parâmetros iniciais, tarefas e verificação em celular e desktop.
+
+Em 29/09/2026 foi acrescentado o plano da RAM. Em 30/09/2026 o plano foi implementado sobre a reestruturação já aplicada: o cenário e o vidro substituíram os fundos opacos de serviços e rodapé (`bg-paper`/`bg-ink-soft` viraram `glass-band`), o hero e a experiência receberam `glass-surface`, o header e o menu de tela cheia ganharam vidro no `::before`, e os acentos de texto pequeno passaram por correção de contraste (`red` restrito a texto grande ou vidro denso; `muted` substituído por `paper-soft`/`gold` onde o cenário clareava o fundo). O registro completo, com evidências e limitações, está na seção “Registro da implementação” do plano. Os documentos anteriores permanecem como histórico.

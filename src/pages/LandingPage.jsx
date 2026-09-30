@@ -19,7 +19,7 @@ const SECTION_TAG = 'text-[10px] font-extrabold tracking-[.14em] uppercase'
 const BUTTON = 'inline-flex min-h-12 items-center justify-center gap-3 px-5 text-[10px] font-extrabold tracking-[.1em] uppercase transition-colors'
 // Título de destaque: mesmo tamanho do hero, usado também em experiência e serviços.
 const DISPLAY_XL = 'font-display text-[clamp(38px,8vw,52px)] leading-[.96] font-semibold tracking-[-.025em] uppercase sm:text-[clamp(46px,6vw,56px)] xl:text-[56px]'
-const FOOTER_LINK = 'inline-flex min-h-10 items-center gap-2 text-[10px] font-extrabold tracking-[.1em] text-paper-soft uppercase transition-colors hover:text-red'
+const FOOTER_LINK = 'inline-flex min-h-10 items-center gap-2 text-[10px] font-extrabold tracking-[.1em] text-paper-soft uppercase transition-colors hover:text-paper'
 
 const galleryPhotos = [
   {
@@ -54,7 +54,7 @@ export default function LandingPage() {
   const [galleryPaused, setGalleryPaused] = useState(false)
 
   return (
-    <div className="overflow-clip">
+    <div className="site-page overflow-clip">
       <SkipLink />
       <SiteHeader />
 
@@ -65,7 +65,7 @@ export default function LandingPage() {
           aria-labelledby="hero-title"
           className={`${GRID} pt-[calc(var(--header-height)_+_48px)] pb-10 sm:pt-[calc(var(--header-height)_+_56px)] sm:pb-12 xl:pt-[calc(var(--header-height)_+_48px)] xl:pb-14`}
         >
-          <div className="max-w-[790px]">
+          <div className="glass-surface max-w-[790px] p-6 sm:p-8">
             <p id="hero-title" className={`mb-5 max-w-[980px] ${DISPLAY_XL}`}>
               A melhor versão do seu veículo é o nosso compromisso
             </p>
@@ -82,7 +82,7 @@ export default function LandingPage() {
           <div className={`${GRID} mb-4 flex items-center justify-between gap-4`}>
             <h2 id="gallery-title" className="font-display text-[18px] font-semibold tracking-[.02em] text-paper uppercase sm:text-[20px]">Cuidado automotivo</h2>
             <div className="flex items-center gap-4">
-              <p className="m-0 text-[10px] text-muted">Fotos ilustrativas</p>
+              <p className="m-0 text-[10px] text-paper-soft">Fotos ilustrativas</p>
               <button
                 type="button"
                 className="gallery-toggle min-h-10 text-[10px] font-extrabold tracking-[.1em] text-paper-soft uppercase transition-colors hover:text-paper"
@@ -119,11 +119,11 @@ export default function LandingPage() {
 
         
         {/* Serviços --------------------------------------------------------- */}
-        <section id="servicos" aria-labelledby="services-title" className="bg-paper py-10 text-ink sm:py-12">
+        <section id="servicos" aria-labelledby="services-title" className="glass-band py-10 text-paper sm:py-12">
           <div className={`${GRID} text-center`}>
            
             <h2 id="services-title" className={`mx-auto mb-0 max-w-[900px] ${DISPLAY_XL}`}>
-              Escolha o <span className="text-red-deep">cuidado</span> que seu carro merece
+              Escolha o <span className="text-red">cuidado</span> que seu carro merece
             </h2>
 
             {/* No desktop a grade corre por coluna (grid-flow-col, 4 linhas): 3 serviços à
@@ -137,7 +137,7 @@ export default function LandingPage() {
                 >
                   <span>
                     <span className="block font-display text-[clamp(12px,2.5vw,20px)] leading-[1.1] font-semibold uppercase">{service.name}</span>
-                    <span className="mt-1 block text-[11px] leading-[1.3] text-red-deep">{service.caption}</span>
+                    <span className="mt-1 block text-[11px] leading-[1.3] text-red">{service.caption}</span>
                   </span>
                   {/* Decorativa: o nome ao lado já diz o que é. */}
                   <img
@@ -158,7 +158,7 @@ export default function LandingPage() {
 
       {/* A experiência ---------------------------------------------------- */}
         <section id="essencia" aria-labelledby="essence-title" className={`${GRID} grid items-center gap-8 py-14 sm:grid-cols-2 sm:gap-10 sm:py-20`}>
-          <div>
+          <div className="glass-surface p-6 sm:p-8">
             <h2 id="essence-title" className={`mb-5 ${DISPLAY_XL}`}>
               Todo o cuidado que seu carro merece
             </h2>
@@ -184,7 +184,7 @@ export default function LandingPage() {
       {/* Rodapé ------------------------------------------------------------- */}
       {/* Fundo e fio ocupam a largura toda; o conteúdo segue alinhado ao GRID.
           O id "visite" vive aqui porque o header e a página de devs apontam para /#visite. */}
-      <footer id="visite" className="border-t border-t-line bg-ink-soft">
+      <footer id="visite" className="glass-band">
         <div className={`${GRID} grid grid-cols-1 gap-10 py-12 sm:grid-cols-2 sm:gap-8 sm:py-14 xl:grid-cols-[repeat(4,auto)] xl:justify-between`}>
           <div>
             <Brand />
